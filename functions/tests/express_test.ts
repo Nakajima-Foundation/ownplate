@@ -62,6 +62,8 @@ describe("express function", () => {
       itemDescription: "hello from menu",
       price: 1000,
       itemName: "good menu",
+      publicFlag: true,
+      deletedFlag: false,
     });
     await adminDB.doc("restaurants/testbar/menus/VbXMnx4wdTgh1VBpBRIr").set({
       images: { item: { resizedImages: { "600": "123.jpg" } } },

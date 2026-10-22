@@ -1,9 +1,7 @@
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import type {
-  SmaregiStoreListData,
-  SmaregiProductListData,
-  SmaregiAuthData,
+  DispatchData,
   LineVerifyFriendData,
   SubAccountDeleteChildData,
   SubAccountInvitateData,
@@ -13,34 +11,21 @@ import type {
   OrderCreatedData,
   LiffAuthenticateData,
   PingData,
+  SuperTwilioCallData,
+  OrderChangeData,
+  OrderPlacedData,
+  OrderPayData,
+  StripeOAuthVerifyData,
   StripeDeleteRestaurantCardData,
+  CheckPushInviteData,
+  CheckPushInviteResult,
+  CreatePushInviteData,
+  CreatePushInviteResult,
+  RedeemPushInviteData,
+  RedeemPushInviteResult,
+  SendTestWebPushData,
+  SendTestWebPushResult,
 } from "@/models/functionTypes";
-
-export const smaregiStoreList = httpsCallable<
-  SmaregiStoreListData,
-  {
-    res: { storeId: string; storeName: string }[];
-  }
->(functionsJP, "smaregiStoreList2");
-
-export const smaregiProductList = httpsCallable<
-  SmaregiProductListData,
-  {
-    res: {
-      productId: string;
-      productCode: string;
-      productName: string;
-      price: number;
-    }[];
-  }
->(functionsJP, "smaregiProductList2");
-
-export const smaregiAuth = httpsCallable<
-  SmaregiAuthData,
-  {
-    result: boolean;
-  }
->(functionsJP, "smaregiAuth2");
 
 export const lineVerifyFriend = httpsCallable<
   LineVerifyFriendData,
@@ -85,9 +70,18 @@ export const lineValidate = httpsCallable<
   }
 >(functionsJP, "lineValidate2");
 
-export const superDispatch = httpsCallable(functionsJP, "superDispatch2");
+// cmd ごとに中身が違う。`setCustomClaim` は条件を満たさないと初期値の
+// `{ result: false, message: "not processed" }` をそのまま返す（知らない cmd は例外）。
+// 1つの形には決められないので、読む側が絞る前提で unknown のまま渡す。
+export const superDispatch = httpsCallable<DispatchData, { result: unknown }>(
+  functionsJP,
+  "superDispatch2",
+);
 
-export const superTwilio = httpsCallable(functionsJP, "superTwilio2");
+export const superTwilio = httpsCallable<SuperTwilioCallData>(
+  functionsJP,
+  "superTwilio2",
+);
 
 export const accountDelete = httpsCallable(functionsJP, "accountDelete2");
 
@@ -99,16 +93,22 @@ export const orderUpdate = httpsCallable<
   }
 >(functionsJP, "orderUpdateJp2");
 
-export const orderChange = httpsCallable(functionsJP, "orderChangeJp2");
+export const orderChange = httpsCallable<OrderChangeData>(
+  functionsJP,
+  "orderChangeJp2",
+);
 
-export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp2");
+export const orderPlace = httpsCallable<OrderPlacedData>(
+  functionsJP,
+  "orderPlaceJp2",
+);
 
 export const orderCreated = httpsCallable<OrderCreatedData>(
   functionsJP,
   "orderCreatedJp2",
 );
 
-export const orderPay = httpsCallable(functionsJP, "stripepay2");
+export const orderPay = httpsCallable<OrderPayData>(functionsJP, "stripepay2");
 
 export const liffAuthenticate = httpsCallable<
   LiffAuthenticateData,
@@ -134,8 +134,35 @@ export const stripeDeleteRestaurantCard = httpsCallable<
 >(functionsJP, "stripeDeleteRestaurantCard2");
 export const stripeConnect = httpsCallable(functionsJP, "stripeConnect2");
 export const stripeDisconnect = httpsCallable(functionsJP, "stripeDisconnect2");
-export const stripeVerify = httpsCallable(functionsJP, "stripeVerify2");
+// functions の super/stripeVerify.ts が Stripe の口座を読んで返す。画面が使う所だけを書く。
+export const stripeVerify = httpsCallable<
+  StripeOAuthVerifyData,
+  {
+    result?: boolean;
+    account?: { capabilities?: { [key: string]: string } };
+  }
+>(functionsJP, "stripeVerify2");
 export const stripeReceipt = httpsCallable<
-  { restaurantId: string; orderId: string | string[] },
+  { restaurantId: string; orderId: string },
   { receipt_url?: string }
 >(functionsJP, "stripeReceipt2");
+
+export const createPushInvite = httpsCallable<
+  CreatePushInviteData,
+  CreatePushInviteResult
+>(functionsJP, "createPushInvite2");
+// 押す前に招待が使えるか確かめる。状態は変えないので、何度呼んでも安全。
+export const checkPushInvite = httpsCallable<
+  CheckPushInviteData,
+  CheckPushInviteResult
+>(functionsJP, "checkPushInvite2");
+// 登録する端末はサインインしていない。トークンを知っていることが唯一の資格。
+export const redeemPushInvite = httpsCallable<
+  RedeemPushInviteData,
+  RedeemPushInviteResult
+>(functionsJP, "redeemPushInvite2");
+export const sendTestWebPush = httpsCallable<
+  SendTestWebPushData,
+  SendTestWebPushResult,
+  { result: boolean; sent: number; failed: number; targets: number }
+>(functionsJP, "sendTestWebPush2");

@@ -38,11 +38,11 @@ service cloud.firestore {
       return resource.data.ownerUid == request.auth.uid;
     }
 
+    function hasNumberPrice(request) {
+      return request.resource.data.price is number;
+    }
     function isRestaurantOwner(restaurantId, request) {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
-    }
-    function isSmaregiOwner(contractId, request) {
-      return get(/databases/$(database)/documents/smaregi/$(contractId)).data.uid == request.auth.uid;
     }
     function isRestaurantSubAccount(restaurantId, request) {
       let parantUid = get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
@@ -78,17 +78,11 @@ service cloud.firestore {
     // restaurantInfo
     function isUndefinedRestaurantParams(request) {
       return isUndefined(request.resource.data, 'isEC') &&
-             isUndefined(request.resource.data, 'onTheList') &&
-             isUndefined(request.resource.data, 'inMoIndex') &&
-             isUndefined(request.resource.data, 'enableMoPickup') &&
-             isUndefined(request.resource.data, 'groupId');
+             isUndefined(request.resource.data, 'onTheList');
     }
     function notUpdateRestaurantParams(resource, request) {
-      return (isUndefined(request.resource.data, 'isEC')  || request.resource.data.isEC == resource.data.isEC) &&
-             (isUndefined(request.resource.data, 'onTheList')  || request.resource.data.onTheList == resource.data.onTheList) || (request.resource.data.onTheList == false) &&      
-             (isUndefined(request.resource.data, 'inMoIndex')  || request.resource.data.inMoIndex == resource.data.inMoIndex) &&      
-             (isUndefined(request.resource.data, 'enableMoPickup') || request.resource.data.enableMoPickup == resource.data.enableMoPickup) &&
-             (isUndefined(request.resource.data, 'groupId') || request.resource.data.groupId == resource.data.groupId) ;
+      return (isUndefined(request.resource.data, 'isEC') || request.resource.data.isEC == resource.data.isEC) &&
+             (isUndefined(request.resource.data, 'onTheList') || request.resource.data.onTheList == resource.data.onTheList || request.resource.data.onTheList == false);
     }
     function notUpdatePaymentParams(resource, request) {
       return request.resource.data.stripe == resource.data.stripe || isUndefined(request.resource.data, ['stripe']);
@@ -166,10 +160,6 @@ service cloud.firestore {
           && request.resource.data.email == request.auth.token.email;
         allow update: if request.auth.uid == userId;
       }
-      match /private/smaregi {
-        allow read, write: if request.auth.uid == userId;
-        allow read: if isSuper(request);
-      }
       match /private/notification {
         allow read, write: if request.auth.uid == userId;
         allow read: if isSuper(request);
@@ -189,6 +179,13 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
       }
     }
+    // Web Push のワンタイム招待。doc id はトークンの SHA-256。
+    // list だけ塞いでも、トークンを知っていれば get できてしまうので read ごと塞ぐ。
+    // 照合は Functions の中だけで起き、クライアントはこの doc を一度も読まない。
+    match /pushInvites/{tokenHash} {
+      allow read, write: if false;
+    }
+
     match /zipcode/{zipCode} {
       allow get: if true
     }
@@ -245,8 +242,13 @@ service cloud.firestore {
       allow read: if isOwner(resource, request);
     }
 
+    // collection group。ここは **すべての messages コレクション** に当たる。
+    // 持っている項目だけで判断されるので、**どこかの messages に fromUid や
+    // ownerUid を足すと、その相手から読めるようになる**。項目を増やすときは必ずここを見ること。
     match /{path=**}/messages/{messageId} {
       allow read: if isFromUser(resource, request);
+      // 店舗向けの timeline。複数店舗のオーナーが串刺しで引くために collection group で許す。
+      allow read: if isResuaurantOwner(resource, request);
     }
 
     match /{path=**}/subCategory/{subcategory} {
@@ -326,8 +328,10 @@ service cloud.firestore {
           allow read: if isAdmin(request) && isRestaurantGroupSubAccount(restaurantId, request);
           allow read: if isSuper(request);
 
-          allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
-          allow write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          // 値段が数であることは**ここでしか守れない**。画面の type="number" は
+          // 迂回できるし、数でない値段は客側に ¥0 として出たうえで注文まで通る。
+          allow write: if hasNumberPrice(request) && isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow write: if hasNumberPrice(request) && isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
         match /titles/{titleId} {
           allow read: if true
@@ -367,6 +371,30 @@ service cloud.firestore {
           allow read, write: if isRestaurantOwner(restaurantId, request);
           allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
+        // Web Push の端末登録。lines と違い、この doc はサーバだけが持つ値
+        // (recentSends の送信記録、restaurantId、登録時の情報) を抱えている。
+        // そこでクライアントに許すのは「一覧に出す」「ON/OFF する」「名前を変える」
+        // 「消す」だけに絞る。禁止するフィールドを並べるのではなく、触ってよい
+        // フィールドだけを列挙する。並べ方だと、後から足したフィールドが素通りする。
+        // 新規作成はワンタイム URL 経由で Functions が書くので、クライアントには要らない。
+        // Functions は Admin SDK なのでこの rules を通らない。
+        // 店舗向けメッセージの timeline。書くのは Functions だけ（Admin SDK なので
+        // この rules を通らない）。オーナーとサブアカウントが読むだけ。
+        // 全店舗を串刺しで引くほうは collection group 側の規則が持っている。
+        match /messages/{messageId} {
+          allow read: if isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        }
+
+        match /pushRegistrations/{fid} {
+          allow read, delete: if isRestaurantOwner(restaurantId, request);
+          allow read, delete: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow update: if isRestaurantOwner(restaurantId, request)
+                           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['notify', 'name']);
+          allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request)
+                           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['notify', 'name']);
+          allow create: if false;
+        }
         match /liffCustomer/{uid} {
           allow read: if isRestaurantOwner(restaurantId, request);
           allow write: if uid == request.auth.uid && isNewOwner(request);
@@ -403,29 +431,6 @@ service cloud.firestore {
           allow write: if isAdmin(request)
                           && isRestaurantOwner(restaurantId, request);
         }
-    }
-
-    match /smaregi/{contractId} {
-        allow read: if isAdmin(request) && isOwner(resource, request);
-        allow write: if false // only server side of function can write here (see functions/smaregi.ts)
-        match /stores/{storeId} {
-            allow read: if isAdmin(request) && isSmaregiOwner(contractId, request) && isOwner(resource, request);
-            allow write: if isAdmin(request) && isNewOwner(request) && isSmaregiOwner(contractId, request);
-            allow delete: if isAdmin(request) && isSmaregiOwner(contractId, request);
-            match /products/{prodcts} {
-                allow create: if isAdmin(request) && isNewOwner(request) && isSmaregiOwner(contractId, request);
-                allow read, update: if isAdmin(request) && isOwner(resource, request) && isSmaregiOwner(contractId, request);
-                allow delete: if isAdmin(request) && isSmaregiOwner(contractId, request);
-            }
-            match /stocks/{prodcts} {
-                allow read: if isAdmin(request) && isOwner(resource, request) && isSmaregiOwner(contractId, request);
-                allow write: if false // only server side of function can update stock from smaregi (see T.B.D.)
-            }
-        }
-    }
-    match /smaregiData/{contractId}/stores/{storeId}/smaregiProducts/{productId} {
-        allow read: if isAdmin(request) && isSmaregiOwner(contractId, request);
-        allow write: if false // only server side of function can update stock from smaregi (see T.B.D.)
     }
 
     match /requestList/{restaurantId} {

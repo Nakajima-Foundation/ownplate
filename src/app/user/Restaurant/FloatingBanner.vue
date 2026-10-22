@@ -47,9 +47,9 @@
             </div>
             <div class="mt-0.5">
               {{
-                moment(v.termFrom).format("YYYY/MM/DD HH:mm") +
+                formatDay(v.termFrom, "YYYY/MM/DD HH:mm") +
                 " 〜 " +
-                moment(v.termTo).format("YYYY/MM/DD HH:mm")
+                formatDay(v.termTo, "YYYY/MM/DD HH:mm")
               }}
             </div>
           </div>
@@ -92,9 +92,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
 
-import moment from "moment-timezone";
+import { formatDay } from "@/utils/shopCalendar";
+import type Promotion from "@/models/promotion";
 import PromotionMessage5 from "@/app/user/Restaurant/PromotionMessage5.vue";
 import PromotionMessage6 from "@/app/user/Restaurant/PromotionMessage6.vue";
 
@@ -105,11 +106,11 @@ export default defineComponent({
   },
   props: {
     promotion: {
-      type: Object,
+      type: Object as PropType<Promotion>,
       required: true,
     },
     possiblePromotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: false,
     },
   },
@@ -117,7 +118,7 @@ export default defineComponent({
     const promotionVisible = ref(false);
     return {
       promotionVisible,
-      moment,
+      formatDay,
     };
   },
 });

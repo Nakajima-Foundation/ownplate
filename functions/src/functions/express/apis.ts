@@ -1,16 +1,16 @@
 import express from "express";
-import * as admin from "firebase-admin";
+import { getApps, initializeApp } from "firebase-admin/app";
+import { DocumentData, FieldValue, Firestore, getFirestore } from "firebase-admin/firestore";
 // import { ownPlateConfig } from "../../common/project";
 // import cors from "cors";
 // import * as Sentry from "@sentry/node";
 
-import { nameOfOrder, timezone } from "../../lib/utils";
-import { MenuData } from "../../models/menu";
 import { RestaurantInfoData } from "../../models/RestaurantInfo";
 import { RequestWithRestaurant } from "../../lib/types/restaurant";
 
 import { validateFirebaseId } from "../../lib/validator";
 import { order_status } from "../../common/constant";
+import { buildReceiptText } from "./receiptFormat";
 import moment from "moment-timezone";
 import * as receiptline from "receiptline";
 // import { convert } from 'convert-svg-to-png';
@@ -18,13 +18,13 @@ import sharp from "sharp";
 
 export const apiRouter = express.Router();
 
-if (!admin.apps.length) {
-  admin.initializeApp();
+if (!getApps().some((app) => app.name === "[DEFAULT]")) {
+  initializeApp();
 }
 
-let db = admin.firestore();
+let db = getFirestore();
 
-export const updateDb = (_db: admin.firestore.Firestore) => {
+export const updateDb = (_db: Firestore) => {
   db = _db;
 };
 
@@ -35,78 +35,15 @@ export const response200 = (res: express.Response, payload: unknown) => {
   });
 };
 
-export const escapeOptionPrice = (text: string) => {
-  const optionPriceRegex = /\(((\+|＋|ー|−)[0-9.]+)\)/g;
-  return text.replace(optionPriceRegex, "");
-};
-export const escapePrinterString = (text: string) => {
-  // {}+-|"`^,;:
-  return text.replace(/[{}+\-|"`^,;:]+/g, "");
+export const getSVG = (restaurantData: DocumentData, orderData: DocumentData) => {
+  return receiptline.transform(buildReceiptText(restaurantData, orderData), { encoding: "cp932" });
 };
 
-export const getSVG = (restaurantData: admin.firestore.DocumentData, orderData: admin.firestore.DocumentData) => {
-  const orderNumber = nameOfOrder(orderData.number);
+// Express 5 の params は wildcard ルート用に string[] も取りうる。ここは名前付き
+// パラメータだけのルートなので、実際に受け取る形を型で明示する。
+type StarPrinterParams = { restaurantId: string; starKey: string };
 
-  const messages: string[] = [];
-  Object.keys(orderData.order).map((menuId) => {
-    const menu = orderData.menuItems[menuId] as MenuData;
-    const name = menu.itemName;
-    return Object.keys(orderData.order[menuId]).map((key) => {
-      const count = orderData.order[menuId][key];
-      messages.push(`${escapePrinterString(name)} | x${count}`);
-
-      try {
-        if (orderData.options && orderData.options[menuId] && orderData.options[menuId][key]) {
-          const opts = orderData.options[menuId][key].filter((o: unknown) => o);
-          if (opts.length > 0) {
-            opts.map((opt: string) => {
-              if (opt) {
-                messages.push("~~~*" + escapePrinterString(escapeOptionPrice(opt)) + "|");
-              }
-            });
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    });
-  });
-  const orders = messages.join("\n");
-  const howToReceive = orderData.isDelivery ? "デリバリー" : "テイクアウト";
-  const timeEstimated = moment(orderData.timePlaced.toDate()).tz(timezone).format("YYYY/MM/DD HH:mm");
-  const taxPayment = restaurantData.inclusiveTax ? "内税" : "外税";
-  const onlinePay = orderData?.payment?.stripe ? "事前クレジット決済" : "現地払い";
-  const text = `
-^^${escapePrinterString(restaurantData.restaurantName || "")}
-おもちかえり.com
-
-^^^"${orderNumber}"
-
-|受渡方法："${howToReceive}"
-|受渡希望時間："${timeEstimated}"
-
-${escapePrinterString(orderData.name || "")}さん|
-{w:*,4;b:line}
-${orders}
--
-{w:16,16;a:right}
-小計 | ¥${orderData.total}
-消費税（${taxPayment}） | ¥${orderData.tax || 0}
-配達料金 | ¥${orderData.deliveryFee || 0} 
-心づけ (サービス料・消費税含む)| ¥${orderData.tip || 0}
--
-^^ 合計 | ^^^¥${orderData.totalCharge}
-{w:auto; b:space}
-支払方法："${onlinePay}"|
-
-
-`;
-  // console.log({text});
-  const svg = receiptline.transform(text, { encoding: "cp932" });
-  return svg;
-};
-
-const common = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+const common = async (req: express.Request<StarPrinterParams>, res: express.Response, next: express.NextFunction): Promise<void> => {
   const { restaurantId, starKey } = req.params;
 
   if (!validateFirebaseId(restaurantId)) {
@@ -161,7 +98,7 @@ const pollingStar = async (req: express.Request, res: express.Response) => {
     await db.collection(`restaurants/${restaurantId}/printLog`).add({
       restaurantId,
       orderId: orders.docs[0].id,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     });
     return res.json({
       jobReady: true,

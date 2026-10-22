@@ -1,8 +1,9 @@
 import { ownPlateConfig, gtmID, GAPIKey } from "@/config/project";
+import type { ResolvableLink } from "@unhead/vue";
 
 const hostName = ownPlateConfig.hostName;
 
-const link = [
+const link: ResolvableLink[] = [
   {
     rel: "icon",
     type: "image/x-icon",
@@ -99,13 +100,7 @@ export const defaultHeader = {
     {
       key: "og:image",
       property: "og:image",
-      content:
-        "https://" +
-        hostName +
-        "/" +
-        (ownPlateConfig.region === "JP"
-          ? "PR-Feature.png"
-          : "OGP-Facebook.png"),
+      content: "https://" + hostName + "/PR-Feature.png",
     },
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },

@@ -6,17 +6,21 @@
     </div>
     <div v-else>
       <div v-if="partner && partner.length > 0" class="mx-6 mt-3 items-center">
-        <div v-for="(part, k) in partner" :key="k" class="flex">
-          <div class="flex-1">
-            <img :src="`/partners/${part.logo}`" alt="" class="w-12" />
-            <span class="font-bold">
-              {{ part.name }}
-            </span>
+        <template v-for="(part, k) in partner" :key="k">
+          <!-- 提携先が消されたあとも店舗側には id が残る。getPartner はその穴を
+               undefined のまま残すので、ここで飛ばす。 -->
+          <div v-if="part" class="flex">
+            <div class="flex-1">
+              <img :src="`/partners/${part.logo}`" alt="" class="w-12" />
+              <span class="font-bold">
+                {{ part.name }}
+              </span>
+            </div>
+            <div class="cursor-pointer text-right font-bold" v-if="part.ask">
+              <a href="#" @click="openContact()">サポート問い合わせ</a>
+            </div>
           </div>
-          <div class="cursor-pointer text-right font-bold" v-if="part.ask">
-            <a href="#" @click="openContact()">サポート問い合わせ</a>
-          </div>
-        </div>
+        </template>
       </div>
       <!-- Notification Settings Popup-->
       <router-view
@@ -24,20 +28,22 @@
         v-if="noRestaurant === false"
         @updateRestaurant="updateRestaurant"
       ></router-view>
-      <NotificationWatcher :notificationConfig="notificationConfig" />
-      <SoundConfigWatcher :notificationConfig="notificationConfig" />
-      <NewOrderWatcher :notificationConfig="notificationConfig" />
+      <template v-if="notificationConfig">
+        <NotificationWatcher :notificationConfig="notificationConfig" />
+        <SoundConfigWatcher :notificationConfig="notificationConfig" />
+        <NewOrderWatcher :notificationConfig="notificationConfig" />
+      </template>
       <t-modal v-model:active="isOpen" width="488">
-        <PartnersContact :id="(partner[0] || {}).id" />
+        <PartnersContact :id="contactPartner?.id" />
       </t-modal>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from "vue";
+import { defineComponent, ref, onUnmounted, computed } from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, type Unsubscribe } from "firebase/firestore";
 
 import NotificationWatcher from "@/app/admin/Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "@/app/admin/Watcher/SoundConfigWatcher.vue";
@@ -49,14 +55,15 @@ import { PartnerData } from "@/models/ShopOwner";
 import { ping } from "@/lib/firebase/functions";
 
 import {
-  getShopOwner,
   getPartner,
-  regionalSetting,
+  firstKnownPartner,
   useRestaurantId,
   useAdminUids,
 } from "@/utils/utils";
+import { getShopOwner } from "@/utils/shopOwner";
+import { regionalSetting } from "@/config/constant";
 
-import { defaultShopInfo } from "@/utils/admin/RestaurantPageUtils";
+import { defaultShopInfo } from "@/utils/admin/shopInfoForm";
 import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
@@ -105,19 +112,12 @@ export default defineComponent({
       const restaurant_data = restaurant.data();
       const copy = JSON.parse(JSON.stringify(defaultShopInfo));
       const loadShopInfo = { ...copy, ...restaurant_data, ...defaultTax };
-      if (loadShopInfo.temporaryClosure) {
-        loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
-          (day: { toDate: () => Date }) => {
-            return day.toDate();
-          },
-        );
-      }
       shopInfo.value = loadShopInfo;
       noRestaurant.value = false;
     };
     updateRestaurant();
 
-    const notification_detacher = ref();
+    const notification_detacher = ref<Unsubscribe>();
     notification_detacher.value = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}/private/notifications`),
       (notification) => {
@@ -145,6 +145,7 @@ export default defineComponent({
     });
 
     const partner = ref<(PartnerData | undefined)[]>([]);
+    const contactPartner = computed(() => firstKnownPartner(partner.value));
     (async () => {
       const shopOwner = await getShopOwner(ownerUid.value);
       partner.value = await getPartner(shopOwner);
@@ -157,6 +158,7 @@ export default defineComponent({
       notificationConfig,
 
       partner,
+      contactPartner,
       openContact,
       isOpen,
 

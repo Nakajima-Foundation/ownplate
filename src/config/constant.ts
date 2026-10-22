@@ -16,6 +16,19 @@ export const order_status = {
 // Type for order status values
 export type OrderStatus = (typeof order_status)[keyof typeof order_status];
 
+export type OrderStatusName = keyof typeof order_status;
+
+// 名前が `OrderStatusName` だと分かっているところは直接索ける。こちらは
+// `Object.keys()` のように string しか手元に無いとき用。知らない名前には undefined。
+// 自前の欄だけを見る。素の索きだと `toString` などで継承した関数が返り、
+// 戻り値の型が嘘になる。
+const orderStatusByName: { readonly [key: string]: OrderStatus | undefined } =
+  order_status;
+export const orderStatusOf = (key: string): OrderStatus | undefined =>
+  Object.prototype.hasOwnProperty.call(orderStatusByName, key)
+    ? orderStatusByName[key]
+    : undefined;
+
 export const order_status_for_form: { [key: string]: number } = {
   error: 0,
   order_placed: order_status.order_placed, // by user and stripe
@@ -27,13 +40,17 @@ export const order_status_for_form: { [key: string]: number } = {
 
 export const order_status_keys = Object.keys(order_status).reduce(
   (tmp: { [key: string]: string }, key: string) => {
-    tmp[String(order_status[key as keyof typeof order_status])] = key;
+    tmp[String(orderStatusOf(key))] = key;
     return tmp;
   },
   {},
 );
 
-export const possible_transitions = {
+// 遷移表に無い状態でも引かれる（読み手が || {} で受けている）。
+// 索引シグネチャが無いと、載っている4つ以外では引けない。
+export const possible_transitions: {
+  [key: number]: { [key: number]: boolean };
+} = {
   [order_status.order_placed]: {
     [order_status.order_accepted]: true,
     [order_status.order_canceled]: true,
@@ -43,7 +60,6 @@ export const possible_transitions = {
     [order_status.ready_to_pickup]: true, // both paid and unpaid
   },
   [order_status.ready_to_pickup]: {
-    [order_status.order_refunded]: true,
     [order_status.transaction_complete]: true,
   },
   [order_status.transaction_complete]: {
@@ -75,7 +91,7 @@ export const timeEventMapping = {
   order_canceled_by_customer: "orderCustomerCanceledAt",
   transaction_complete: "transactionCompletedAt",
   transaction_hide: "transactionHideAt", // special condition
-};
+} as const;
 
 export const stripe_regions_jp = {
   langs: ["ja"],
@@ -91,7 +107,9 @@ export const stripe_regions_jp = {
   allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
 };
 
-export const daysOfWeek = {
+// 曜日の番号で索く。moment の "e" が返す 0-6 に 7 を足した形で呼ばれる。
+// 1..7 の外は入っていないので、戻りは undefined にもなると言う。
+export const daysOfWeek: { [key: number]: string | undefined } = {
   1: "monday",
   2: "tuesday",
   3: "wednesday",
@@ -151,7 +169,9 @@ export const JPPrefecture = [
   "沖縄県",
 ];
 
-export const taxRates = ["food", "alcohol"];
+// 要素の型を明示する。広がって string になると、この名前で索く一覧
+// （taxRateKeys など）が索けなくなる。
+export const taxRates: ("food" | "alcohol")[] = ["food", "alcohol"];
 
 export const reservationTheDayBefore = [
   { messageKey: "editRestaurant.reservationTheDaysBefore.zero", value: 0 },

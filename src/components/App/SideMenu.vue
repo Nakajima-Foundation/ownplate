@@ -181,7 +181,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import { useLiffBasePath, regionalSetting, useUserData } from "@/utils/utils";
+import { routeParamOf } from "@/utils/routeParam";
+import { useLiffBasePath, useUserData } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 import SideMenuButton from "@/components/App/SideMenuButton.vue";
 import SideMenuText from "@/components/App/SideMenuText.vue";
 import SideBar from "@/components/App/SideBar.vue";
@@ -202,7 +204,7 @@ export default defineComponent({
     const restaurantId = computed(() => {
       // Check if current route is a restaurant page (/r/:restaurantId/...)
       if (route.path.startsWith("/r/") && route.params.restaurantId) {
-        return route.params.restaurantId as string;
+        return routeParamOf(route.params.restaurantId);
       }
       return null;
     });

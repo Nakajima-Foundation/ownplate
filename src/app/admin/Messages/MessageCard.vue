@@ -31,7 +31,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { AdminMessageData } from "@/models/subAccount";
 
 import {
   subAccountInvitationAccept,
@@ -40,7 +41,7 @@ import {
 
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
 import moment from "moment-timezone";
 
@@ -48,7 +49,7 @@ export default defineComponent({
   name: "MessageCard",
   props: {
     message: {
-      type: Object,
+      type: Object as PropType<AdminMessageData>,
       required: true,
     },
   },
@@ -57,7 +58,6 @@ export default defineComponent({
     const generalStore = useGeneralStore();
     const dialogStore = useDialogStore();
     const router = useRouter();
-    const route = useRoute();
 
     const childInvitationAccept = () => {
       dialogStore.setAlert({
@@ -67,10 +67,7 @@ export default defineComponent({
           generalStore.setLoading(true);
           await subAccountInvitationAccept({ messageId: props.message.id });
           generalStore.setLoading(false);
-          router.go({
-            path: route.path,
-            force: true,
-          });
+          router.go(0);
         },
       });
     };

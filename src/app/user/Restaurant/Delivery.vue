@@ -126,16 +126,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 export default defineComponent({
   emits: ["update:modelValue"],
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     modelValue: {

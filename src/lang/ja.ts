@@ -16,7 +16,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
   },
   pageTitle: {
@@ -160,6 +159,8 @@ const data = {
     current: "変更前",
     clickAndUpload: "ここをクリック",
     clickAndUploadDetail: "グレー部分をクリックしてアップロード(JPEG形式)",
+    imageTooLarge: "画像は{size}MBまでです。小さい画像を選んでください。",
+    imageNotImage: "画像ファイルを選んでください。",
     edit: "編集",
   },
   currency: {
@@ -319,6 +320,12 @@ const data = {
     notificationConfig: "通知設定",
     moveToLineConfig:
       "LINE通知設定画面に移動します。移動の前に、このページの保存を忘れずに。",
+    invoiceNumber: "登録番号（適格請求書発行事業者）",
+    enterInvoiceNumber: "例：T1234567890123",
+    invoiceNumberNote:
+      "適格請求書発行事業者の登録番号。未設定の場合はレシート・PDF に印字しません。",
+    webPushNotification: "プッシュ通知",
+    moveToPushConfig: "Webプッシュ設定",
     openDaysConfig: "営業日時設定",
     lunchOrDinnerToggle: "ランチ/ディナーの自動切り替え",
     lunchOrDinnerNotice:
@@ -353,6 +360,8 @@ const data = {
     availableDayTimeSettings: "商品の注文可能時間設定",
     free: "無料",
     optionsPreview: "オプションプレビュー",
+    showOptionsPreview: "プレビューを表示",
+    hideOptionsPreview: "プレビューを隠す",
     priceChange: "値段変化",
     noPriceChange: "なし",
     tax: "消費税",
@@ -386,6 +395,7 @@ const data = {
     category2: "カテゴリー2",
     editCategory2: "カテゴリー2を編集",
     exclusionDate: "除外日",
+    holiday: "祝日",
     exclusionTime: "除外時間",
     showAllMenu: "全ての商品",
     showPublicMenu: "公開中のみ",
@@ -507,6 +517,12 @@ const data = {
     temporaryClosureDescription: "日にちを選択してから追加を押してください",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "日にちを選択",
+    closedOnHolidays: "祝日定休日",
+    closedOnHolidaysLabel: "祝日を定休日にする",
+    closedOnHolidaysDescription:
+      "オンにすると、祝日は受け取りできなくなります。",
+    holidayList: "対象の祝日（翌年末まで）",
+    closedOnHolidaysNotice: "祝日は定休日です",
     paymentMethod: "支払い方法",
     onlinePayment: "オンライン決済",
     onsitePayment: "受け取り払い",
@@ -602,6 +618,7 @@ const data = {
     about: "飲食店情報",
     limitedSale: "のみ販売",
     unavailableTime: "受け渡しできない時間",
+    unavailableOnHolidays: "祝日は受け取れません",
     confirmCart: "カートを見る",
     checkout: "お会計",
     orderCounter: "{count} 個",
@@ -875,12 +892,9 @@ const data = {
     discountPriceMessage: "値引きがあります",
     discountPrice: "値引き金額",
     beforeDiscountPrice: "値引き前価格",
-    cancelReason: "キャンセル理由",
     productId: "商品番号",
     category: "カテゴリ",
     categoryId: "カテゴリID",
-    subCategory: "サブカテゴリ",
-    subCategoryId: "サブカテゴリID",
   },
   editEC: {
     postageList: "送料リスト",
@@ -932,7 +946,6 @@ const data = {
     backToDiscounts: "割引設定一覧に戻る",
     backToDocument: "文章一覧に戻る",
     backToSubaccounts: "サブアカウント一覧に戻る",
-    backToSmaregi: "スマレジ設定に戻る",
     addTitle: "商品グループ名を追加",
     addItem: "商品を追加",
     downloadMenu: "チラシをダウンロード",
@@ -989,6 +1002,41 @@ const data = {
     "auth/missing-verification-code": "SMS確認コードが入力されていません",
     "auth/code-expired":
       "SMS確認コードが有効期限切れです。SMS確認コードを再送信して再度入力してください",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com 注文通知",
+    appShortName: "おもちかえり通知",
+    title: "通知を受け取る端末の登録",
+    installHeading: "iPhone・iPad をお使いの場合",
+    installStep1: "Safari の共有ボタンを押します",
+    installStep2: "「ホーム画面に追加」を選びます",
+    installStep3:
+      "ホーム画面に追加されたアイコンを押して「通知を受け取る端末の登録」画面を開きます",
+    nameLabel: "端末名（必須）",
+    nameHint:
+      "管理画面の端末一覧に表示されます。この端末だと分かる名前を入力してください。",
+    namePlaceholder: "例：レジの iPad",
+    register: "通知を受け取る",
+    done: "登録しました",
+    doneHint: "新しい注文が入ると、この端末に通知が届きます。",
+    status: {
+      "registered-here": "この端末は登録済みです",
+      used: "この URL は使用済みです。管理者に新しい URL の発行を依頼してください。",
+      expired:
+        "この URL は期限切れです。管理者に新しい URL の発行を依頼してください。",
+      "not-found":
+        "この URL は無効です。管理者に新しい URL の発行を依頼してください。",
+    },
+    failure: {
+      unconfigured: "この店舗ではプッシュ通知を利用できません。",
+      unsupported: "この端末またはブラウザではプッシュ通知を利用できません。",
+      denied: "通知がブロックされています。ブラウザの設定で許可してください。",
+      dismissed: "通知が許可されませんでした。もう一度お試しください。",
+      "no-fid":
+        "登録できませんでした。しばらくしてからもう一度お試しください。",
+      invite:
+        "この URL は使用済みか、期限が切れています。管理者にお問い合わせください。",
+    },
   },
   admin: {
     welcomeMessage: "いらっしゃいませ！",
@@ -1104,13 +1152,6 @@ const data = {
         optout: "受け取らない",
       },
     },
-    thirdPartyService: {
-      title: "システム連携",
-      openSmaregi: "スマレジ連携設定",
-      smaregiManual: "スマレジマニュアル",
-      smaregiAppMarket: "スマレジアプリマーケットへ",
-      smaregiManualLink: "スマレジ連携の使い方",
-    },
     needEmailVerification: "メールアドレスの認証を完了させてください。",
     noteEmailVerification1:
       "{email} から送信されるメールをご確認いただき、メール内に記載のURLをクリックし、認証を完了させてください。",
@@ -1137,8 +1178,12 @@ const data = {
     directory: {
       status: "お客様向け飲食店一覧への掲載状況",
       requestWarning: "お支払い設定、店舗公開後に申請をお願いします",
+      requestOptionalNote:
+        "※ 掲載の申請は任意です。申請しなくても店舗は公開できます。申請する場合は、先に店舗を公開してください。",
       requestingWarning:
         "お支払い設定、店舗公開がまだの場合は設定をお願いします",
+      requestingPublicNote:
+        "※ 店舗が公開されていないと、一覧への掲載や運営側での確認ができません。まだの場合は店舗を公開してください。",
       notListed: "未掲載",
       requestList: "掲載を申請する",
       waiting: "申請中",
@@ -1152,6 +1197,72 @@ const data = {
     forgotPassword: "パスワードを忘れた場合",
     passwordReset: "パスワードのリセット",
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
+    timeline: {
+      title: "お知らせ履歴",
+      empty: "まだお知らせはありません。",
+      failed: "お知らせを読み込めませんでした。権限をご確認ください。",
+    },
+    push: {
+      sendFailed: "直近の送信に失敗しています",
+      lastSentAt: "最終送信",
+      undelivered: "通知が届いていません。登録し直してください",
+      rename: "端末名を変更",
+      save: "保存",
+      delete: "削除",
+      registeredAt: "登録",
+      namePlaceholder: "例：レジの iPad",
+      devices: "通知する端末",
+      empty: "まだ端末が登録されていません。",
+      addDevice: "端末を追加",
+      inviteHeading: "通知を受け取りたい端末で、こちらの URL を開いてください",
+      inviteHint:
+        "この URL で登録できる端末は 1 台のみです。2 台目を追加したい場合は、もう一度「端末を追加」を押してください。有効期限は 24 時間です。※ URL を LINE のグループ等、不特定多数の人が見えるところで共有しないでください。",
+      deviceGuideHeading: "この URL を開いた端末での手順",
+      deviceGuideIos:
+        "iPhone・iPad：Safari で開き、共有ボタンから「ホーム画面に追加」を選び、追加されたアイコンから開き直してください。Safari のタブのままでは通知を受け取れません（iOS 16.4 以降が必要です）。",
+      deviceGuideAndroid:
+        "Android：Chrome でそのまま開いて登録できます。端末の設定で通知がオフになっていると届きません。",
+      deviceGuideDesktop:
+        "パソコン：通知を許可していても、OS の通知設定でブラウザがオフのときや、集中モードのあいだは表示されません。",
+      copy: "URL をコピー",
+      copied: "コピーしました",
+      test: "テスト送信",
+      testResult: {
+        noTargets: "通知がオンの端末がありません。",
+        allSent: "{targets} 台に送信しました。",
+        partlySent:
+          "{targets} 台中 {sent} 台に送信しました。届かなかった端末は一覧で確認してください。",
+        failed:
+          "テスト送信に失敗しました。時間をおいてもう一度お試しください。",
+      },
+      deleteConfirm: "この端末への通知を消去しますか？",
+    },
+    webpush: {
+      restaurantId: "店舗 ID",
+      title: "Web Push テスト",
+      statusHeading: "状態",
+      configured: "VAPID 鍵",
+      notConfigured: "未設定",
+      supported: "この端末の対応",
+      notSupported: "非対応",
+      permission: "通知の許可",
+      currentDevice: "この端末の FID",
+      noDevice: "未登録",
+      iosHint:
+        "iPhone・iPad ではホーム画面に追加したアイコンから開いた場合のみ利用できます。",
+      registrationHeading: "端末の登録",
+      register: "この端末を登録",
+      unregister: "この端末を解除",
+      sendHeading: "テスト送信",
+      sendTitle: "タイトル",
+      sendBody: "本文",
+      send: "自分の端末に送信",
+      probeHeading: "callable の影響確認",
+      probeHint:
+        "通常の callable を1回呼びます。この後に送信して届けば、callable が FID を壊す問題は解消しています。",
+      probe: "callable を呼ぶ",
+      logHeading: "ログ",
+    },
     order: {
       suspend: "受付休止",
       suspendSettings: "受付休止設定",
@@ -1174,6 +1285,9 @@ const data = {
       infinityNotificationOn: "1分おきに再通知",
       infinityNotificationOff: "受注時のみ通知",
       soundTest: "テスト",
+      webPushDescription:
+        "管理画面を閉じていても、この端末に新しい注文をお知らせします。",
+      webPushDevices: "プッシュ通知の端末",
       paymentIsNotCompleted:
         "ご注意：「受付済み」ボタンを押すとカード決済が処理されます。",
       cancelButton: "注文をキャンセル",
@@ -1291,6 +1405,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "ドメインがホワイトリストに登録されていません。",
         "auth/internal-error": "パスワードが無効です。",
+        "auth/missing-password": "パスワードを入力してください。",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
@@ -1366,12 +1481,6 @@ const data = {
       showBelow: "設定の下のほうにあります",
       enabled: "有効にする",
       callbackURLCopyToLine: "この値をコピーしてLINE側に設定をしてください。",
-    },
-    smaregi: {
-      index: "スマレジ連携",
-      authenticating: "連携中",
-      authenticationError: "連携に失敗しました",
-      smaregiShopList: "スマレジ店舗一覧",
     },
   },
   week: {
@@ -1478,6 +1587,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "登録しました",
+      body: "続けて登録するときは「端末を追加」を押してください。",
+    },
     paymentMethods: {
       title: "現地決済方法",
       body: "「受け取り払い」を選択したお客様向けに、店舗で利用できる決済方法を案内する機能です。",
@@ -1507,6 +1620,62 @@ const data = {
     reset: "サーバーURLリセット",
   },
   validationError: {
+    invoiceNumber: {
+      format: "半角で「T」＋数字13桁を入力してください",
+    },
+    itemName: {
+      empty: "商品名を入力してください",
+    },
+    price: {
+      empty: "値段を入力してください",
+      invalid: "値段は0以上の整数で入力してください",
+    },
+    restaurantName: {
+      empty: "飲食店名を入力してください",
+    },
+    ownerName: {
+      empty: "責任者氏名を入力してください",
+    },
+    streetAddress: {
+      empty: "番地以下を入力してください",
+    },
+    city: {
+      empty: "市区町村を入力してください",
+    },
+    state: {
+      empty: "都道府県を選択してください",
+    },
+    url: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    lineUrl: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    instagramUrl: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    uberEatsUrl: {
+      invalidUrl: "正しいURL（http:// または https://）を入力してください",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "準備時間が長すぎます（最大7日まで）",
+      negative: "準備時間に負の値は指定できません",
+      notNumbery: "準備時間は数値で入力してください",
+      empty: "準備時間を入力してください",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "予約受付開始日の設定が正しくありません",
+      empty: "予約受付開始日を選択してください",
+    },
+    restProfilePhoto: {
+      empty: "プロフィール画像を設定してください",
+    },
+    restCoverPhoto: {
+      empty: "カバー画像を設定してください",
+    },
+    oneInEmpty: "開始時刻と終了時刻の両方を入力してください",
+    validBusinessTime: "終了時刻は開始時刻より後にしてください",
+    noSelect: "営業時間を設定してください",
     zip: {
       empty: "郵便番号を入力してください",
       invalidZip: "正しい7桁の郵便番号を入力してください",
@@ -1516,6 +1685,7 @@ const data = {
     },
     name: {
       empty: "お名前(氏名)を入力してください",
+      length: "お名前は3文字以上で入力してください",
     },
     memo: {
       length: "メッセージは500文字以内で入力してください。",

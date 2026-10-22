@@ -51,7 +51,7 @@
         >
           <i class="material-icons mr-2 text-lg text-white/50">language</i>
           <span class="mr-2 text-sm font-bold text-white/80">{{
-            languages[language]
+            languageLabel
           }}</span>
 
           <i class="material-icons text-lg text-white/50">arrow_drop_down</i>
@@ -100,7 +100,9 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 
-import { useUserData, isJapan, regionalSetting, isNull } from "@/utils/utils";
+import { useUserData } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
+import { regionalSetting } from "@/config/constant";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -120,6 +122,12 @@ export default defineComponent({
 
     const language = ref(regionalSetting.defaultLanguage);
     const languages = regionalSetting.languages;
+    // 表示名の一覧は決まった鍵しか持たないが、language には端末の言語がそのまま
+    // 入ることがある（対応していない言語なら表示は空のまま）。
+    const languageLabel = computed(() => {
+      const labels: { [key: string]: string } = languages;
+      return labels[language.value] ?? "";
+    });
     const langPopup = ref(false);
 
     const { user, uid, isAdmin } = useUserData();
@@ -153,11 +161,7 @@ export default defineComponent({
       if (route.query.lang) {
         changeLang(route.query.lang as string);
       } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
-        if (isJapan) {
-          changeLang("ja");
-        } else {
-          changeLang("en");
-        }
+        changeLang("ja");
       } else {
         const __language =
           (window.navigator.languages && window.navigator.languages[0]) ||
@@ -210,6 +214,7 @@ export default defineComponent({
     return {
       language,
       languages,
+      languageLabel,
 
       langPopup,
 

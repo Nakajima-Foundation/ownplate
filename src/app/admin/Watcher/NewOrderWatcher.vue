@@ -14,7 +14,7 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 
-import { midNight } from "@/utils/dateUtils";
+import { startOfDayAfter } from "@/utils/shopCalendar";
 import { order_status } from "@/config/constant";
 
 import { doc2data, useRestaurantId, useSoundPlay } from "@/utils/utils";
@@ -41,7 +41,7 @@ export default defineComponent({
     const orders = ref<OrderInfoData[]>([]);
 
     const today = computed(() => {
-      return midNight(0);
+      return startOfDayAfter(new Date(), 0);
     });
     const hasNewOrder = computed(() => {
       return orders.value.length > 0;
@@ -60,7 +60,7 @@ export default defineComponent({
           where("status", "==", order_status.order_placed),
         ),
         (result) => {
-          orders.value = result.docs.map(doc2data("order")) as OrderInfoData[];
+          orders.value = result.docs.map(doc2data<OrderInfoData>("order"));
           generalStore.setOrders(orders.value);
         },
         (error) => {
@@ -98,7 +98,8 @@ export default defineComponent({
     }, 1000 * intervalTime);
 
     onUnmounted(() => {
-      order_detacher();
+      // 上の dateWasUpdated と同じく、まだ張られていないことがある。
+      order_detacher?.();
       clearInterval(intervalTask);
     });
     watch(today, () => {

@@ -68,7 +68,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
@@ -83,7 +84,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     backLink: {

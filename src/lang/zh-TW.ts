@@ -15,7 +15,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
@@ -156,6 +155,8 @@ const data = {
     current: "變更前",
     clickAndUpload: "點選此處",
     clickAndUploadDetail: "點選灰色部分上傳 (JPEG 格式)",
+    imageTooLarge: "圖片大小不能超過 {size}MB，請選擇較小的圖片。",
+    imageNotImage: "請選擇圖片檔案。",
     edit: "編輯",
   },
   currency: {
@@ -305,6 +306,12 @@ const data = {
     orderConfirmViewConfig: "訂單確認介面設定",
     notificationConfig: "通知設定",
     moveToLineConfig: "跳轉至 LINE 通知設定介面。跳轉前請記得儲存此頁。",
+    invoiceNumber: "發票登記號",
+    enterInvoiceNumber: "例如：T1234567890123",
+    invoiceNumberNote:
+      "合格發票開立者登記號。未設定時不會列印在收據和 PDF 上。",
+    webPushNotification: "推播通知",
+    moveToPushConfig: "Web 推播設定",
     openDaysConfig: "營業日時設定",
     lunchOrDinnerToggle: "午餐/晚餐自動切換",
     lunchOrDinnerNotice:
@@ -339,6 +346,8 @@ const data = {
     availableDayTimeSettings: "商品可下單時間設定",
     free: "免費",
     optionsPreview: "選項預覽",
+    showOptionsPreview: "顯示選項預覽",
+    hideOptionsPreview: "隱藏選項預覽",
     priceChange: "價格變化",
     noPriceChange: "無",
     tax: "消費稅",
@@ -371,6 +380,7 @@ const data = {
     category2: "分類 2",
     editCategory2: "編輯分類 2",
     exclusionDate: "排除日",
+    holiday: "國定假日",
     exclusionTime: "排除時間",
     showAllMenu: "全部商品",
     showPublicMenu: "僅公開中",
@@ -492,6 +502,11 @@ const data = {
     temporaryClosureDescription: "請選擇日期後按新增",
     temporaryClosureOkay: "確定",
     temporaryClosureSelect: "選擇日期",
+    closedOnHolidays: "國定假日公休",
+    closedOnHolidaysLabel: "國定假日公休",
+    closedOnHolidaysDescription: "開啟後，國定假日無法取餐。",
+    holidayList: "適用的國定假日（至明年年底）",
+    closedOnHolidaysNotice: "國定假日公休",
     paymentMethod: "支付方式",
     onlinePayment: "線上支付",
     onsitePayment: "現場支付",
@@ -579,6 +594,7 @@ const data = {
     about: "店鋪資訊",
     limitedSale: "僅銷售",
     unavailableTime: "不可取餐時間",
+    unavailableOnHolidays: "國定假日無法取餐",
     confirmCart: "檢視購物車",
     checkout: "結賬",
     orderCounter: "{count} 件",
@@ -841,12 +857,9 @@ const data = {
     discountPriceMessage: "有折扣",
     discountPrice: "折扣金額",
     beforeDiscountPrice: "折扣前價格",
-    cancelReason: "取消原因",
     productId: "商品編號",
     category: "分類",
     categoryId: "分類 ID",
-    subCategory: "子分類",
-    subCategoryId: "子分類 ID",
   },
   editEC: {
     postageList: "運費列表",
@@ -894,7 +907,6 @@ const data = {
     backToDiscounts: "返回折扣設定列表",
     backToDocument: "返回文件列表",
     backToSubaccounts: "返回子賬號列表",
-    backToSmaregi: "返回 Smaregi 設定",
     addTitle: "新增商品組名",
     addItem: "新增商品",
     downloadMenu: "下載傳單",
@@ -949,6 +961,35 @@ const data = {
       "SMS 驗證碼無效。請重新傳送 SMS 驗證碼並輸入",
     "auth/missing-verification-code": "未輸入 SMS 驗證碼",
     "auth/code-expired": "SMS 驗證碼已過期。請重新傳送 SMS 驗證碼並輸入",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com 訂單通知",
+    appShortName: "訂單通知",
+    title: "註冊接收通知的裝置",
+    installHeading: "使用 iPhone 或 iPad 時",
+    installStep1: "點按 Safari 的分享按鈕",
+    installStep2: "選擇「加入主畫面」",
+    installStep3: "點按加入主畫面的圖示，開啟「註冊接收通知的裝置」畫面",
+    nameLabel: "裝置名稱（必填）",
+    nameHint: "將顯示在管理畫面的裝置列表中。請輸入能識別此裝置的名稱。",
+    namePlaceholder: "例如：收銀台的 iPad",
+    register: "接收通知",
+    done: "已註冊",
+    doneHint: "有新訂單時，本裝置將收到通知。",
+    status: {
+      "registered-here": "本裝置已註冊",
+      used: "此網址已被使用。請向管理員索取新的網址。",
+      expired: "此網址已過期。請向管理員索取新的網址。",
+      "not-found": "此網址無效。請向管理員索取新的網址。",
+    },
+    failure: {
+      unconfigured: "本店鋪無法使用推播通知。",
+      unsupported: "此裝置或瀏覽器無法接收推播通知。",
+      denied: "通知已被封鎖。請在瀏覽器設定中允許。",
+      dismissed: "未允許通知。請再試一次。",
+      "no-fid": "註冊失敗。請稍後再試。",
+      invite: "此網址已被使用或已過期。請聯絡管理員。",
+    },
   },
   admin: {
     welcomeMessage: "歡迎光臨！",
@@ -1057,13 +1098,6 @@ const data = {
         optout: "不接收",
       },
     },
-    thirdPartyService: {
-      title: "系統聯動",
-      openSmaregi: "Smaregi 聯動設定",
-      smaregiManual: "Smaregi 手冊",
-      smaregiAppMarket: "前往 Smaregi 應用市場",
-      smaregiManualLink: "Smaregi 聯動使用方法",
-    },
     needEmailVerification: "請完成郵箱地址驗證。",
     noteEmailVerification1:
       "請查收從 {email} 傳送的郵件，點選郵件中的 URL 完成驗證。",
@@ -1088,7 +1122,11 @@ const data = {
     directory: {
       status: "客戶用店鋪列表的刊登狀態",
       requestWarning: "請在支付設定、店鋪公開後申請",
+      requestOptionalNote:
+        "※ 刊登申請為選填項目。即使不申請也可以公開店鋪。如需申請，請先公開店鋪。",
       requestingWarning: "如支付設定、店鋪公開尚未完成請先設定",
+      requestingPublicNote:
+        "※ 店鋪未公開時，將無法在列表中刊登或由營運方確認。如尚未公開，請先公開店鋪。",
       notListed: "未刊登",
       requestList: "申請刊登",
       waiting: "申請中",
@@ -1102,6 +1140,71 @@ const data = {
     forgotPassword: "忘記密碼",
     passwordReset: "重置密碼",
     pleaseCheckInbox: "郵件已傳送。請檢視收件箱。",
+    timeline: {
+      title: "通知紀錄",
+      empty: "目前沒有通知。",
+      failed: "無法載入通知。請確認您的權限。",
+    },
+    push: {
+      sendFailed: "最近一次傳送失敗",
+      lastSentAt: "最後傳送",
+      undelivered: "通知未能送達此裝置。請重新註冊。",
+      rename: "修改裝置名稱",
+      save: "儲存",
+      delete: "刪除",
+      registeredAt: "註冊",
+      namePlaceholder: "例如：收銀台的 iPad",
+      devices: "接收通知的裝置",
+      empty: "尚未註冊任何裝置。",
+      addDevice: "新增裝置",
+      inviteHeading: "請在需要接收通知的裝置上開啟此網址",
+      inviteHint:
+        "此網址只能註冊 1 台裝置。如需新增第 2 台裝置，請再次點按「新增裝置」。有效期限為 24 小時。※ 請勿將網址分享到 LINE 群組等不特定多數人可以看到的地方。",
+      deviceGuideHeading: "開啟此 URL 的裝置上的操作步驟",
+      deviceGuideIos:
+        'iPhone / iPad：請用 Safari 開啟，點選分享按鈕選擇"加入主畫面"，然後從新增的圖示重新開啟。在 Safari 分頁中無法接收通知（需要 iOS 16.4 以上）。',
+      deviceGuideAndroid:
+        "Android：用 Chrome 直接開啟即可註冊。若在裝置設定中關閉了通知，將收不到。",
+      deviceGuideDesktop:
+        "電腦：即使已允許通知，若在系統通知設定中關閉了瀏覽器，或處於專注模式期間，也不會顯示。",
+      copy: "複製網址",
+      copied: "已複製",
+      test: "傳送測試",
+      testResult: {
+        noTargets: "沒有開啟通知的裝置。",
+        allSent: "已傳送到 {targets} 台裝置。",
+        partlySent:
+          "已傳送到 {targets} 台中的 {sent} 台裝置。請在列表中查看未收到的裝置。",
+        failed: "測試傳送失敗。請稍後再試。",
+      },
+      deleteConfirm: "要刪除對該裝置的通知嗎？",
+    },
+    webpush: {
+      restaurantId: "店鋪 ID",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "接單暫停",
       suspendSettings: "接單暫停設定",
@@ -1124,6 +1227,8 @@ const data = {
       infinityNotificationOn: "每分鐘重新通知",
       infinityNotificationOff: "僅接單時通知",
       soundTest: "測試",
+      webPushDescription: "即使關閉管理頁面，也會將新訂單通知到此裝置。",
+      webPushDevices: "推播通知裝置",
       paymentIsNotCompleted: "注意: 按「已受理」按鈕將處理卡片支付。",
       cancelButton: "取消訂單",
       cancelTitle: "取消訂單",
@@ -1231,6 +1336,7 @@ const data = {
         "auth/invalid-login-credentials": "郵箱或密碼無效。",
         "auth/unauthorized-continue-uri": "域名未註冊在白名單中。",
         "auth/internal-error": "密碼無效。",
+        "auth/missing-password": "請輸入密碼。",
         "auth/invalid-credential": "郵箱或密碼無效。",
       },
     },
@@ -1301,12 +1407,6 @@ const data = {
       showBelow: "在設定的下方",
       enabled: "啟用",
       callbackURLCopyToLine: "請複製此值並設定到 LINE。",
-    },
-    smaregi: {
-      index: "Smaregi 聯動",
-      authenticating: "認證中",
-      authenticationError: "認證失敗",
-      smaregiShopList: "Smaregi 店鋪列表",
     },
   },
   week: {
@@ -1411,6 +1511,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "已註冊",
+      body: "如需繼續註冊，請點按「新增裝置」。",
+    },
     paymentMethods: {
       title: "支付方式",
       body: "此功能為選擇「現場支付」的客戶提供店鋪可用的支付方式資訊",
@@ -1439,6 +1543,62 @@ const data = {
     reset: "重置伺服器 URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "請輸入半形 T 加 13 位數字",
+    },
+    itemName: {
+      empty: "請輸入商品名稱",
+    },
+    price: {
+      empty: "請輸入價格",
+      invalid: "請輸入0以上的整數作為價格",
+    },
+    restaurantName: {
+      empty: "請輸入餐廳名稱",
+    },
+    ownerName: {
+      empty: "請輸入負責人姓名",
+    },
+    streetAddress: {
+      empty: "請輸入門牌號及以下地址",
+    },
+    city: {
+      empty: "請輸入市區町村",
+    },
+    state: {
+      empty: "請選擇都道府縣",
+    },
+    url: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    lineUrl: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    instagramUrl: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    uberEatsUrl: {
+      invalidUrl: "請輸入有效的URL（以 http:// 或 https:// 開頭）",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "準備時間過長（最多7天）",
+      negative: "準備時間不能為負數",
+      notNumbery: "請以數字輸入準備時間",
+      empty: "請輸入準備時間",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "預約受理開始日的設定不正確",
+      empty: "請選擇預約受理開始日",
+    },
+    restProfilePhoto: {
+      empty: "請設定大頭貼圖片",
+    },
+    restCoverPhoto: {
+      empty: "請設定封面圖片",
+    },
+    oneInEmpty: "請同時輸入開始時間和結束時間",
+    validBusinessTime: "結束時間必須晚於開始時間",
+    noSelect: "請設定營業時間",
     zip: {
       empty: "請輸入郵政編碼",
       invalidZip: "請輸入有效的郵政編碼",
@@ -1448,6 +1608,7 @@ const data = {
     },
     name: {
       empty: "請輸入姓名",
+      length: "請輸入至少 3 個字的姓名。",
     },
     memo: {
       length: "請在 500 字以內輸入訊息。",

@@ -48,19 +48,17 @@ import {
 import { getShopIcon, getCustomerIcon } from "@/utils/map";
 import { GMAPId } from "@/config/project";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
+import { CustomerInfo } from "@/models/customer";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object as PropType<{
-        location: { lat: number; lng: number };
-      }>,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     customer: {
-      type: Object as PropType<{
-        location: { lat: number; lng: number };
-      }>,
+      type: Object as PropType<CustomerInfo>,
       required: true,
     },
     phoneNumber: {
@@ -72,22 +70,28 @@ export default defineComponent({
     const mapRef = ref<HTMLElement | null>(null);
     const mapObj = ref<google.maps.Map>();
 
+    // 店舗の座標は片方だけ入っていることがある。地図は両方そろっていないと使えない。
+    const shopLocation = computed(() => {
+      const location = props.shopInfo?.location;
+      if (!location?.lat || !location?.lng) {
+        return null;
+      }
+      return { lat: location.lat, lng: location.lng };
+    });
+
     const computedCenter = computed(() => {
-      if (props.customer?.location && props.shopInfo?.location) {
+      const shop = shopLocation.value;
+      if (props.customer?.location && shop) {
         return {
-          lat: (props.customer.location.lat + props.shopInfo.location.lat) / 2,
-          lng: (props.customer.location.lng + props.shopInfo.location.lng) / 2,
+          lat: (props.customer.location.lat + shop.lat) / 2,
+          lng: (props.customer.location.lng + shop.lng) / 2,
         };
       }
       return GOOGLE_MAP_DEFAULT_CENTER; // default center
     });
 
     const drawMap = () => {
-      if (
-        !mapRef.value ||
-        !props.customer.location ||
-        !props.shopInfo.location
-      ) {
+      if (!mapRef.value || !props.customer.location || !shopLocation.value) {
         return;
       }
       if (mapObj.value) {
@@ -105,16 +109,14 @@ export default defineComponent({
       // Google Maps API mounts the marker via the `map` option in the constructor;
       // the returned reference is intentionally discarded.
       // shop marker
-      // eslint-disable-next-line no-new
-      new google.maps.marker.AdvancedMarkerElement({
+      void new google.maps.marker.AdvancedMarkerElement({
         map,
         position: props.customer.location,
         content: getCustomerIcon(),
       });
-      // eslint-disable-next-line no-new
-      new google.maps.marker.AdvancedMarkerElement({
+      void new google.maps.marker.AdvancedMarkerElement({
         map,
-        position: props.shopInfo.location,
+        position: shopLocation.value,
         content: getShopIcon(),
       });
     };

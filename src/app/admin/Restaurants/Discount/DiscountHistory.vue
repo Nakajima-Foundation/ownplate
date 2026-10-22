@@ -130,7 +130,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from "vue";
+import { defineComponent, ref, onUnmounted, PropType } from "vue";
+import type { UserPromotionHistoryDataBase } from "@/models/promotionTypes";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -141,16 +143,17 @@ import {
   orderBy,
   deleteDoc,
   doc,
-  DocumentData,
+  type Timestamp,
 } from "firebase/firestore";
 
-import { useAdminUids, notFoundResponse } from "@/utils/utils";
+import { collectionData, useAdminUids, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import BackButton from "@/components/BackButton.vue";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 import moment from "moment-timezone";
 
@@ -161,7 +164,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: false,
     },
   },
@@ -170,7 +173,7 @@ export default defineComponent({
 
     const id = props.shopInfo?.restaurantId;
     const idKey = "restaurantId";
-    const discountId = route.params.discountId as string;
+    const discountId = routeParamOf(route.params.discountId);
 
     const { ownerUid } = useAdminUids();
     if (
@@ -180,7 +183,11 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    type HistoryItem = DocumentData & { path: string };
+    // 書くときは serverTimestamp、読むと Timestamp。path は削除のために読み込みで足す。
+    type HistoryItem = Omit<
+      UserPromotionHistoryDataBase,
+      "createdAt" | "usedAt"
+    > & { createdAt: Timestamp; usedAt: Timestamp; path: string };
     const histories = ref<HistoryItem[]>([]);
     const cond = discountId
       ? query(
@@ -199,7 +206,7 @@ export default defineComponent({
       docs.docs.forEach((a) => {
         const d = a.data();
         d.path = a.ref.path;
-        tmp.push(d as HistoryItem);
+        tmp.push(collectionData<HistoryItem>(d));
       });
       histories.value = tmp;
     });

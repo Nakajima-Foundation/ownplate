@@ -21,10 +21,10 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
-import moment from "moment";
+import { formatDay } from "@/utils/shopCalendar";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { order_status } from "@/config/constant";
+import { order_status, orderStatusOf } from "@/config/constant";
 import { OrderInfoData } from "@/models/orderInfo";
 import { arrayOrNumSum, orderTypeKey, getRestaurantId } from "@/utils/utils";
 
@@ -54,20 +54,20 @@ export default defineComponent({
           return count + arrayOrNumSum(order.order[id]);
         }, 0);
         const status = Object.keys(order_status).reduce((result, key) => {
-          if (order_status[key] === order.status) {
+          if (orderStatusOf(key) === order.status) {
             return key;
           }
           return result;
         }, "unexpected");
         return {
-          datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
+          datePlaced: formatDay(order.timePlaced.toDate(), "YYYY/MM/DD HH:mm"),
           type: t("order." + orderTypeKey(order)),
           dateEstimated:
             order.timeEstimated &&
-            moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),
+            formatDay(order.timeEstimated.toDate(), "YYYY/MM/DD HH:mm"),
           dateConfirmed:
             order.timeConfirmed &&
-            moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
+            formatDay(order.timeConfirmed.toDate(), "YYYY/MM/DD HH:mm"),
           statusName: t(`order.status.${status}`),
           totalCount,
           total: order.totalCharge,

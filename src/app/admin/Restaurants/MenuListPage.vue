@@ -248,9 +248,6 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "@/app/admin/Restaurants/MenuListPage/Utils";
 
-import { ownPlateConfig } from "@/config/project";
-
-import { MenuData, TitleData } from "@/models/menu";
 import {
   copyMenuData,
   getBlankMenuItem,
@@ -261,11 +258,13 @@ import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle2 } from "@/utils/admin/Toggle";
 
 import { useRouter, useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import {
+  collectionData,
   sleep,
   scrollToElementById,
   defaultTitle,
@@ -317,8 +316,13 @@ export default defineComponent({
     }));
 
     const restaurantId = computed(() => {
-      return route.params.restaurantId as string;
+      return routeParamOf(route.params.restaurantId);
     });
+    // allow sub Account
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
+    }
+
     const { menuObj, itemsObj, numberOfMenus, loadMenu, isLoading } =
       useMenuAndTitle(restaurantId);
 
@@ -326,19 +330,22 @@ export default defineComponent({
       return Object.keys(menuObj.value).length;
     });
 
-    // allow sub Account
-    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return notFoundResponse;
-    }
-
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
     // Menu list is saved in restaurant info. This data needs reactive.
     notFound.value = false;
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
       (results) => {
-        if (results.exists() && results.data().uid === ownerUid.value) {
-          shopInfoSnapshot.value = results.data() as RestaurantInfoData;
+        // 比べる uid が分かっていないときに、店舗側の uid も無いと素の比較では
+        // 一致してしまう。分かっていなければ一致しない扱いにする。
+        if (
+          results.exists() &&
+          ownerUid.value !== undefined &&
+          results.data().uid === ownerUid.value
+        ) {
+          shopInfoSnapshot.value = collectionData<RestaurantInfoData>(
+            results.data(),
+          );
           notFound.value = false;
         } else {
           notFound.value = true;
@@ -483,7 +490,7 @@ export default defineComponent({
     // 値そのものを key として使う identity 関数を渡す。
     const menuListItemKey = (key: string) => key;
 
-    const addTitle = async (operation: string) => {
+    const addTitle = async (operation?: string) => {
       submitting.value = true;
       try {
         const data = getBlankTitleItem(uid.value);
@@ -504,7 +511,7 @@ export default defineComponent({
         submitting.value = false;
       }
     };
-    const addMenu = async (operation: string) => {
+    const addMenu = async (operation?: string) => {
       submitting.value = true;
       try {
         const itemData = getBlankMenuItem(uid.value);
@@ -571,7 +578,8 @@ export default defineComponent({
       }
     };
 
-    const forkItem = async (itemKey: string, newData: MenuData | TitleData) => {
+    // 読むのは id だけ。呼び手が渡すのは addDoc の戻りで、読み込んだ品目ではない。
+    const forkItem = async (itemKey: string, newData: { id: string }) => {
       const pos = menuLists.value.indexOf(itemKey);
 
       const newMenuLists = menuLists.value;
@@ -587,6 +595,9 @@ export default defineComponent({
     };
     const forkTitleItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
+      if (item._dataType !== "title") {
+        return;
+      }
       const data = {
         name: item.name,
         uid: uid.value,
@@ -603,11 +614,10 @@ export default defineComponent({
 
     const forkMenuItem = async (itemKey: string) => {
       const item = itemsObj.value[itemKey];
-      const data = copyMenuData(
-        item,
-        ownPlateConfig.region === "JP",
-        uid.value,
-      );
+      if (item._dataType !== "menu") {
+        return;
+      }
+      const data = copyMenuData(item, uid.value);
       const newData = await addDoc(
         collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data),

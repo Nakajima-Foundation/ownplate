@@ -137,6 +137,21 @@
         </div>
       </div>
 
+      <!-- Web Push -->
+      <div
+        class="mt-4 flex justify-center rounded-lg bg-black/5 py-3 text-center"
+        v-if="isOwner && !simpleMode"
+      >
+        <router-link :to="'/admin/restaurants/' + restaurantid + '/pushlist'">
+          <div class="text-op-teal inline-flex items-center">
+            <i class="material-icons mr-2 text-lg">notifications_active</i>
+            <span class="text-sm font-bold">
+              {{ $t("editRestaurant.moveToPushConfig") }}
+            </span>
+          </div>
+        </router-link>
+      </div>
+
       <!-- Notifications Settings -->
       <div
         class="mt-4 flex justify-evenly rounded-lg bg-black/5 pt-3 pb-2 text-center"
@@ -312,6 +327,11 @@
               {{ $t("admin.directory.requestingWarning") }}
             </span>
           </div>
+          <div class="mt-2">
+            <span class="text-sm text-black/60">
+              {{ $t("admin.directory.requestingPublicNote") }}
+            </span>
+          </div>
         </div>
 
         <!-- Off Directory -->
@@ -337,6 +357,11 @@
           <div class="mt-2">
             <span class="text-sm">
               {{ $t("admin.directory.requestWarning") }}
+            </span>
+          </div>
+          <div class="mt-2">
+            <span class="text-sm text-black/60">
+              {{ $t("admin.directory.requestOptionalNote") }}
             </span>
           </div>
         </div>
@@ -393,7 +418,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, computed } from "vue";
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onUnmounted,
+  computed,
+  PropType,
+} from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -414,7 +447,7 @@ export default defineComponent({
   name: "RestaurantEditCard",
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     restaurantid: {

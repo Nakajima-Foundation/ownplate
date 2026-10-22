@@ -65,11 +65,11 @@
                 @change="handleCardStateChange"
                 ref="stripeRef"
                 :stripeJCB="stripeJCB"
-                :stripeAccount="stripeAccount"
-                :clientSecret="orderInfo.client_secret"
+                :stripeAccount="stripeAccount ?? ''"
+                :clientSecret="orderInfo.client_secret ?? ''"
                 :ownerUid="shopInfo.uid"
                 :uid="orderInfo.uid"
-                :hasPayment="orderInfo.hasPayment"
+                :hasPayment="orderInfo.hasPayment ?? false"
                 :isPayingError="isPayingError"
               ></stripe-card>
               <div class="mt-4 text-center">
@@ -114,9 +114,10 @@ import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue
 
 import { orderPay } from "@/lib/firebase/functions";
 
-import { OrderInfoData } from "@/models/orderInfo";
+import { OrderDataBase } from "@/models/orderTypes";
 import { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -125,6 +126,7 @@ import { errorMessage } from "@/utils/utils";
 import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 export default defineComponent({
   name: "Order",
@@ -143,7 +145,7 @@ export default defineComponent({
       required: true,
     },
     orderInfo: {
-      type: Object as PropType<OrderInfoData>,
+      type: Object as PropType<OrderDataBase>,
       required: true,
     },
     orderItems: {
@@ -151,12 +153,12 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     menuPagePath: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   data() {
@@ -168,14 +170,16 @@ export default defineComponent({
     const cartStore = useCartStore();
     const dialogStore = useDialogStore();
 
-    const restaurantId = route.params.restaurantId as string;
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const isPayingError = ref(false);
 
-    const cardState = ref({});
+    // StripeCard が渡すのは Stripe の実物か `{ complete: true }` のどちらか。
+    // 画面が見るのは complete だけなので、それだけを約束する。
+    const cardState = ref<{ complete?: boolean }>({});
 
     // ref for refs
-    const stripeRef = ref();
+    const stripeRef = ref<InstanceType<typeof StripeCard> | null>(null);
 
     const stripeAccount = computed(() => {
       return props.paymentInfo.stripe;
@@ -192,7 +196,7 @@ export default defineComponent({
     });
 
     const orderId = computed(() => {
-      return route.params.orderId as string;
+      return routeParamOf(route.params.orderId);
     });
     const stripeSmallPayment = computed(() => {
       return props.orderInfo.total <= 50;
@@ -213,13 +217,13 @@ export default defineComponent({
             quantity: Array.isArray(or.count)
               ? or.count.reduce((a, b) => a + b, 0)
               : or.count,
-          } as analyticsUtil.AnalyticsMenuData;
+          };
         }),
         props.shopInfo,
         restaurantId,
       );
     };
-    const handleCardStateChange = (state: { [key: string]: boolean }) => {
+    const handleCardStateChange = (state: { complete?: boolean }) => {
       if (state.complete) {
         isPayingError.value = false;
       }
@@ -230,7 +234,12 @@ export default defineComponent({
       try {
         isPayingError.value = false;
         generalStore.setLoading(true);
-        const pay = await stripeRef.value.processPayment();
+        const stripeCard = stripeRef.value;
+        // カード欄は v-if="showPayment" の中にある。無いまま支払わない。
+        if (!stripeCard) {
+          throw new Error("Pay: the card form is not rendered");
+        }
+        const pay = await stripeCard.processPayment();
         if (pay.error) {
           isPayingError.value = true;
           generalStore.setLoading(false);
@@ -239,7 +248,7 @@ export default defineComponent({
         await orderPay({
           restaurantId,
           orderId: orderId.value,
-          isSavePay: stripeRef.value.isSavePay,
+          isSavePay: stripeCard.isSavePay,
         });
 
         sendPurchase();
@@ -248,6 +257,7 @@ export default defineComponent({
       } catch (error) {
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "order.place",
         });
       } finally {

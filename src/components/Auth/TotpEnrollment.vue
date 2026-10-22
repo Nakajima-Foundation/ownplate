@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, shallowRef } from "vue";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   multiFactor,
@@ -99,7 +99,9 @@ export default defineComponent({
     const verificationCode = ref("");
     const error = ref("");
     const enrollmentComplete = ref(false);
-    const totpSecret = ref<TotpSecret | null>(null);
+    // Firebase が返す物をそのまま渡す必要がある。ref だと入れ子ごと包まれて、
+    // 中身が読み取り専用になり、SDK にも代理の物が渡る。
+    const totpSecret = shallowRef<TotpSecret | null>(null);
 
     onMounted(async () => {
       try {

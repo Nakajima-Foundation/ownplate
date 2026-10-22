@@ -119,7 +119,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
-import { parse } from "cookie";
+import { parseCookie } from "cookie";
 
 import { PaymentInfo } from "@/models/paymentInfo";
 import Checkbox from "@/components/form/checkbox.vue";
@@ -143,10 +143,10 @@ export default defineComponent({
     const inStorePayment = ref<boolean | undefined>(false);
 
     onMounted(async () => {
-      const code = route.query.code as string;
+      const code = route.query.code;
       if (code) {
         const state = route.query.state;
-        const cookies = parse(document.cookie);
+        const cookies = parseCookie(document.cookie);
         //console.log("mounted", code, state, cookies.stripe_state);
         if (state === cookies?.stripe_state) {
           generalStore.setLoading(true);
@@ -156,6 +156,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
             dialogStore.setErrorMessage({
+              error,
               code: "stripe.connect",
             });
           } finally {
@@ -239,6 +240,7 @@ export default defineComponent({
           } catch (error) {
             console.error(error);
             dialogStore.setErrorMessage({
+              error,
               code: "stripe.disconnect",
             });
           } finally {

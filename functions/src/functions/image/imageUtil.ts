@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { getStorage } from "firebase-admin/storage";
 
 import * as path from "path";
 import * as os from "os";
@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import * as constant from "./constant";
 
-const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["bucket"]>, fromFileFullPath: string, toFileFullPath: string, size: number, contentType: string) => {
+const runSharp = async (bucket: ReturnType<ReturnType<typeof getStorage>["bucket"]>, fromFileFullPath: string, toFileFullPath: string, size: number, contentType: string) => {
   const tmpResizeFile = path.join(os.tmpdir(), uuidv4());
 
   try {
@@ -41,7 +41,7 @@ const runSharp = async (bucket: ReturnType<ReturnType<typeof admin.storage>["buc
   return false;
 };
 export const downloadFileFromBucket = async (data: { bucket: string; name: string }) => {
-  const bucketObj = admin.storage().bucket(data.bucket);
+  const bucketObj = getStorage().bucket(data.bucket);
   const tempFilePath = path.join(os.tmpdir(), uuidv4());
 
   await bucketObj.file(data.name).download({ destination: tempFilePath });
@@ -49,7 +49,7 @@ export const downloadFileFromBucket = async (data: { bucket: string; name: strin
   return tempFilePath;
 };
 export const resizedImage = async (data: { bucket: string; name: string; contentType?: string }, toFileFullPath: string, size: number) => {
-  const bucketObj = admin.storage().bucket(data.bucket);
+  const bucketObj = getStorage().bucket(data.bucket);
 
   const fromTempFilePath = await downloadFileFromBucket(data);
   const ret = await runSharp(bucketObj, fromTempFilePath, toFileFullPath, size, data.contentType ?? "");
@@ -60,7 +60,7 @@ export const resizedImage = async (data: { bucket: string; name: string; content
 };
 
 export const removeFile = async (data: { bucket: string; name: string }) => {
-  const bucket = admin.storage().bucket(data.bucket);
+  const bucket = getStorage().bucket(data.bucket);
   await bucket.file(data.name).delete();
 };
 

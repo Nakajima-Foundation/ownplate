@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from "vue";
+import type { MenuData } from "@/models/menu";
 
 import * as pdf from "@/lib/pdf/pdf";
 import { usePhoneNumber, shareUrl, useBasePath } from "@/utils/utils";
@@ -26,7 +27,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 export default defineComponent({
   props: {
     menuObj: {
-      type: Object,
+      type: Object as PropType<{ [key: string]: MenuData }>,
       required: true,
     },
     shopInfo: {

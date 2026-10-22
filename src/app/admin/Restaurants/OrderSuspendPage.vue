@@ -131,6 +131,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
+import { addDays, pickupDateOf } from "@/utils/shopCalendar";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useGeneralStore } from "@/store";
@@ -195,7 +196,7 @@ export default defineComponent({
       }
       return [];
     });
-    const getSuspend = (suspendUntil) => {
+    const getSuspend = (suspendUntil: { toDate: () => Date } | null) => {
       if (suspendUntil) {
         const time = suspendUntil.toDate();
         if (time < new Date()) {
@@ -208,14 +209,8 @@ export default defineComponent({
     const suspendUntil = ref(getSuspend(props.shopInfo.suspendUntil));
 
     const handleSuspend = async (day: number, time: number) => {
-      const tmpDate = date.value?.date
-        ? new Date(date.value?.date)
-        : new Date();
-      tmpDate.setHours(time / 60);
-      tmpDate.setMinutes(time % 60);
-      if (day && day > 0) {
-        tmpDate.setDate(tmpDate.getDate() + day);
-      }
+      const atTime = pickupDateOf(date.value?.date || new Date(), time);
+      const tmpDate = day && day > 0 ? addDays(atTime, day) : atTime;
       generalStore.setLoading(true);
       const timeStamp = Timestamp.fromDate(tmpDate);
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
@@ -231,7 +226,7 @@ export default defineComponent({
         suspendUntil: null,
       });
       generalStore.setLoading(false);
-      suspendUntil.value = null;
+      suspendUntil.value = false;
       ctx.emit("updateRestaurant");
     };
     return {

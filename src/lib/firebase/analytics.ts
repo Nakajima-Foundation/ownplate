@@ -11,16 +11,13 @@ import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-export interface AnalyticsMenuData extends MenuData {
-  id: string;
+export interface AnalyticsMenuData extends Partial<MenuData> {
   quantity: number;
-  category: string;
-  subCategory: string;
 }
 type AnalyticsData = Record<string, unknown>;
 
 export const sku_item_data = (
-  menu: AnalyticsMenuData,
+  menu: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -33,7 +30,7 @@ export const sku_item_data = (
   };
 };
 export const sku_item_data2 = (
-  menu: AnalyticsMenuData,
+  menu: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
   quantity: number,
@@ -57,7 +54,7 @@ const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
 };
 
 export const sendMenuListView = (
-  menus: AnalyticsMenuData[],
+  menus: Partial<MenuData>[],
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -142,7 +139,7 @@ export const sendRedunded = (
 // LOGIN
 
 export const sendViewItem = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -160,7 +157,7 @@ export const sendViewItem = (
 };
 
 export const sendSelectItem = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
 ) => {
@@ -177,7 +174,7 @@ export const sendSelectItem = (
 };
 
 export const sendAddToCart = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
   quantity: number,
@@ -196,7 +193,7 @@ export const sendAddToCart = (
 };
 
 export const sendRemoveFromCart = (
-  item: AnalyticsMenuData,
+  item: Partial<MenuData>,
   shopInfo: RestaurantInfoData,
   restaurantId: string,
   quantity: number,
@@ -234,44 +231,6 @@ export const sendViewCart = (
   } catch (e) {
     console.log(e);
   }
-};
-
-export const sku_item_data_for_datalayer = (
-  menu: AnalyticsMenuData,
-  shopInfo: RestaurantInfoData,
-  restaurantId: string,
-  quantity: number,
-) => {
-  return {
-    item_name: menu.itemName,
-    item_id: "SKU_" + menu.id,
-    price: menu.price,
-    item_brand: shopInfo.restaurantName,
-    item_category: menu.subCategory,
-    quantity,
-  };
-};
-
-export const getDataForLayer = (
-  orderInfo: OrderInfoData,
-  orderId: string,
-  menus: AnalyticsMenuData[],
-  shopInfo: RestaurantInfoData,
-  restaurantId: string,
-) => {
-  const analyticsData = {
-    transaction_id: orderId,
-    affiliation: shopInfo.restaurantName,
-    value: orderInfo.total,
-    tax: orderInfo.tax,
-    currency: "JPY",
-
-    items: menus.map((menu) => {
-      const q = orderInfo.order[menu.id].reduce((t, c) => t + c, 0);
-      return sku_item_data_for_datalayer(menu, shopInfo, restaurantId, q);
-    }),
-  };
-  return analyticsData;
 };
 
 /*

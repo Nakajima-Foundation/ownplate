@@ -34,11 +34,7 @@ export default defineComponent({
     type MenuRow = {
       productName: string;
       productPriceWithTax: number;
-      productId: string;
       taxPercentage: number;
-      categoryId: string;
-      subcategoryCd: string;
-      subcategoryId: string;
       productExplanation: string;
       productNameAlias: string;
       productImagePath: string;
@@ -57,11 +53,7 @@ export default defineComponent({
         const data = {
           productName: menu.itemName,
           productPriceWithTax: menu.price,
-          productId: menu.productId,
           taxPercentage: menu.tax === "food" ? 8 : 10,
-          categoryId: menu.category,
-          subcategoryCd: menu.subcategoryCd,
-          subcategoryId: menu.subCategory,
           productExplanation: menu.itemDescription,
           productNameAlias: menu.itemAliasesName,
           productImagePath: menu.images?.item?.path,
@@ -81,11 +73,7 @@ export default defineComponent({
     const fields = [
       "productName",
       "productPriceWithTax",
-      "productId",
       "taxPercentage",
-      "categoryId",
-      "subcategoryCd",
-      "subcategoryId",
       "productExplanation",
       "productNameAlias",
       "productImagePath",

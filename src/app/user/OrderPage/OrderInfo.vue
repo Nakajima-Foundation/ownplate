@@ -2,11 +2,14 @@
   <div class="rounded-lg bg-white p-4 shadow-sm">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="(orderItem, key) in orderItems" :key="orderItem.key">
+      <template
+        v-for="(orderItem, key) in orderItems"
+        :key="orderItem.orderIndex.join('-')"
+      >
         <order-item
           :orderItem="orderItem"
           :editable="editable"
-          :available="(editedAvailableOrders || {})[key]"
+          :available="(editedAvailableOrders || [])[key]"
           @update="updateAvailable"
           :menuData="(menuData || {})[orderItem.id]"
           :mkey="key"
@@ -83,7 +86,6 @@
             </div>
           </div>
           <div class="text-right">
-            {{ orderInfo.shoppingCost }}
             <div class="text-base">
               {{ $n(actualShippingCost, "currency") }}
             </div>
@@ -201,7 +203,7 @@
 
     <!-- promotion discount for before pay -->
     <div
-      v-if="enablePromotion"
+      v-if="enablePromotion && promotion"
       class="-mx-2 mt-2 rounded-lg bg-green-600/10 p-2"
     >
       <!-- promotion discount -->
@@ -219,7 +221,7 @@
         </div>
         <div class="text-right">
           <div class="text-base">
-            {{ $n(-discountPrice, "currency") }}
+            {{ $n(-(discountPrice ?? 0), "currency") }}
           </div>
         </div>
       </div>
@@ -243,12 +245,13 @@
 
 <script lang="ts">
 import { defineComponent, computed, watch, ref, PropType } from "vue";
+import type Promotion from "@/models/promotion";
 
-import { order_status } from "@/config/constant";
-import { stripeRegion } from "@/utils/utils";
+import { order_status, stripe_regions_jp } from "@/config/constant";
 import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import type { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
@@ -257,7 +260,7 @@ export default defineComponent({
 
   props: {
     orderItems: {
-      type: Array,
+      type: Array<OrderItemData>,
       required: true,
     },
     orderInfo: {
@@ -274,7 +277,7 @@ export default defineComponent({
     },
     // promotion
     promotion: {
-      type: Object,
+      type: Object as PropType<Promotion | null>,
       required: false,
     },
     enablePromotion: {
@@ -291,7 +294,7 @@ export default defineComponent({
       required: false,
     },
     editedAvailableOrders: {
-      type: Array,
+      type: Array as PropType<boolean[]>,
       required: false,
     },
     shippingCost: {
@@ -304,8 +307,8 @@ export default defineComponent({
   },
   emits: ["update", "change"],
   setup(props, ctx) {
-    const regionTip = stripeRegion.tip;
-    const tipStep = 1.0 / stripeRegion.multiple;
+    const regionTip = stripe_regions_jp.tip;
+    const tipStep = 1.0 / stripe_regions_jp.multiple;
 
     const tip = ref<number | string>("");
 
@@ -316,7 +319,7 @@ export default defineComponent({
 
     // internal
     const calcTip = (ratio: number) => {
-      const m = stripeRegion.multiple;
+      const m = stripe_regions_jp.multiple;
       const value = Math.round((props.orderInfo.total * ratio * m) / 100) / m;
       if (m === 1) {
         return Math.round(value);

@@ -1,10 +1,10 @@
-import * as admin from "firebase-admin";
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { getFirestore } from "firebase-admin/firestore";
+import { onCall } from "firebase-functions/v2/https";
 
 import { superTwilioCall } from "../../functions/super/twilio";
-import { enforceAppCheck, secretKeys } from "../firebase";
+import { enforceAppCheck, requireAppCheck, secretKeys } from "../firebase";
 
-const db = admin.firestore();
+const db = getFirestore();
 
 export default onCall(
   {
@@ -15,8 +15,7 @@ export default onCall(
     secrets: secretKeys,
   },
   async (context) => {
-    if (context.app == undefined) {
-      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
-    }
+    requireAppCheck(context);
     return await superTwilioCall(db, context.data, context);
-  });
+  },
+);

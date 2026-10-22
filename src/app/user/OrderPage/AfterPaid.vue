@@ -173,7 +173,6 @@
 
           <div class="mt-2">
             <shop-info
-              :compact="true"
               :shopInfo="shopInfo"
               :isDelivery="orderInfo.isDelivery"
               :paymentInfo="paymentInfo"
@@ -201,6 +200,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType, ref } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
@@ -225,12 +225,15 @@ import { stripeCancelIntent } from "@/lib/firebase/functions";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, validUrl } from "@/utils/utils";
+import { validUrl } from "@/utils/utils";
+import { isEmpty } from "@/utils/commonUtils";
 
 import { OrderInfoData } from "@/models/orderInfo";
+import type { OrderItemData } from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 import { useI18n } from "vue-i18n";
@@ -266,19 +269,19 @@ export default defineComponent({
       required: true,
     },
     orderItems: {
-      type: Array,
+      type: Array<OrderItemData>,
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     menuPagePath: {
       type: String,
-      required: false,
+      required: true,
     },
     hasFriends: {
-      type: Boolean,
+      type: Boolean as PropType<boolean | null>,
       required: false,
     },
     hasLine: {
@@ -292,8 +295,8 @@ export default defineComponent({
     const dialogStore = useDialogStore();
     const { d } = useI18n({ useScope: "global" });
 
-    const orderId = route.params.orderId as string;
-    const restaurantId = route.params.restaurantId as string;
+    const orderId = routeParamOf(route.params.orderId);
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const hasStripe = computed(() => {
       return props.orderInfo.payment && props.orderInfo.payment.stripe;

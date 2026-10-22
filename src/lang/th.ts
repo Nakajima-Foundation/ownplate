@@ -15,7 +15,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
@@ -158,6 +157,9 @@ const data = {
     current: "ก่อนเปลี่ยนแปลง",
     clickAndUpload: "คลิกที่นี่",
     clickAndUploadDetail: "คลิกที่พื้นที่สีเทาเพื่ออัปโหลด (รูปแบบ JPEG)",
+    imageTooLarge:
+      "รูปภาพต้องมีขนาดไม่เกิน {size}MB กรุณาเลือกรูปที่เล็กกว่านี้",
+    imageNotImage: "กรุณาเลือกไฟล์รูปภาพ",
     edit: "แก้ไข",
   },
   currency: {
@@ -316,6 +318,12 @@ const data = {
     notificationConfig: "ตั้งค่าการแจ้งเตือน",
     moveToLineConfig:
       "จะย้ายไปยังหน้าตั้งค่าการแจ้งเตือน LINE อย่าลืมบันทึกหน้านี้ก่อนย้าย",
+    invoiceNumber: "เลขทะเบียนใบกำกับภาษี",
+    enterInvoiceNumber: "เช่น T1234567890123",
+    invoiceNumberNote:
+      "เลขทะเบียนผู้ออกใบกำกับภาษี หากไม่ได้ตั้งค่าจะไม่พิมพ์บนใบเสร็จและ PDF",
+    webPushNotification: "การแจ้งเตือนแบบพุช",
+    moveToPushConfig: "ตั้งค่า Web push",
     openDaysConfig: "ตั้งค่าวัน/เวลาทำการ",
     lunchOrDinnerToggle: "สลับเมนูกลางวัน/เย็นอัตโนมัติ",
     lunchOrDinnerNotice:
@@ -350,6 +358,8 @@ const data = {
     availableDayTimeSettings: "ตั้งค่าเวลาที่สามารถสั่งซื้อสินค้าได้",
     free: "ฟรี",
     optionsPreview: "ดูตัวอย่างตัวเลือก",
+    showOptionsPreview: "แสดงตัวอย่างตัวเลือก",
+    hideOptionsPreview: "ซ่อนตัวอย่างตัวเลือก",
     priceChange: "การเปลี่ยนแปลงราคา",
     noPriceChange: "ไม่มี",
     tax: "ภาษีการบริโภค",
@@ -383,6 +393,7 @@ const data = {
     category2: "หมวดหมู่ 2",
     editCategory2: "แก้ไขหมวดหมู่ 2",
     exclusionDate: "วันที่ยกเว้น",
+    holiday: "วันหยุดนักขัตฤกษ์",
     exclusionTime: "เวลาที่ยกเว้น",
     showAllMenu: "สินค้าทั้งหมด",
     showPublicMenu: "เฉพาะที่เปิดเผย",
@@ -504,6 +515,12 @@ const data = {
     temporaryClosureDescription: "กรุณาเลือกวันที่และกดเพิ่ม",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "เลือกวันที่",
+    closedOnHolidays: "ปิดวันหยุดนักขัตฤกษ์",
+    closedOnHolidaysLabel: "ปิดทำการในวันหยุดนักขัตฤกษ์",
+    closedOnHolidaysDescription:
+      "เมื่อเปิดใช้งาน จะไม่สามารถรับสินค้าในวันหยุดนักขัตฤกษ์ของญี่ปุ่นได้",
+    holidayList: "วันหยุดนักขัตฤกษ์ (ถึงสิ้นปีหน้า)",
+    closedOnHolidaysNotice: "ปิดทำการในวันหยุดนักขัตฤกษ์",
     paymentMethod: "วิธีชำระเงิน",
     onlinePayment: "ชำระเงินออนไลน์",
     onsitePayment: "ชำระที่ร้าน",
@@ -599,6 +616,7 @@ const data = {
     about: "ข้อมูลร้านอาหาร",
     limitedSale: "จำหน่ายเฉพาะ",
     unavailableTime: "เวลาที่ไม่สามารถส่งมอบได้",
+    unavailableOnHolidays: "ไม่สามารถรับได้ในวันหยุดนักขัตฤกษ์",
     confirmCart: "ดูตะกร้า",
     checkout: "ชำระเงิน",
     orderCounter: "{count} ชิ้น",
@@ -872,12 +890,9 @@ const data = {
     discountPriceMessage: "มีส่วนลด",
     discountPrice: "จำนวนส่วนลด",
     beforeDiscountPrice: "ราคาก่อนลด",
-    cancelReason: "เหตุผลการยกเลิก",
     productId: "หมายเลขสินค้า",
     category: "หมวดหมู่",
     categoryId: "ID หมวดหมู่",
-    subCategory: "หมวดหมู่ย่อย",
-    subCategoryId: "ID หมวดหมู่ย่อย",
   },
   editEC: {
     postageList: "รายการค่าจัดส่ง",
@@ -928,7 +943,6 @@ const data = {
     backToDiscounts: "กลับไปที่รายการตั้งค่าส่วนลด",
     backToDocument: "กลับไปที่รายการเอกสาร",
     backToSubaccounts: "กลับไปที่รายการบัญชีย่อย",
-    backToSmaregi: "กลับไปที่การตั้งค่า Smaregi",
     addTitle: "เพิ่มชื่อกลุ่มสินค้า",
     addItem: "เพิ่มสินค้า",
     downloadMenu: "ดาวน์โหลดใบปลิว",
@@ -985,6 +999,37 @@ const data = {
     "auth/missing-verification-code": "ไม่ได้ป้อนรหัสยืนยัน SMS",
     "auth/code-expired":
       "รหัสยืนยัน SMS หมดอายุ กรุณาส่งรหัสยืนยัน SMS อีกครั้งและป้อนใหม่",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com แจ้งเตือนคำสั่งซื้อ",
+    appShortName: "แจ้งเตือนคำสั่งซื้อ",
+    title: "ลงทะเบียนอุปกรณ์เพื่อรับการแจ้งเตือน",
+    installHeading: "สำหรับ iPhone หรือ iPad",
+    installStep1: "แตะปุ่มแชร์ของ Safari",
+    installStep2: 'เลือก "เพิ่มไปยังหน้าจอโฮม"',
+    installStep3:
+      'แตะไอคอนที่เพิ่มไว้ในหน้าจอโฮมเพื่อเปิดหน้า "ลงทะเบียนอุปกรณ์เพื่อรับการแจ้งเตือน"',
+    nameLabel: "ชื่ออุปกรณ์ (จำเป็น)",
+    nameHint:
+      "จะแสดงในรายการอุปกรณ์บนหน้าจอผู้ดูแล กรอกชื่อที่บอกได้ว่าเป็นอุปกรณ์นี้",
+    namePlaceholder: "เช่น iPad ที่เคาน์เตอร์",
+    register: "รับการแจ้งเตือน",
+    done: "ลงทะเบียนแล้ว",
+    doneHint: "อุปกรณ์นี้จะได้รับแจ้งเตือนเมื่อมีคำสั่งซื้อใหม่",
+    status: {
+      "registered-here": "อุปกรณ์นี้ลงทะเบียนแล้ว",
+      used: "URL นี้ถูกใช้ไปแล้ว กรุณาขอ URL ใหม่จากผู้ดูแลระบบ",
+      expired: "URL นี้หมดอายุแล้ว กรุณาขอ URL ใหม่จากผู้ดูแลระบบ",
+      "not-found": "URL นี้ไม่ถูกต้อง กรุณาขอ URL ใหม่จากผู้ดูแลระบบ",
+    },
+    failure: {
+      unconfigured: "ร้านนี้ไม่สามารถใช้การแจ้งเตือนแบบพุชได้",
+      unsupported: "อุปกรณ์หรือเบราว์เซอร์นี้ไม่รองรับการแจ้งเตือนแบบพุช",
+      denied: "การแจ้งเตือนถูกบล็อก กรุณาอนุญาตในการตั้งค่าเบราว์เซอร์",
+      dismissed: "ไม่ได้อนุญาตการแจ้งเตือน กรุณาลองอีกครั้ง",
+      "no-fid": "ลงทะเบียนไม่สำเร็จ กรุณาลองใหม่อีกครั้งในภายหลัง",
+      invite: "URL นี้ถูกใช้ไปแล้วหรือหมดอายุ กรุณาติดต่อผู้ดูแลระบบ",
+    },
   },
   admin: {
     welcomeMessage: "ยินดีต้อนรับ!",
@@ -1099,13 +1144,6 @@ const data = {
         optout: "ไม่รับ",
       },
     },
-    thirdPartyService: {
-      title: "เชื่อมต่อระบบ",
-      openSmaregi: "ตั้งค่าเชื่อมต่อ Smaregi",
-      smaregiManual: "คู่มือ Smaregi",
-      smaregiAppMarket: "ไปที่ตลาดแอป Smaregi",
-      smaregiManualLink: "วิธีใช้การเชื่อมต่อ Smaregi",
-    },
     needEmailVerification: "กรุณายืนยันอีเมลให้เสร็จสิ้น",
     noteEmailVerification1:
       "กรุณาตรวจสอบอีเมลที่ส่งจาก {email} และคลิก URL ในอีเมลเพื่อยืนยัน",
@@ -1131,7 +1169,11 @@ const data = {
     directory: {
       status: "สถานะการแสดงในรายการร้านอาหารสำหรับลูกค้า",
       requestWarning: "หลังจากตั้งค่าชำระเงินและเปิดเผยร้านแล้ว กรุณาสมัคร",
+      requestOptionalNote:
+        "การสมัครแสดงในรายการเป็นทางเลือก ไม่ต้องสมัครก็สามารถเปิดเผยร้านได้ หากต้องการสมัคร กรุณาเปิดเผยร้านก่อน",
       requestingWarning: "หากยังไม่ตั้งค่าชำระเงินและเปิดเผยร้าน กรุณาตั้งค่า",
+      requestingPublicNote:
+        "หากร้านของคุณยังไม่เปิดเผย จะไม่สามารถแสดงในรายการหรือให้ทีมงานตรวจสอบได้ หากยังไม่เปิดเผย กรุณาเปิดเผยร้านของคุณ",
       notListed: "ยังไม่ได้แสดง",
       requestList: "สมัครแสดง",
       waiting: "กำลังสมัคร",
@@ -1145,6 +1187,71 @@ const data = {
     forgotPassword: "ลืมรหัสผ่าน",
     passwordReset: "รีเซ็ตรหัสผ่าน",
     pleaseCheckInbox: "ส่งอีเมลแล้ว กรุณาตรวจสอบกล่องจดหมาย",
+    timeline: {
+      title: "ประวัติการแจ้งเตือน",
+      empty: "ยังไม่มีการแจ้งเตือน",
+      failed: "ไม่สามารถโหลดการแจ้งเตือนได้ กรุณาตรวจสอบสิทธิ์การเข้าถึง",
+    },
+    push: {
+      sendFailed: "การส่งล่าสุดล้มเหลว",
+      lastSentAt: "ส่งล่าสุด",
+      undelivered: "การแจ้งเตือนไปไม่ถึงอุปกรณ์นี้ กรุณาลงทะเบียนใหม่",
+      rename: "เปลี่ยนชื่ออุปกรณ์",
+      save: "บันทึก",
+      delete: "ลบ",
+      registeredAt: "ลงทะเบียน",
+      namePlaceholder: "เช่น iPad ที่เคาน์เตอร์",
+      devices: "อุปกรณ์ที่จะแจ้งเตือน",
+      empty: "ยังไม่มีอุปกรณ์ที่ลงทะเบียน",
+      addDevice: "เพิ่มอุปกรณ์",
+      inviteHeading: "เปิด URL นี้บนอุปกรณ์ที่ต้องการรับการแจ้งเตือน",
+      inviteHint:
+        'URL นี้ลงทะเบียนได้เพียง 1 อุปกรณ์ หากต้องการเพิ่มอุปกรณ์ที่ 2 ให้กด "เพิ่มอุปกรณ์" อีกครั้ง URL หมดอายุใน 24 ชั่วโมง ※ ห้ามแชร์ URL ในที่ที่คนจำนวนมากมองเห็นได้ เช่น กลุ่ม LINE',
+      deviceGuideHeading: "ขั้นตอนบนอุปกรณ์ที่เปิด URL นี้",
+      deviceGuideIos:
+        'iPhone / iPad: เปิดด้วย Safari แตะปุ่มแชร์ เลือก "เพิ่มไปยังหน้าจอโฮม" แล้วเปิดใหม่จากไอคอนที่เพิ่มไว้ ไม่สามารถรับการแจ้งเตือนจากแท็บ Safari ได้ (ต้องใช้ iOS 16.4 ขึ้นไป)',
+      deviceGuideAndroid:
+        "Android: เปิดด้วย Chrome แล้วลงทะเบียนได้ทันที หากปิดการแจ้งเตือนในการตั้งค่าเครื่องไว้ จะไม่ได้รับการแจ้งเตือน",
+      deviceGuideDesktop:
+        "คอมพิวเตอร์: แม้จะอนุญาตการแจ้งเตือนแล้ว หากเบราว์เซอร์ถูกปิดในการตั้งค่าการแจ้งเตือนของระบบ หรืออยู่ในโหมดโฟกัส ก็จะไม่แสดง",
+      copy: "คัดลอก URL",
+      copied: "คัดลอกแล้ว",
+      test: "ส่งทดสอบ",
+      testResult: {
+        noTargets: "ไม่มีอุปกรณ์ที่เปิดการแจ้งเตือน",
+        allSent: "ส่งไปยัง {targets} อุปกรณ์แล้ว",
+        partlySent:
+          "ส่งไปยัง {sent} จาก {targets} อุปกรณ์แล้ว ตรวจสอบอุปกรณ์ที่ไม่ได้รับในรายการ",
+        failed: "ส่งทดสอบไม่สำเร็จ โปรดลองอีกครั้งภายหลัง",
+      },
+      deleteConfirm: "หยุดแจ้งเตือนอุปกรณ์นี้หรือไม่",
+    },
+    webpush: {
+      restaurantId: "รหัสร้าน",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "หยุดรับคำสั่งซื้อ",
       suspendSettings: "ตั้งค่าหยุดรับคำสั่งซื้อ",
@@ -1168,6 +1275,9 @@ const data = {
       infinityNotificationOn: "แจ้งเตือนซ้ำทุก 1 นาที",
       infinityNotificationOff: "แจ้งเตือนเฉพาะเมื่อรับคำสั่งซื้อ",
       soundTest: "ทดสอบ",
+      webPushDescription:
+        "แจ้งคำสั่งซื้อใหม่ไปยังอุปกรณ์นี้แม้ปิดหน้าจอผู้ดูแลแล้ว",
+      webPushDevices: "อุปกรณ์รับการแจ้งเตือน",
       paymentIsNotCompleted:
         'ข้อควรระวัง: เมื่อกดปุ่ม "รับคำสั่งซื้อแล้ว" การชำระเงินด้วยบัตรจะถูกดำเนินการ',
       cancelButton: "ยกเลิกคำสั่งซื้อ",
@@ -1281,6 +1391,7 @@ const data = {
         "auth/invalid-login-credentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
         "auth/unauthorized-continue-uri": "โดเมนไม่ได้ลงทะเบียนในไวท์ลิสต์",
         "auth/internal-error": "รหัสผ่านไม่ถูกต้อง",
+        "auth/missing-password": "กรุณากรอกรหัสผ่าน",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
@@ -1354,12 +1465,6 @@ const data = {
       showBelow: "อยู่ด้านล่างของการตั้งค่า",
       enabled: "เปิดใช้งาน",
       callbackURLCopyToLine: "กรุณาคัดลอกค่านี้และตั้งค่าใน LINE",
-    },
-    smaregi: {
-      index: "เชื่อมต่อ Smaregi",
-      authenticating: "กำลังเชื่อมต่อ",
-      authenticationError: "การเชื่อมต่อล้มเหลว",
-      smaregiShopList: "รายการร้าน Smaregi",
     },
   },
   week: {
@@ -1466,6 +1571,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "ลงทะเบียนแล้ว",
+      body: 'หากต้องการลงทะเบียนต่อ ให้กด "เพิ่มอุปกรณ์"',
+    },
     paymentMethods: {
       title: "วิธีชำระเงินที่ร้าน",
       body: 'ฟังก์ชันแนะนำวิธีชำระเงินที่ใช้ได้ที่ร้านสำหรับลูกค้าที่เลือก "ชำระเมื่อรับสินค้า"',
@@ -1495,6 +1604,66 @@ const data = {
     reset: "รีเซ็ต URL เซิร์ฟเวอร์",
   },
   validationError: {
+    invoiceNumber: {
+      format: "กรอก T ตามด้วยตัวเลข 13 หลัก (อักขระครึ่งความกว้าง)",
+    },
+    itemName: {
+      empty: "กรุณาป้อนชื่อสินค้า",
+    },
+    price: {
+      empty: "กรุณาป้อนราคา",
+      invalid: "กรุณากรอกราคาเป็นจำนวนเต็มตั้งแต่ 0 ขึ้นไป",
+    },
+    restaurantName: {
+      empty: "กรุณาป้อนชื่อร้านอาหาร",
+    },
+    ownerName: {
+      empty: "กรุณาป้อนชื่อผู้รับผิดชอบ",
+    },
+    streetAddress: {
+      empty: "กรุณาป้อนที่อยู่ (บ้านเลขที่และถนน)",
+    },
+    city: {
+      empty: "กรุณาป้อนเขต/อำเภอ",
+    },
+    state: {
+      empty: "กรุณาเลือกจังหวัด",
+    },
+    url: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "กรุณาป้อน URL ที่ถูกต้อง (ขึ้นต้นด้วย http:// หรือ https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "เวลาเตรียมนานเกินไป (สูงสุด 7 วัน)",
+      negative: "เวลาเตรียมต้องไม่เป็นค่าติดลบ",
+      notNumbery: "กรุณาป้อนเวลาเตรียมเป็นตัวเลข",
+      empty: "กรุณาป้อนเวลาเตรียม",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "การตั้งค่าวันเริ่มรับการจองไม่ถูกต้อง",
+      empty: "กรุณาเลือกวันเริ่มรับการจอง",
+    },
+    restProfilePhoto: {
+      empty: "กรุณาตั้งค่ารูปโปรไฟล์",
+    },
+    restCoverPhoto: {
+      empty: "กรุณาตั้งค่ารูปหน้าปก",
+    },
+    oneInEmpty: "กรุณาป้อนทั้งเวลาเริ่มและเวลาสิ้นสุด",
+    validBusinessTime: "เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม",
+    noSelect: "กรุณาตั้งค่าเวลาทำการ",
     zip: {
       empty: "กรุณาป้อนรหัสไปรษณีย์",
       invalidZip: "กรุณาป้อนรหัสไปรษณีย์ 7 หลักที่ถูกต้อง",
@@ -1504,6 +1673,7 @@ const data = {
     },
     name: {
       empty: "กรุณาป้อนชื่อ",
+      length: "กรุณาป้อนชื่ออย่างน้อย 3 ตัวอักษร",
     },
     memo: {
       length: "กรุณาป้อนข้อความไม่เกิน 500 ตัวอักษร",

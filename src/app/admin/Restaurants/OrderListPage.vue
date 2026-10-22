@@ -35,7 +35,7 @@
               :key="day.index"
             >
               {{ $d(day.date, "short") }}
-              {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+              {{ orderCounter[dateKeyOf(day.date)] }}
               <span v-if="day.index === pickUpDaysInAdvance">{{
                 $t("date.today")
               }}</span>
@@ -74,18 +74,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onUnmounted, watch } from "vue";
-import { db } from "@/lib/firebase/firebase9";
 import {
-  collection,
-  where,
-  query,
-  onSnapshot,
-  DocumentData,
-} from "firebase/firestore";
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+  watch,
+  PropType,
+} from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
+import type { OrderInfoData } from "@/models/orderInfoData";
+import { db } from "@/lib/firebase/firebase9";
+import { collection, where, query, onSnapshot } from "firebase/firestore";
 
-import { midNight } from "@/utils/dateUtils";
-import moment from "moment";
+import { dateKeyOf, startOfDayAfter } from "@/utils/shopCalendar";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -94,13 +96,13 @@ import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import {
   doc2data,
-  isNull,
   useAdminUids,
   notFoundResponse,
   useRestaurantId,
   defaultTitle,
   orderFilter,
 } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
@@ -117,7 +119,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
@@ -126,12 +128,11 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
-    const orders = ref<DocumentData[]>([]);
+    const orders = ref<OrderInfoData[]>([]);
     const dayIndex = ref(0);
     const restaurantId = useRestaurantId();
 
-    // eslint-disable-next-line no-empty-function
-    let order_detacher = () => {};
+    let order_detacher = (): void => undefined;
 
     useHead(() => ({
       title: props.shopInfo.restaurantName
@@ -161,7 +162,10 @@ export default defineComponent({
     const lastSeveralDays = computed(() => {
       return Array.from(Array(10 + pickUpDaysInAdvance.value).keys()).map(
         (index) => {
-          const date = midNight(pickUpDaysInAdvance.value - index);
+          const date = startOfDayAfter(
+            new Date(),
+            pickUpDaysInAdvance.value - index,
+          );
           return { index, date };
         },
       );
@@ -171,14 +175,12 @@ export default defineComponent({
     const updateDayIndex = () => {
       const newDayIndex =
         lastSeveralDays.value.findIndex((day) => {
-          return moment(day.date).format("YYYY-MM-DD") === route.query.day;
+          return dateKeyOf(day.date) === route.query.day;
         }) || 0;
       dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
     };
     const updateQueryDay = () => {
-      const day = moment(lastSeveralDays.value[dayIndex.value].date).format(
-        "YYYY-MM-DD",
-      );
+      const day = dateKeyOf(lastSeveralDays.value[dayIndex.value].date);
       if (route.query.day !== day) {
         router.push(
           "/admin/restaurants/" + restaurantId.value + "/orders?day=" + day,
@@ -212,7 +214,7 @@ export default defineComponent({
         ),
         (result) => {
           orders.value = result.docs
-            .map(doc2data("order"))
+            .map(doc2data<OrderInfoData>("order"))
             .filter(orderFilter)
             .sort((order0, order1) => {
               if (order0.status === order1.status) {
@@ -224,13 +226,6 @@ export default defineComponent({
                 return aTime > bTime ? -1 : 1;
               }
               return order0.status < order1.status ? -1 : 1;
-            })
-            .map((order) => {
-              order.timePlaced = order.timePlaced.toDate();
-              if (order.timeEstimated) {
-                order.timeEstimated = order.timeEstimated.toDate();
-              }
-              return order;
             });
         },
       );
@@ -248,11 +243,10 @@ export default defineComponent({
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce(
         (tmp: { [key: string]: string }, day) => {
-          const count = (
-            generalStore.orderObj[moment(day.date).format("YYYY-MM-DD")] || []
-          ).length;
+          const count = (generalStore.orderObj[dateKeyOf(day.date)] || [])
+            .length;
           if (count > 0) {
-            tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
+            tmp[dateKeyOf(day.date)] = "(" + count + ")";
           }
           return tmp;
         },
@@ -291,7 +285,7 @@ export default defineComponent({
       updateDayIndex,
 
       restaurantId,
-      moment,
+      dateKeyOf,
     };
   },
 });

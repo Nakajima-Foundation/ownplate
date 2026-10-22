@@ -1,0 +1,229 @@
+// e2e 用の店舗を Firestore エミュレーターへ入れる。
+// FIRESTORE_EMULATOR_HOST が無ければ止まる（本物へ書く事故を防ぐ）。
+import { initializeApp } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
+
+import {
+  AUTH_EMULATOR_PORT,
+  EMULATOR_HOST,
+  FIRESTORE_EMULATOR_PORT,
+} from "../src/config/emulatorPorts.ts";
+import {
+  SEED_CUSTOMER_PHONE,
+  SEED_CUSTOMER_STRIPE_ID,
+  SEED_CUSTOMER_UID,
+  SEED_DELIVERY_MENU_ID,
+  SEED_DELIVERY_OWNER_EMAIL,
+  SEED_DELIVERY_OWNER_PASSWORD,
+  SEED_DELIVERY_OWNER_UID,
+  SEED_DELIVERY_RESTAURANT_ID,
+  SEED_DELIVERY_UNDER_MENU_ID,
+  SEED_EDIT_MENU_ID,
+  SEED_EDIT_OWNER_EMAIL,
+  SEED_EDIT_OWNER_PASSWORD,
+  SEED_EDIT_OWNER_UID,
+  SEED_EDIT_RESTAURANT_ID,
+  SEED_MENU_ID,
+  SEED_OPTION_MENU_ID,
+  SEED_PROMOTION_ID,
+  SEED_OWNER_EMAIL,
+  SEED_OWNER_PASSWORD,
+  SEED_OWNER_UID,
+  SEED_RESTAURANT_ID,
+  SEED_RESTAURANT_NAME,
+  SEED_SUPER_EMAIL,
+  SEED_SUPER_PASSWORD,
+  SEED_SUB_EMAIL,
+  SEED_SUB_UNASSIGNED_EMAIL,
+  SEED_SUB_UNASSIGNED_PASSWORD,
+  SEED_SUB_UNASSIGNED_UID,
+  SEED_SUB_PASSWORD,
+  SEED_SUB_UID,
+  SEED_SUPER_UID,
+  seedMenu,
+  seedDeliveryArea,
+  seedDeliveryMenu,
+  seedDeliveryRestaurant,
+  seedDeliveryUnderMenu,
+  seedEditMenu,
+  seedEditRestaurant,
+  seedOptionMenu,
+  seedPromotion,
+  seedRestaurant,
+} from "./seedData.ts";
+
+// アプリが使う projectId と同じでなければ、エミュレーターの中で別の入れ物になる。
+const PROJECT_ID = "ownplate-dev";
+
+// 何度走らせても同じ並びになるよう、固定の時刻を使う。
+const SEEDED_AT = new Date("2026-01-01T00:00:00Z");
+
+const requireEmulator = () => {
+  if (!process.env.FIRESTORE_EMULATOR_HOST) {
+    throw new Error(
+      `FIRESTORE_EMULATOR_HOST がありません。${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT} を指してから実行してください。`,
+    );
+  }
+  if (!process.env.FIREBASE_AUTH_EMULATOR_HOST) {
+    throw new Error(
+      `FIREBASE_AUTH_EMULATOR_HOST がありません。${EMULATOR_HOST}:${AUTH_EMULATOR_PORT} を指してから実行してください。`,
+    );
+  }
+};
+
+// 何度走らせても同じ状態になるように、同じメールを持つ古い利用者を消してから作る。
+// uid を変えたときに「メールは使用中、uid は無い」で詰まるのを避ける。
+const upsertOwner = async () => {
+  const auth = getAuth();
+  const existing = await auth
+    .getUserByEmail(SEED_OWNER_EMAIL)
+    .catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({
+    uid: SEED_OWNER_UID,
+    email: SEED_OWNER_EMAIL,
+    password: SEED_OWNER_PASSWORD,
+    emailVerified: true,
+  });
+};
+
+// 署名でしか作れないので、オーナーは一人ずつ作る。作り方はどれも同じ。
+const upsertAdmin = async (uid: string, email: string, password: string) => {
+  const auth = getAuth();
+  const existing = await auth.getUserByEmail(email).catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({ uid, email, password, emailVerified: true });
+};
+
+// 保存を伴う試験のオーナー。作り方は上と同じ。
+const upsertEditOwner = async () => {
+  const auth = getAuth();
+  const existing = await auth
+    .getUserByEmail(SEED_EDIT_OWNER_EMAIL)
+    .catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({
+    uid: SEED_EDIT_OWNER_UID,
+    email: SEED_EDIT_OWNER_EMAIL,
+    password: SEED_EDIT_OWNER_PASSWORD,
+    emailVerified: true,
+  });
+};
+
+// 電話で署名すると毎回あたらしい uid が振られ、Stripe の顧客 id を先に置けない。
+// 番号を決め打ちした利用者を作って uid を固定する。
+const upsertCustomer = async () => {
+  const auth = getAuth();
+  const existing = await auth
+    .getUserByPhoneNumber(SEED_CUSTOMER_PHONE)
+    .catch(() => null);
+  if (existing) {
+    await auth.deleteUser(existing.uid);
+  }
+  await auth.createUser({
+    uid: SEED_CUSTOMER_UID,
+    phoneNumber: SEED_CUSTOMER_PHONE,
+  });
+};
+
+const main = async () => {
+  requireEmulator();
+  initializeApp({ projectId: PROJECT_ID });
+  const db = getFirestore();
+  const restaurant = db.doc(`restaurants/${SEED_RESTAURANT_ID}`);
+  await restaurant.set(seedRestaurant(SEEDED_AT));
+  await restaurant.collection("menus").doc(SEED_MENU_ID).set(seedMenu());
+  await restaurant
+    .collection("menus")
+    .doc(SEED_OPTION_MENU_ID)
+    .set(seedOptionMenu());
+  await restaurant
+    .collection("promotions")
+    .doc(SEED_PROMOTION_ID)
+    .set(seedPromotion());
+  // inStore を立てると受け取り払いになり、Stripe 無しで注文まで進める。
+  // PaymentInfo の stripe は文字列なので、偽の false を置くのは誤り。
+  await upsertOwner();
+  await db
+    .doc(`admins/${SEED_OWNER_UID}/public/payment`)
+    .set({ inStore: true });
+  const editRestaurant = db.doc(`restaurants/${SEED_EDIT_RESTAURANT_ID}`);
+  await editRestaurant.set(seedEditRestaurant(SEEDED_AT));
+  await editRestaurant
+    .collection("menus")
+    .doc(SEED_EDIT_MENU_ID)
+    .set(seedEditMenu());
+  await upsertEditOwner();
+  await db
+    .doc(`admins/${SEED_EDIT_OWNER_UID}/public/payment`)
+    .set({ inStore: true });
+  const deliveryRestaurant = db.doc(
+    `restaurants/${SEED_DELIVERY_RESTAURANT_ID}`,
+  );
+  await deliveryRestaurant.set(seedDeliveryRestaurant(SEEDED_AT));
+  await deliveryRestaurant
+    .collection("menus")
+    .doc(SEED_DELIVERY_MENU_ID)
+    .set(seedDeliveryMenu());
+  await deliveryRestaurant
+    .collection("menus")
+    .doc(SEED_DELIVERY_UNDER_MENU_ID)
+    .set(seedDeliveryUnderMenu());
+  await deliveryRestaurant
+    .collection("delivery")
+    .doc("area")
+    .set(seedDeliveryArea());
+  await upsertAdmin(
+    SEED_DELIVERY_OWNER_UID,
+    SEED_DELIVERY_OWNER_EMAIL,
+    SEED_DELIVERY_OWNER_PASSWORD,
+  );
+  await db
+    .doc(`admins/${SEED_DELIVERY_OWNER_UID}/public/payment`)
+    .set({ inStore: true });
+  // 親オーナーの子アカウント。親が割り当てた店舗だけを見られる。
+  // parentUid は独自クレームなので、利用者側からは作れない。
+  await upsertAdmin(SEED_SUB_UID, SEED_SUB_EMAIL, SEED_SUB_PASSWORD);
+  await getAuth().setCustomUserClaims(SEED_SUB_UID, {
+    parentUid: SEED_OWNER_UID,
+  });
+  await db.doc(`admins/${SEED_OWNER_UID}/children/${SEED_SUB_UID}`).set({
+    email: SEED_SUB_EMAIL,
+    restaurantLists: [SEED_RESTAURANT_ID],
+  });
+  // 親は同じだが担当店舗なし。親子関係だけでは読めないことの対照。
+  await upsertAdmin(
+    SEED_SUB_UNASSIGNED_UID,
+    SEED_SUB_UNASSIGNED_EMAIL,
+    SEED_SUB_UNASSIGNED_PASSWORD,
+  );
+  await getAuth().setCustomUserClaims(SEED_SUB_UNASSIGNED_UID, {
+    parentUid: SEED_OWNER_UID,
+  });
+  await db
+    .doc(`admins/${SEED_OWNER_UID}/children/${SEED_SUB_UNASSIGNED_UID}`)
+    .set({ email: SEED_SUB_UNASSIGNED_EMAIL, restaurantLists: [] });
+  await upsertAdmin(SEED_SUPER_UID, SEED_SUPER_EMAIL, SEED_SUPER_PASSWORD);
+  await getAuth().setCustomUserClaims(SEED_SUPER_UID, { admin: true });
+  await upsertCustomer();
+  // 置いておかないと orderCreated が本物の Stripe へ顧客を作りに行き、
+  // 鍵の無い CI では注文が「売り切れかも」の見た目で失敗する。
+  await db
+    .doc(`users/${SEED_CUSTOMER_UID}/system/stripe`)
+    .set({ customerId: SEED_CUSTOMER_STRIPE_ID });
+  process.stdout.write(
+    `種まき完了: restaurants/${SEED_RESTAURANT_ID}（${SEED_RESTAURANT_NAME}）\n`,
+  );
+};
+
+main().catch((error) => {
+  process.stderr.write(`${String(error)}\n`);
+  process.exitCode = 1;
+});

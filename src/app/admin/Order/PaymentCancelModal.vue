@@ -63,7 +63,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import type { OrderInfoData } from "@/models/orderInfo";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { stripePaymentCancelIntent } from "@/lib/firebase/functions";
 
 import { useGeneralStore } from "@/store";
@@ -74,11 +76,11 @@ import { errorMessage } from "@/utils/utils";
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     orderId: {
@@ -117,6 +119,7 @@ export default defineComponent({
       } catch (error) {
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "stripe.cancel",
         });
       } finally {

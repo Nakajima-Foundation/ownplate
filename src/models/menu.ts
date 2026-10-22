@@ -3,10 +3,10 @@ import { isNull } from "../utils/commonUtils";
 
 export interface MenuImages {
   item: {
-    resizedImages: {
+    resizedImages?: {
       [key: string]: string;
     };
-    original: string;
+    original?: string;
     path?: string;
   };
 }
@@ -28,7 +28,7 @@ export interface TitleData {
   deletedFlag: boolean;
 }
 
-export interface MenuItem {
+export type MenuItem = {
   price: number;
   itemName: string;
   itemPhoto?: string;
@@ -39,9 +39,9 @@ export interface MenuItem {
   exceptDay?: { [key: string]: boolean };
   exceptHour?: ExceptHour;
   tax: string;
-}
+};
 
-export interface MenuData extends MenuItem {
+export type MenuData = MenuItem & {
   _dataType?: "menu"; // set by doc2data. not need to store in db.
   id?: string; // set by doc2data. not need to store in db.
   itemDescription: string;
@@ -63,7 +63,13 @@ export interface MenuData extends MenuItem {
   validatedFlag: boolean;
 
   createdAt?: Timestamp | FieldValue;
-}
+};
+
+// 保存する形。画像と除外時間は、無いときに空のオブジェクトを書く（Firestore は undefined を書けない）。
+export type MenuSaveData = Omit<MenuData, "images" | "exceptHour"> & {
+  images: Partial<MenuImages>;
+  exceptHour: ExceptHour;
+};
 
 // for util function
 
@@ -85,13 +91,12 @@ const newExceptHour = (exceptHour: ExceptHour) => {
 };
 export const getNewItemData = (
   item: MenuData,
-  isJP: boolean,
   validatedFlag: boolean,
-): MenuData => {
+): MenuSaveData => {
   const itemData = {
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
-    price: isJP ? Math.round(Number(item.price)) : Number(item.price),
+    price: Math.round(Number(item.price)),
     tax: item.tax,
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,
@@ -114,7 +119,6 @@ export const getNewItemData = (
     exceptDay: item.exceptDay || {},
     exceptHour: newExceptHour(item.exceptHour || {}),
   };
-  // @ts-expect-error - Firestore does not allow undefined in images field, using empty object causes type mismatch
   return itemData;
 };
 

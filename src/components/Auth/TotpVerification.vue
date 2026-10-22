@@ -49,6 +49,7 @@
 import { defineComponent, ref, PropType } from "vue";
 import { TotpMultiFactorGenerator, MultiFactorResolver } from "firebase/auth";
 import { useGeneralStore } from "@/store";
+import { errorCode, errorMessage } from "@/utils/utils";
 
 export default defineComponent({
   name: "TotpVerification",
@@ -108,10 +109,10 @@ export default defineComponent({
         emit("complete");
       } catch (e: unknown) {
         console.error("Failed to verify TOTP:", e);
-        console.error("Error code:", e.code);
-        console.error("Error message:", e.message);
+        console.error("Error code:", errorCode(e));
+        console.error("Error message:", errorMessage(e));
 
-        if (e.code === "auth/invalid-verification-code") {
+        if (errorCode(e) === "auth/invalid-verification-code") {
           error.value = "admin.totp.error.invalidCode";
         } else {
           error.value = "admin.totp.error.verificationFailed";

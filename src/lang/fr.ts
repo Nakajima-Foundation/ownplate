@@ -17,7 +17,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
   },
   pageTitle: {
@@ -166,6 +165,9 @@ const data = {
     current: "Current",
     clickAndUpload: "Click and Upload",
     clickAndUploadDetail: "Click gray area to upload image(JPEG only)",
+    imageTooLarge:
+      "Images must be {size}MB or smaller. Please choose a smaller image.",
+    imageNotImage: "Please choose an image file.",
     edit: "Edit",
   },
   currency: {
@@ -325,6 +327,12 @@ const data = {
     notificationConfig: "Paramètres de notification",
     moveToLineConfig:
       "Accéder à l'écran des paramètres de notification LINE. N'oubliez pas d'enregistrer cette page avant de vous déplacer.",
+    invoiceNumber: "Numéro d'enregistrement de facture",
+    enterInvoiceNumber: "ex. T1234567890123",
+    invoiceNumberNote:
+      "Numéro d'enregistrement de l'émetteur de factures qualifiées. Omis du reçu et du PDF s'il n'est pas défini.",
+    webPushNotification: "Notifications push",
+    moveToPushConfig: "Paramètres Web push",
     openDaysConfig: "Paramètres des jours et heures d'ouverture",
     lunchOrDinnerToggle: "Basculement automatique déjeuner/dîner",
     lunchOrDinnerNotice:
@@ -362,6 +370,8 @@ const data = {
       "Paramètres des horaires de commande de l'article",
     free: "Gratuit",
     optionsPreview: "Options Preview",
+    showOptionsPreview: "Show Options Preview",
+    hideOptionsPreview: "Hide Options Preview",
     priceChange: "Price Change",
     noPriceChange: "No Change",
     tax: "Tax",
@@ -396,6 +406,7 @@ const data = {
     category2: "Category 2",
     editCategory2: "Edit Category 2",
     exclusionDate: "Date d'exclusion",
+    holiday: "Jours fériés",
     exclusionTime: "Heure d'exclusion",
     showAllMenu: "All Items",
     showPublicMenu: "Published Items",
@@ -517,6 +528,12 @@ const data = {
     temporaryClosureDescription: "Please select a date and then press Add",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
+    closedOnHolidays: "Closed on Holidays",
+    closedOnHolidaysLabel: "Closed on public holidays",
+    closedOnHolidaysDescription:
+      "When on, orders cannot be picked up on Japanese public holidays.",
+    holidayList: "Public holidays (through the end of next year)",
+    closedOnHolidaysNotice: "Closed on public holidays",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
     onsitePayment: "On Site Payment",
@@ -614,6 +631,7 @@ const data = {
     about: "About",
     limitedSale: "Vente limitée uniquement",
     unavailableTime: "Heures de non-retrait",
+    unavailableOnHolidays: "Retrait impossible les jours fériés",
     confirmCart: "Voir le panier",
     checkout: "Checkout",
     orderCounter: "{count} item | {count} items",
@@ -891,12 +909,9 @@ const data = {
     discountPriceMessage: "There is a discount",
     discountPrice: "Montant de la remise",
     beforeDiscountPrice: "Prix avant remise",
-    cancelReason: "Motif d'annulation",
     productId: "Référence produit",
     category: "Catégorie",
     categoryId: "ID catégorie",
-    subCategory: "Sous-catégorie",
-    subCategoryId: "ID sous-catégorie",
   },
   editEC: {
     postageList: "Liste des frais de port",
@@ -949,7 +964,6 @@ const data = {
     backToDiscounts: "View Promotions",
     backToDocument: "Retour à la liste des documents",
     backToSubaccounts: "Retour à la liste des sous-comptes",
-    backToSmaregi: "Retour aux paramètres Smaregi",
     addTitle: "Add Group Title",
     addItem: "Add Item",
     downloadMenu: "Download menu",
@@ -1006,6 +1020,45 @@ const data = {
     "auth/missing-verification-code": "SMS verification code is missing.",
     "auth/code-expired":
       "Le code de vérification SMS a expiré. Veuillez demander un nouveau code et le saisir à nouveau.",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com Alertes commandes",
+    appShortName: "Alertes commandes",
+    title: "Enregistrer un appareil pour les notifications",
+    installHeading: "Sur iPhone ou iPad",
+    installStep1: "Appuyez sur le bouton de partage de Safari",
+    installStep2: "Choisissez « Sur l'écran d'accueil »",
+    installStep3:
+      "Touchez l'icône ajoutée à l'écran d'accueil pour ouvrir l'écran « Enregistrer un appareil pour les notifications »",
+    nameLabel: "Nom de l'appareil (obligatoire)",
+    nameHint:
+      "Affiché dans la liste des appareils de l'écran d'administration. Saisissez un nom qui permet de reconnaître cet appareil.",
+    namePlaceholder: "ex. iPad de la caisse",
+    register: "Recevoir les notifications",
+    done: "Enregistré",
+    doneHint: "Cet appareil sera notifié à l'arrivée d'une nouvelle commande.",
+    status: {
+      "registered-here": "Cet appareil est déjà enregistré",
+      used: "Cette URL a déjà été utilisée. Demandez-en une nouvelle à votre administrateur.",
+      expired:
+        "Cette URL a expiré. Demandez-en une nouvelle à votre administrateur.",
+      "not-found":
+        "Cette URL n'est pas valide. Demandez-en une nouvelle à votre administrateur.",
+    },
+    failure: {
+      unconfigured:
+        "Les notifications push ne sont pas disponibles pour ce restaurant.",
+      unsupported:
+        "Cet appareil ou ce navigateur ne peut pas recevoir de notifications push.",
+      denied:
+        "Les notifications sont bloquées. Autorisez-les dans les réglages du navigateur.",
+      dismissed:
+        "Les notifications n'ont pas été autorisées. Veuillez réessayer.",
+      "no-fid":
+        "L'enregistrement a échoué. Veuillez réessayer dans un instant.",
+      invite:
+        "Cette URL a déjà été utilisée ou a expiré. Demandez-en une nouvelle à votre administrateur.",
+    },
   },
   admin: {
     welcomeMessage: "Welcome!",
@@ -1120,13 +1173,6 @@ const data = {
         optout: "Don't Receive",
       },
     },
-    thirdPartyService: {
-      title: "Intégration de systèmes",
-      openSmaregi: "Paramètres d'intégration Smaregi",
-      smaregiManual: "Manuel Smaregi",
-      smaregiAppMarket: "Accéder à l'App Market Smaregi",
-      smaregiManualLink: "Comment utiliser l'intégration Smaregi",
-    },
     needEmailVerification:
       "Veuillez terminer la vérification de votre adresse e-mail.",
     noteEmailVerification1:
@@ -1154,8 +1200,12 @@ const data = {
       status: "Restaurant Directory",
       requestWarning:
         "Veuillez postuler après avoir configuré le paiement et ouvert le restaurant au public.",
+      requestOptionalNote:
+        "L'inscription à l'annuaire est facultative : vous pouvez ouvrir votre restaurant au public sans postuler. Si vous postulez, veuillez d'abord ouvrir votre restaurant au public.",
       requestingWarning:
         "Veuillez configurer vos paramètres de paiement et la fiche du magasin si ce n'est pas déjà fait.",
+      requestingPublicNote:
+        "Si votre restaurant n'est pas ouvert au public, il ne peut pas être inscrit dans l'annuaire ni vérifié par notre équipe. Veuillez ouvrir votre restaurant au public si ce n'est pas déjà fait.",
       notListed: "Not Listed",
       requestList: "Request to be Listed",
       waiting: "Waiting for Approval",
@@ -1169,6 +1219,74 @@ const data = {
     forgotPassword: "Forgot Password？",
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
+    timeline: {
+      title: "Historique des notifications",
+      empty: "Aucune notification pour le moment.",
+      failed:
+        "Impossible de charger les notifications. Veuillez vérifier vos autorisations.",
+    },
+    push: {
+      sendFailed: "Le dernier envoi a échoué",
+      lastSentAt: "Dernier envoi",
+      undelivered:
+        "Les notifications n'arrivent plus sur cet appareil. Veuillez l'enregistrer à nouveau.",
+      rename: "Renommer l'appareil",
+      save: "Enregistrer",
+      delete: "Supprimer",
+      registeredAt: "Enregistré",
+      namePlaceholder: "ex. iPad de la caisse",
+      devices: "Appareils à notifier",
+      empty: "Aucun appareil n'est encore enregistré.",
+      addDevice: "Ajouter un appareil",
+      inviteHeading:
+        "Ouvrez cette URL sur l'appareil qui doit recevoir les notifications",
+      inviteHint:
+        "Cette URL ne permet d'enregistrer qu'un seul appareil. Pour ajouter un deuxième appareil, appuyez à nouveau sur « Ajouter un appareil ». L'URL expire au bout de 24 heures. * Ne partagez pas l'URL là où beaucoup de personnes peuvent la voir, comme un groupe LINE.",
+      deviceGuideHeading: "Étapes sur l'appareil qui ouvre cette URL",
+      deviceGuideIos:
+        "iPhone / iPad : ouvrez le lien dans Safari, appuyez sur Partager, choisissez « Sur l'écran d'accueil », puis rouvrez depuis la nouvelle icône. Les notifications ne peuvent pas être reçues depuis un onglet Safari (iOS 16.4 ou version ultérieure requis).",
+      deviceGuideAndroid:
+        "Android : ouvrez le lien dans Chrome et enregistrez directement. Les notifications n'arriveront pas si elles sont désactivées dans les réglages de l'appareil.",
+      deviceGuideDesktop:
+        "Ordinateur : même si les notifications sont autorisées, elles ne s'affichent pas lorsque le navigateur est désactivé dans les réglages de notification du système ou pendant le mode Concentration.",
+      copy: "Copier l'URL",
+      copied: "Copié",
+      test: "Envoyer un test",
+      testResult: {
+        noTargets: "Aucun appareil n'a les notifications activées.",
+        allSent: "Envoyé à {targets} appareil(s).",
+        partlySent:
+          "Envoyé à {sent} appareil(s) sur {targets}. Vérifiez dans la liste les appareils qui ne l'ont pas reçu.",
+        failed: "L'envoi du test a échoué. Veuillez réessayer plus tard.",
+      },
+      deleteConfirm: "Arrêter de notifier cet appareil ?",
+    },
+    webpush: {
+      restaurantId: "ID du restaurant",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Suspend",
       suspendSettings: "Suspension Settings",
@@ -1192,6 +1310,9 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
+      webPushDescription:
+        "Notifies this device of new orders even when the admin page is closed.",
+      webPushDevices: "Appareils de notification push",
       paymentIsNotCompleted:
         "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",
@@ -1318,6 +1439,7 @@ const data = {
           "L'adresse e-mail ou le mot de passe est invalide.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Le mot de passe est invalide.",
+        "auth/missing-password": "Veuillez saisir votre mot de passe.",
         "auth/invalid-credential":
           "L'adresse e-mail ou le mot de passe est invalide.",
       },
@@ -1396,12 +1518,6 @@ const data = {
       showBelow: "it's at the bottom of the settings",
       enabled: "Enabled",
       callbackURLCopyToLine: "Copy this value and set it on the LINE side.",
-    },
-    smaregi: {
-      index: "Intégration Smaregi",
-      authenticating: "Authentification en cours",
-      authenticationError: "Échec de l'authentification",
-      smaregiShopList: "Liste des magasins Smaregi",
     },
   },
   week: {
@@ -1509,6 +1625,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Enregistré",
+      body: "Pour enregistrer un autre appareil, appuyez sur « Ajouter un appareil ».",
+    },
     paymentMethods: {
       title: "Modes de paiement",
       body: "Cette fonctionnalité fournit des informations sur les modes de paiement disponibles au magasin pour les clients ayant choisi « Paiement sur place ».",
@@ -1538,6 +1658,69 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Saisissez T suivi de 13 chiffres (caractères demi-chasse)",
+    },
+    itemName: {
+      empty: "Veuillez saisir le nom de l'article",
+    },
+    price: {
+      empty: "Veuillez saisir le prix",
+      invalid:
+        "Veuillez saisir un nombre entier supérieur ou égal à 0 pour le prix",
+    },
+    restaurantName: {
+      empty: "Veuillez saisir le nom du restaurant",
+    },
+    ownerName: {
+      empty: "Veuillez saisir le nom du responsable",
+    },
+    streetAddress: {
+      empty: "Veuillez saisir l'adresse (numéro et rue)",
+    },
+    city: {
+      empty: "Veuillez saisir la ville",
+    },
+    state: {
+      empty: "Veuillez sélectionner la préfecture",
+    },
+    url: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Veuillez saisir une URL valide (commençant par http:// ou https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Le temps de préparation est trop long (7 jours maximum)",
+      negative: "Le temps de préparation ne peut pas être négatif",
+      notNumbery:
+        "Veuillez saisir le temps de préparation sous forme de nombre",
+      empty: "Veuillez saisir le temps de préparation",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "Le réglage du jour de début des réservations est invalide",
+      empty: "Veuillez sélectionner le jour de début des réservations",
+    },
+    restProfilePhoto: {
+      empty: "Veuillez définir une photo de profil",
+    },
+    restCoverPhoto: {
+      empty: "Veuillez définir une photo de couverture",
+    },
+    oneInEmpty: "Veuillez saisir l'heure de début et l'heure de fin",
+    validBusinessTime:
+      "L'heure de fin doit être postérieure à l'heure de début",
+    noSelect: "Veuillez définir les horaires d'ouverture",
     zip: {
       empty: "Veuillez saisir votre code postal",
       invalidZip: "Veuillez saisir un code postal valide",
@@ -1547,6 +1730,7 @@ const data = {
     },
     name: {
       empty: "Veuillez saisir votre nom complet",
+      length: "Veuillez saisir votre nom (au moins 3 caractères).",
     },
     memo: {
       length: "Veuillez saisir votre message en 500 caractères maximum.",

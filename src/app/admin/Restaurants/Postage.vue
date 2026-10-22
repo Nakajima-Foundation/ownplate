@@ -79,17 +79,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-import {
-  useAdminUids,
-  notFoundResponse,
-  useRestaurantId,
-  regionalSetting,
-} from "@/utils/utils";
+import { useAdminUids, notFoundResponse, useRestaurantId } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 import { checkShopAccount } from "@/utils/userPermission";
+import { freeThresholdOf } from "../../../utils/commonUtils";
 
 import NotFound from "@/components/NotFound.vue";
 import Checkbox from "@/components/form/checkbox.vue";
@@ -101,7 +99,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
@@ -126,9 +124,10 @@ export default defineComponent({
             if (data.postageList) {
               postage.value = data.postageList.default;
             }
-            if (data.freeThreshold) {
+            const savedFreeThreshold = freeThresholdOf(data.freeThreshold);
+            if (savedFreeThreshold !== null) {
               enableFree.value = true;
-              freeThreshold.value = data.freeThreshold;
+              freeThreshold.value = savedFreeThreshold;
             }
           }
         }

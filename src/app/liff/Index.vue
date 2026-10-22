@@ -42,10 +42,14 @@ import {
   query,
   getDocs,
   documentId,
-  DocumentData,
 } from "firebase/firestore";
 
-import { useLiffIndexId, resizedProfileImage } from "@/utils/utils";
+import {
+  collectionData,
+  useLiffIndexId,
+  resizedProfileImage,
+} from "@/utils/utils";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   props: {
@@ -55,7 +59,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const restaurants = ref<DocumentData[]>([]);
+    const restaurants = ref<RestaurantInfoData[]>([]);
     const liffIndexId = useLiffIndexId();
 
     getDocs(
@@ -65,7 +69,7 @@ export default defineComponent({
       ),
     ).then((collect) => {
       const r = collect.docs.map((a) => {
-        const data = a.data();
+        const data = collectionData<RestaurantInfoData>(a.data());
         data.id = a.id;
         return data;
       });

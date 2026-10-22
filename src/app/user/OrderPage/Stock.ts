@@ -1,5 +1,6 @@
 import { ref } from "vue";
 
+import { isSoldOutOn } from "@/utils/soldOut";
 import {
   getDocs,
   query,
@@ -9,9 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";
 
-import { arrayChunk } from "@/utils/utils";
-
-import moment from "moment-timezone";
+import { collectionData, arrayChunk } from "@/utils/utils";
 
 import { OrderInfoData } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
@@ -23,7 +22,7 @@ export const useHasSoldOutToday = (
   const hasSoldOutToday = ref(false);
   const mendIds = Object.keys(orderInfo.order);
 
-  const today = moment().format("YYYY-MM-DD");
+  const now = new Date();
 
   const menuData = ref<{ [key: string]: MenuData }>({});
 
@@ -36,9 +35,9 @@ export const useHasSoldOutToday = (
       ),
     );
     ret.docs.forEach((a) => {
-      const d = a.data() as MenuData;
-      menuData.value[a.id as string] = d;
-      if (d.soldOutToday === today) {
+      const d = collectionData<MenuData>(a.data());
+      menuData.value[a.id] = d;
+      if (isSoldOutOn(d.soldOutToday, now)) {
         hasSoldOutToday.value = true;
       }
     });

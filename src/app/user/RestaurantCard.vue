@@ -14,10 +14,11 @@
     <div v-if="shopInfo" class="mt-4 rounded-lg bg-white p-4 shadow-sm">
       <div class="flex items-center">
         <img
-          v-if="shopInfo.restaurantProfilePhoto"
-          :src="shopInfo.restaurantProfilePhoto"
+          v-if="shopInfo.restProfilePhoto"
+          :src="shopInfo.restProfilePhoto"
           alt=""
           class="h-12 w-12 rounded-full object-cover"
+          @error="smallImageErrorHandler"
         />
         <div class="ml-3">
           <div class="font-bold">{{ shopInfo.restaurantName }}</div>
@@ -75,11 +76,16 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc, Unsubscribe } from "firebase/firestore";
 import { stripeDeleteRestaurantCard } from "@/lib/firebase/functions";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
-import { useUserData } from "@/utils/utils";
+import {
+  smallImageErrorHandler,
+  useUserData,
+  collectionData,
+} from "@/utils/utils";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 import moment from "moment";
@@ -92,7 +98,9 @@ export default defineComponent({
     const dialogStore = useDialogStore();
     const { user } = useUserData();
 
-    const restaurantId = computed(() => route.params.restaurantId as string);
+    const restaurantId = computed(() =>
+      routeParamOf(route.params.restaurantId),
+    );
     const shopInfo = ref<RestaurantInfoData | null>(null);
     const ownerUid = ref<string>("");
     const storedCard = ref<{
@@ -151,8 +159,9 @@ export default defineComponent({
           doc(db, `restaurants/${restaurantId.value}`),
         );
         if (shopDoc.exists()) {
-          shopInfo.value = shopDoc.data();
-          ownerUid.value = shopInfo.value.uid;
+          const shopData = collectionData<RestaurantInfoData>(shopDoc.data());
+          shopInfo.value = shopData;
+          ownerUid.value = shopData.uid;
           // Start monitoring card info once we have owner UID
           checkStripe();
         }
@@ -191,6 +200,7 @@ export default defineComponent({
     });
 
     return {
+      smallImageErrorHandler,
       restaurantId,
       shopInfo,
       storedCard,

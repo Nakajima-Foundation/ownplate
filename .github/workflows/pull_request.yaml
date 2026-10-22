@@ -3,8 +3,13 @@
 
 name: Node.js CI
 
+# PR だけでなく main への push でも回す。PR ごとに緑でも、併合した組み合わせは
+# 誰も検めていない。deploy.yml は型検査をしないので、ここが main の唯一の門になる。
 on:
-  pull_request
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   build-functions:
@@ -24,10 +29,18 @@ jobs:
       uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        # install するのは yarn。'npm' だと npm 側の置き場を保存してしまい、
+        # yarn の取得分が毎回まるごと取り直しになる。
+        cache: 'yarn'
+        cache-dependency-path: functions/yarn.lock
     - run: cp ../src/config/constant.ts ./src/common/constant.ts
     - run: cp ../src/utils/phoneutil.ts ./src/common/phoneutil.ts
     - run: cp ../src/utils/commonUtils.ts ./src/utils/commonUtils.ts
+    - run: cp ../src/utils/shopCalendar.ts ./src/utils/shopCalendar.ts
+    - run: cp ../src/utils/pickupDays.ts ./src/utils/pickupDays.ts
+    - run: cp ../src/utils/exceptData.ts ./src/utils/exceptData.ts
+    - run: cp ../src/utils/pickupCheck.ts ./src/utils/pickupCheck.ts
+    - run: cp ../src/utils/holiday.ts ./src/utils/holiday.ts
     - run: cp ../src/models/RestaurantInfo.ts ./src/models/RestaurantInfo.ts
     - run: cp ../src/models/menu.ts ./src/models/menu.ts
     - run: cp ../src/models/customer.ts ./src/models/customer.ts
@@ -37,7 +50,10 @@ jobs:
     - run: cp ../src/models/promotionTypes.ts ./src/models/promotionTypes.ts
     - run: cp ../src/config/default/ownplate-dev.ts ./src/common/project.ts
     - run: SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
-    - run: yarn run ci_test
+    - run: yarn run unit_tests:coverage
+    - name: coverage summary
+      if: always()
+      run: node ../scripts/coverage-summary.ts coverage/lcov.info Functions
     - run: yarn run lint
     - run: yarn run build
 
@@ -55,10 +71,79 @@ jobs:
       uses: actions/setup-node@v6
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        # 同上。この repo に package-lock.json は無い。
+        cache: 'yarn'
     - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
     - run: yarn install
     - run: yarn run lint
+    - run: yarn run typecheck
+    - run: yarn run typecheck:test
+    - run: yarn run typecheck:vue
+    - run: yarn run test:coverage
+    # 受取日時は JST で数える。端末のタイムゾーンに寄りかかった間違いは UTC だけでは見えないので、別のタイムゾーンでも走らせる。
+    - run: yarn run test:tz
+    - name: coverage summary
+      if: always()
+      run: node scripts/coverage-summary.ts coverage/lcov.info Frontend
     - name: yarn build
       run: yarn run build
+
+    # Reports code quality scores and findings. Report-only: it never fails the build.
+    - name: scoria
+      run: npx -y scoria
+
+
+  e2e:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24.x]
+    steps:
+    - uses: actions/checkout@v6
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+    # Firestore エミュレーターは JDK21 以上でないと起動しない。
+    - uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+    - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
+    - run: yarn install
+    # deploy.yml と同じで、重いので package.json には入れずここで入れる。
+    - run: yarn add -D firebase-tools
+    - run: npx playwright install --with-deps chromium
+    # 注文の確定は Callable を呼ぶので、エミュレーターに載せる functions を用意する。
+    - name: functions を用意する
+      run: |
+        sh scripts/copy2functions.sh
+        cp src/config/project.ts functions/src/common/project.ts
+        yarn --cwd functions install
+        yarn --cwd functions build
+    - name: e2e
+      run: yarn run test:e2e
+    - name: e2e (Firebase エミュレーター)
+      run: yarn run test:e2e:emulator
+    # 失敗したときだけ、エミュレーターが何を言っていたかを出す。
+    # 画面には「売り切れかもしれません」としか出ないので、関数側を見ないと分からない。
+    - name: エミュレーターの記録
+      if: failure()
+      run: |
+        for f in firebase-debug.log firestore-debug.log ui-debug.log \
+                 functions/firebase-debug.log; do
+          [ -f "$f" ] && { echo "===== $f ====="; tail -200 "$f"; }
+        done
+        echo "===== 注文の状態 ====="
+        cat playwright-report/data/*.md 2>/dev/null | grep -iE "error|could not|dialog" | head -20
+    - uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: playwright-report
+        path: |
+          playwright-report/
+          *-debug.log
+        retention-days: 7
       

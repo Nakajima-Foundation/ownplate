@@ -3,7 +3,8 @@ import { defineSecret } from "firebase-functions/params";
 
 import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
-import * as admin from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import { Firestore } from "firebase-admin/firestore";
 import { ownPlateConfig } from "../../common/project";
 
 import { LineValidateData } from "../../models/functionTypes";
@@ -13,7 +14,7 @@ import { validateLineValidate } from "../../lib/validator";
 const line_message_token = defineSecret("LINE_MESSAGE_TOKEN");
 const line_client_secret = defineSecret("LINE_SECRET_KEY");
 
-const getUidLineAndToken = async (db: admin.firestore.Firestore, context: CallableRequest, customerUid: string, restaurantId?: string) => {
+const getUidLineAndToken = async (db: Firestore, context: CallableRequest, customerUid: string, restaurantId?: string) => {
   if (restaurantId) {
     const config = await utils.get_restaurant_line_config(db, restaurantId);
     const lineUser = await utils.get_restaurant_line_user(db, restaurantId, customerUid);
@@ -32,7 +33,7 @@ const getUidLineAndToken = async (db: admin.firestore.Firestore, context: Callab
   }
 };
 
-export const verifyFriend = async (db: admin.firestore.Firestore, data: { restaurantId?: string }, context: CallableRequest) => {
+export const verifyFriend = async (db: Firestore, data: { restaurantId?: string }, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
   const { restaurantId } = data;
   const { uidLine, token } = await getUidLineAndToken(db, context, customerUid, restaurantId);
@@ -55,7 +56,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: { restau
   }
 };
 
-const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: string) => {
+const getLineConfig = async (db: Firestore, restaurantId?: string) => {
   if (restaurantId) {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const { hasLine, lineClientId } = restaurantData;
@@ -84,7 +85,7 @@ const getLineConfig = async (db: admin.firestore.Firestore, restaurantId?: strin
   }
 };
 
-export const validate = async (db: admin.firestore.Firestore, data: LineValidateData, context: CallableRequest) => {
+export const validate = async (db: Firestore, data: LineValidateData, context: CallableRequest) => {
   const uid = utils.validate_auth(context);
 
   const { code, redirect_uri, restaurantId } = data;
@@ -147,7 +148,7 @@ export const validate = async (db: admin.firestore.Firestore, data: LineValidate
       );
     } else if (context.auth!.token.phone_number) {
       // For end-user, seet the custom claim
-      await admin.auth().setCustomUserClaims(uid, {
+      await getAuth().setCustomUserClaims(uid, {
         line: lineUid,
       });
 
@@ -162,7 +163,7 @@ export const validate = async (db: admin.firestore.Firestore, data: LineValidate
     }
     // else {
     // Remove unnecessary claims from previous version.
-    // await admin.auth().setCustomUserClaims(uid, { line: null });
+    // await getAuth().setCustomUserClaims(uid, { line: null });
     // }
 
     return { profile, nonce: verified.nonce };
@@ -172,7 +173,7 @@ export const validate = async (db: admin.firestore.Firestore, data: LineValidate
 };
 
 
-export const getLiffPrivateConfig = async (db: admin.firestore.Firestore, liffIndexId: string) => {
+export const getLiffPrivateConfig = async (db: Firestore, liffIndexId: string) => {
   const liffPrivateConfig = (await db.doc(`/liff/${liffIndexId}/liffPrivate/data`).get()).data();
   if (!liffPrivateConfig) {
     console.log("getLineId: no liffPrivateConfig");
@@ -183,7 +184,7 @@ export const getLiffPrivateConfig = async (db: admin.firestore.Firestore, liffIn
     token,
   };
 };
-export const getLineId = async (db: admin.firestore.Firestore, uid: string | null) => {
+export const getLineId = async (db: Firestore, uid: string | null) => {
   if (uid === null) {
     return {};
   }

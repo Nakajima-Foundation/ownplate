@@ -49,14 +49,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+import { defineComponent, ref, computed, watch, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import { getDocs, query, collectionGroup, where } from "firebase/firestore";
 import DownloadCsv from "@/components/DownloadCSV.vue";
+import type { CsvRow } from "@/utils/csv";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
-import { order_status } from "@/config/constant";
+import { order_status, orderStatusOf } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
 import { reportHeaders, reportHeadersWithAddress } from "@/utils/reportUtils";
@@ -75,7 +77,7 @@ export default defineComponent({
       required: true,
     },
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     fileName: {
@@ -170,11 +172,11 @@ export default defineComponent({
       });
     });
     const tableData = computed(() => {
-      const items: { [key: string]: string | number | null }[] = [];
+      const items: CsvRow[] = [];
       mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
-          if (order_status[key] === order.status) {
+          if (orderStatusOf(key) === order.status) {
             return key;
           }
           return result;
@@ -182,13 +184,11 @@ export default defineComponent({
         ids.forEach((menuId, index) => {
           const orderItems = forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
-          const prices = order.prices[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
-          const taxRate = menuItem.tax === "food" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
-            const opt = Array.isArray(options[key] || [])
-              ? options[key]
-              : [options[key]];
+            // key は writeonFirstLine が Number(key) === 0 で使うので残す。
+            const itemIndex = Number(key);
+            const opt = forceArray(options[itemIndex] ?? "");
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
@@ -279,7 +279,7 @@ export default defineComponent({
                   key,
                   order?.isDelivery ? "1" : "",
                 ),
-                count: orderItems[key],
+                count: orderItems[itemIndex],
                 options: opt.filter((a: string) => String(a) !== "").join("/"),
                 memo: writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
@@ -291,18 +291,6 @@ export default defineComponent({
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
 
-                categoryId: menuItem.category || "",
-                subCategoryId: menuItem.subCategory || "",
-                productId: menuItem.productId || "",
-
-                // for mo
-                menuPrice: menuItem.price,
-                taxRate,
-                tax: Math.round((menuItem.price * taxRate) / (100 + taxRate)),
-                productSubTotal: prices[key],
-
-                cancelReason: order.cancelReason,
-                // end of for mo
                 total: writeonFirstLine(index, key, order.totalCharge || ""),
                 discountPrice: writeonFirstLine(
                   index,

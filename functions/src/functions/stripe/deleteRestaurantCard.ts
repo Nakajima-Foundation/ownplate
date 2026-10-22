@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../lib/utils";
 import { StripeDeleteRestaurantCardData } from "../../models/functionTypes";
@@ -6,7 +6,7 @@ import { getStripeAccount } from "./intent";
 
 // Delete card information for a specific restaurant
 export const deleteRestaurantCard = async (
-  db: admin.firestore.Firestore,
+  db: Firestore,
   data: StripeDeleteRestaurantCardData,
   context: CallableRequest
 ) => {

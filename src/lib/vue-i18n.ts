@@ -16,6 +16,7 @@ import i18nVI from "@/lang/vi";
 import i18nID from "@/lang/id";
 
 import { stripe_regions_jp } from "@/config/constant";
+import { SHOP_TIME_ZONE } from "@/utils/shopCalendar";
 
 const numberFormats: IntlNumberFormat = {
   currency: {
@@ -24,19 +25,23 @@ const numberFormats: IntlNumberFormat = {
   },
 };
 
+// 日時は店の時刻（JST）で出す。端末のタイムゾーンには合わせない（omochikaeri-docs#229）。
 const datetimeFormats: IntlDateTimeFormat = {
   short: {
+    timeZone: SHOP_TIME_ZONE,
     year: "numeric",
     month: "short",
     day: "numeric",
     weekday: "short",
   },
   time: {
+    timeZone: SHOP_TIME_ZONE,
     hour: "numeric",
     minute: "numeric",
     hour12: true,
   },
   long: {
+    timeZone: SHOP_TIME_ZONE,
     year: "numeric",
     month: "short",
     day: "numeric",

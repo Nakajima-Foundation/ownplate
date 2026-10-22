@@ -25,7 +25,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onUnmounted } from "vue";
+import { defineComponent, ref, computed, onUnmounted, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -42,7 +43,7 @@ import { ReviewData } from "@/models/reviewData";
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },

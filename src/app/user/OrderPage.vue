@@ -32,10 +32,7 @@
         :orderInfo="orderInfo"
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
-        :deliveryData="deliveryData"
         :menuPagePath="menuPagePath"
-        @openTransactionsAct="openTransactionsAct"
-        :promotions="promotions"
       />
 
       <OrderPageAfter
@@ -49,11 +46,7 @@
         :hasLine="hasLine"
       />
     </template>
-    <TransactionsActModal
-      ref="transactions"
-      :isDelivery="orderInfo.isDelivery || false"
-      :shopInfo="shopInfo"
-    />
+    <TransactionsActModal ref="transactions" :shopInfo="shopInfo" />
   </div>
 </template>
 
@@ -66,6 +59,9 @@ import {
   watch,
   PropType,
 } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
+import type Promotion from "@/models/promotion";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
@@ -85,6 +81,7 @@ import { lineVerifyFriend } from "@/lib/firebase/functions";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
+  collectionData,
   getOrderItems,
   useLiffBasePath,
   useRestaurantId,
@@ -93,6 +90,7 @@ import {
 } from "@/utils/utils";
 
 import { useRoute, onBeforeRouteLeave } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 import { OrderInfoData } from "@/models/orderInfo";
@@ -116,11 +114,11 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     notFound: {
@@ -128,7 +126,7 @@ export default defineComponent({
       required: false,
     },
     promotions: {
-      type: Array,
+      type: Array<Promotion>,
       required: true,
     },
   },
@@ -138,8 +136,10 @@ export default defineComponent({
     const { isUser, isLiffUser, inLiff } = useUserData();
 
     const loginVisible = ref(false);
-    const transactions = ref();
-    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
+    const transactions = ref<InstanceType<typeof TransactionsActModal> | null>(
+      null,
+    );
+    const orderInfo = ref<OrderInfoData>(collectionData<OrderInfoData>({}));
     const hasFriends = ref<boolean | null>(null);
     const menuObj = ref<{ [key: string]: MenuData } | null>(null);
     const detachers: Unsubscribe[] = [];
@@ -156,7 +156,7 @@ export default defineComponent({
         : [defaultTitle, "Order Page"].join(" / "),
     }));
 
-    const orderId = route.params.orderId as string;
+    const orderId = routeParamOf(route.params.orderId);
     const orderError = computed(() => {
       return orderInfo.value.status === order_status.error;
     });
@@ -185,7 +185,7 @@ export default defineComponent({
         doc(db, `restaurants/${restaurantId.value}/orders/${orderId}`),
         (order) => {
           const order_data = order.exists() ? order.data() : {};
-          orderInfo.value = order_data as OrderInfoData;
+          orderInfo.value = collectionData<OrderInfoData>(order_data);
           menuObj.value = orderInfo.value.menuItems || {};
           if (just_validated.value) {
             analyticsUtil.sendViewCart(
@@ -198,7 +198,7 @@ export default defineComponent({
                   quantity: Array.isArray(or.count)
                     ? or.count.reduce((a, b) => a + b, 0)
                     : or.count,
-                } as analyticsUtil.AnalyticsMenuData;
+                };
               }),
               props.shopInfo,
               restaurantId.value,
@@ -240,7 +240,7 @@ export default defineComponent({
       }
     };
     const openTransactionsAct = () => {
-      transactions.value.openTransactionsAct();
+      transactions.value?.openTransactionsAct();
     };
     if (isUser.value || isLiffUser.value) {
       loadUserData();

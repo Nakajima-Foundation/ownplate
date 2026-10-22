@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { Timestamp } from "firebase-admin/firestore";
 import {
   OrderCreatedData,
   OrderUpdateData,
@@ -14,11 +14,11 @@ import {
   PingData,
   LineValidateData,
   LiffAuthenticateData,
+  CheckPushInviteData,
+  CreatePushInviteData,
+  RedeemPushInviteData,
 } from "../models/functionTypes";
-import {
-  ValidatorNumberOption,
-  ValidatorStringOption,
-} from "./types/validator";
+import { ValidatorNumberOption, ValidatorStringOption } from "./types/validator";
 import { CustomerInfo } from "../models/customer";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
@@ -124,7 +124,7 @@ const validateString = (text: string) => {
 const validateAlphabet = (text: string) => {
   return /^[a-zA-Z]+$/.test(text);
 };
-const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
+const validateTimestamp = (timestamp: Timestamp) => {
   return validateInteger(timestamp.seconds) && validateInteger(timestamp.nanoseconds);
 };
 const validateBoolean = (value: boolean) => {
@@ -159,10 +159,7 @@ type ValidatorRule = {
   regex?: RegExp;
 };
 
-const validateData = (
-  data: object,
-  validator: Record<string, ValidatorRule>,
-) => {
+const validateData = (data: object, validator: Record<string, ValidatorRule>) => {
   const record = data as Record<string, unknown>;
   const errors = Object.keys(validator).reduce((tmp: unknown[], key: string) => {
     const rule = validator[key];
@@ -298,10 +295,6 @@ export const validateCancel = (data: OrderCancelData) => {
       type: "firebaseId",
       required: true,
     },
-    cancelReason: {
-      type: "numAlpha",
-      required: false,
-    },
   };
   return validateData(data, validator);
 };
@@ -380,6 +373,56 @@ export const validatePing = (data: PingData) => {
     },
     operationType: {
       type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCreatePushInvite = (data: CreatePushInviteData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCheckPushInvite = (data: CheckPushInviteData) => {
+  const validator = {
+    token: {
+      type: "string",
+      required: true,
+      regex: /^[A-Za-z0-9_-]{22,128}$/,
+    },
+    fid: {
+      type: "numAlphaBar",
+      required: false,
+    },
+  };
+  return validateData(data, validator);
+};
+
+// FID (Firebase Installation ID) は base64url 相当の固定長文字列。
+// name は端末の呼び名で、日本語が入るので形は見ず、長さだけ呼び出し側で詰める。
+export const validateRedeemPushInvite = (data: RedeemPushInviteData) => {
+  const validator = {
+    token: {
+      type: "string",
+      required: true,
+      regex: /^[A-Za-z0-9_-]{22,128}$/,
+    },
+    fid: {
+      type: "numAlphaBar",
+      required: true,
+    },
+    platform: {
+      type: "alphabet",
+      required: true,
+    },
+    name: {
+      type: "string",
       required: true,
     },
   };

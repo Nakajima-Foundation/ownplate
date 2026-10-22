@@ -32,6 +32,10 @@
             { "key": "X-Permitted-Cross-Domain-Policies", "value": "none" },
             { "key": "Referrer-Policy", "value": "no-referrer" }
           ]
+        },
+        {
+          "source": "/sw.js",
+          "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
         }
       ],
       "appAssociation": "AUTO",
@@ -72,12 +76,17 @@
           "region": "asia-northeast1"
         },
         {
-          "source": "/smaregi/1.0/**",
+          "source": "/sitemap.xml",
           "function": "apiJP2",
           "region": "asia-northeast1"
         },
         {
-          "source": "/sitemap.xml",
+          "source": "/robots.txt",
+          "function": "apiJP2",
+          "region": "asia-northeast1"
+        },
+        {
+          "source": "/llms.txt",
           "function": "apiJP2",
           "region": "asia-northeast1"
         },
@@ -90,5 +99,20 @@
   ],
   "storage": {
     "rules": "storage.rules"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8089
+    },
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": false
+    },
+    "singleProjectMode": true
   }
 }

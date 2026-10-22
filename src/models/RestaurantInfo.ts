@@ -1,3 +1,4 @@
+import type { Timestamp } from "./firebaseUtils";
 export interface RestaurantInfoData {
   url: string;
   restaurantName: string;
@@ -54,8 +55,10 @@ export interface RestaurantInfoData {
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
+  // 適格請求書発行事業者の登録番号。未設定の店舗（免税事業者など）は空。
+  invoiceNumber?: string;
   openTimes: { [key: string]: { start: number; end: number }[] };
-  businessDay: { [key: string]: string[] };
+  businessDay: { [key: string]: boolean };
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
@@ -70,17 +73,37 @@ export interface RestaurantInfoData {
   suspendUntil: { toDate: () => Date } | null;
 
   images: {
-    cover?: { path?: string; resizedImages?: { [key: string]: string } };
-    profile?: { path?: string; resizedImages?: { [key: string]: string } };
+    cover?: {
+      original?: string;
+      path?: string;
+      resizedImages?: { [key: string]: string };
+    };
+    profile?: {
+      original?: string;
+      path?: string;
+      resizedImages?: { [key: string]: string };
+    };
   };
   publicFlag: boolean;
   deletedFlag: boolean;
-  temporaryClosure: { toDate: () => Date; seconds?: number }[];
+  temporaryClosure: Timestamp[];
+  // 祝日を定休日にする（祝日は受け取れない）。
+  closedOnHolidays?: boolean;
   lastOrderTime?: number;
   category1: string[];
   category2: string[];
 
-  createdAt: Date;
+  createdAt: Timestamp;
 }
+
+export type CategoryKey = "category1" | "category2";
+
+// 店舗編集フォームの形。臨時休業日は日付を足し引きするので Date で持つ。
+export type ConvertedRestaurantInfoData = Omit<
+  RestaurantInfoData,
+  "temporaryClosure"
+> & {
+  temporaryClosure: Date[];
+};
 
 export class RestaurantInfo {}

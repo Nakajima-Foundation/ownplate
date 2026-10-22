@@ -71,9 +71,20 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+// テンプレは導入文・箇条書き・注記も読む。いまの一覧は q と answers だけを埋めている。
+type FaqItem = {
+  q: string;
+  answers: string[];
+  type1?: string[];
+  answers1?: string[];
+  type2?: string[];
+  answers2?: string[];
+  notes?: string[];
+};
+
 export default defineComponent({
   setup() {
-    const faqList = [
+    const faqList: FaqItem[] = [
       {
         q: "ご利用の流れについて",
         answers: ["ほげほげ"],

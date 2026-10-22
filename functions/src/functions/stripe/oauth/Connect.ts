@@ -1,9 +1,9 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../../../lib/utils";
 import { validatorStripeOAuthConnect } from "../../../lib/validator";
 
-export const connect = async (db: admin.firestore.Firestore, data: { code: string }, context: CallableRequest) => {
+export const connect = async (db: Firestore, data: { code: string }, context: CallableRequest) => {
   const uid = utils.validate_admin_auth(context);
   const stripe = utils.get_stripe_v2();
 

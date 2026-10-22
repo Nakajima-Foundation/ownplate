@@ -62,16 +62,17 @@
 </template>
 
 <script lang="ts">
+import { isSoldOutOn } from "@/utils/soldOut";
 import { defineComponent, computed, PropType } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { formatOption, optionPrice } from "@/utils/strings";
-import { roundPrice, smallImageErrorHandler, useUserData } from "@/utils/utils";
+import { smallImageErrorHandler, useUserData } from "@/utils/utils";
+import { orderLineOptionsText, orderLineTotalPrice } from "@/utils/orderLine";
 import { MenuData } from "@/models/menu";
+import { OrderItemData } from "@/models/orderInfoData";
 
 import Checkbox from "@/components/form/checkbox.vue";
 
-import moment from "moment-timezone";
 
 export default defineComponent({
   components: {
@@ -79,7 +80,7 @@ export default defineComponent({
   },
   props: {
     orderItem: {
-      type: Object,
+      type: Object as PropType<OrderItemData>,
       required: true,
     },
     menuData: {
@@ -115,22 +116,17 @@ export default defineComponent({
     const count = computed(() => {
       return props.orderItem.count;
     });
-    const displayOption = (option: string) => {
-      return formatOption(option, (price) => n(price, "currency"));
-    };
     const specialRequest = computed(() => {
-      return props.orderItem.options
-        .filter((choice: string) => choice)
-        .map((choice: string) => displayOption(choice))
-        .join(", ");
+      return orderLineOptionsText(props.orderItem.options, (price) =>
+        n(price, "currency"),
+      );
     });
     const totalPrice = computed(() => {
-      let price = item.value.price;
-      props.orderItem.options.forEach((option: string) => {
-        const p = roundPrice(optionPrice(option));
-        price += p;
-      });
-      return price * count.value;
+      return orderLineTotalPrice(
+        item.value.price,
+        props.orderItem.options,
+        count.value,
+      );
     });
     const { isAdmin } = useUserData();
 
@@ -141,9 +137,8 @@ export default defineComponent({
       smallImageErrorHandler(e);
     };
 
-    const today = moment().format("YYYY-MM-DD");
     const soldOutToday = computed(() => {
-      return props.menuData?.soldOutToday === today;
+      return isSoldOutOn(props.menuData?.soldOutToday, new Date());
     });
     return {
       item,

@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 
 import { OrderInfoData } from "@/models/orderInfo";
-import { formatDateYMD } from "@/utils/dateUtils";
+import { dateKeyOf } from "@/utils/shopCalendar";
 
 export const useGeneralStore = defineStore("generalStore", () => {
   const date = ref(new Date());
@@ -40,7 +40,7 @@ export const useGeneralStore = defineStore("generalStore", () => {
   const setOrders = (orders: OrderInfoData[]) => {
     orderObj.value = orders.reduce(
       (tmp: { [key: string]: OrderInfoData[] }, order: OrderInfoData) => {
-        const day = formatDateYMD(order.timePlaced.toDate());
+        const day = dateKeyOf(order.timePlaced.toDate());
         if (!tmp[day]) {
           tmp[day] = [];
         }

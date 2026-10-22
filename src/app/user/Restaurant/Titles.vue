@@ -15,11 +15,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import type { TitleData } from "@/models/menu";
 
 export default defineComponent({
   props: {
     titleLists: {
-      type: Array,
+      type: Array<TitleData>,
       required: true,
     },
   },

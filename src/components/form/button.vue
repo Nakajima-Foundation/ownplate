@@ -6,6 +6,7 @@
       'bg-op-teal-disabled': !isCancel && isDisabled,
       'cursor-pointer': !isDisabled,
     }"
+    type="button"
     :disabled="isDisabled"
     @click="handleClick"
   >
@@ -13,6 +14,7 @@
   </button>
 </template>
 
+<!-- type が無いと form の中で submit になる。送信は t-submit の役目（呼び出し側の type が優先） -->
 <script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({

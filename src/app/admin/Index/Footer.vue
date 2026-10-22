@@ -2,7 +2,7 @@
   <div>
     <div class="text-center">
       <!-- User Manuals -->
-      <div class="inline-block px-1 pb-2" v-if="isJapan">
+      <div class="inline-block px-1 pb-2">
         <router-link to="/admin/docs">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
@@ -16,7 +16,7 @@
       </div>
 
       <!-- Support -->
-      <div class="inline-block px-1 pb-2" v-if="isJapan">
+      <div class="inline-block px-1 pb-2">
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
           target="_blank"
@@ -53,7 +53,7 @@
       </div>
 
       <!-- X -->
-      <div class="inline-block px-1 pb-2" v-if="isJapan">
+      <div class="inline-block px-1 pb-2">
         <a href="https://x.com/omochikaericom" target="_blank">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
@@ -65,7 +65,7 @@
       </div>
 
       <!-- Note -->
-      <div class="inline-block px-1 pb-2" v-if="isJapan">
+      <div class="inline-block px-1 pb-2">
         <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
           <div
             class="inline-flex h-9 items-center justify-center rounded-full bg-white/80 px-4"
@@ -77,12 +77,3 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
-import { isJapan } from "@/utils/utils";
-export default defineComponent({
-  setup() {
-    return { isJapan };
-  },
-});
-</script>

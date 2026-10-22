@@ -86,7 +86,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from "vue";
+import { defineComponent, ref, onUnmounted, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -112,9 +113,11 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { useDialogStore } from "@/store/dialog";
 import { useRouter, useRoute } from "vue-router";
 import { useHead } from "@unhead/vue";
+// LINE 側が作る文書。表示名が入っているかはこの repo の外で決まる。
 interface LineUserData {
   id: string;
   notify?: boolean;
+  displayName?: string;
 }
 
 export default defineComponent({
@@ -124,7 +127,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },

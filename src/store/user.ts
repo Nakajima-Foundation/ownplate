@@ -3,9 +3,11 @@ import { defineStore } from "pinia";
 
 import { User } from "firebase/auth";
 
+// ID トークンをそのまま持つ。既知の鍵は入っているとは限らず、他の鍵も一緒に来る。
 interface Claims {
-  admin: boolean;
-  operator: boolean;
+  [key: string]: unknown;
+  admin?: boolean;
+  operator?: boolean;
   parentUid?: string;
   liffId?: string;
   line?: string;

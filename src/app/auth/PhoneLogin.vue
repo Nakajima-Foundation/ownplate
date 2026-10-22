@@ -46,6 +46,7 @@
       <div class="mt-4 text-center">
         <t-button
           id="signInButton"
+          type="button"
           @click="$emit('dismissed', false)"
           :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
@@ -55,13 +56,13 @@
           </div>
         </t-button>
 
-        <t-button
+        <t-submit
           id="button-send-tel"
-          :isDisabled="!readyToSendSMS"
+          :isDisabled="submitting || !readyToSendSMS"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.send") }}
-        </t-button>
+        </t-submit>
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
@@ -120,6 +121,7 @@
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
         <t-button
+          type="button"
           @click="$emit('dismissed', false)"
           :isCancel="true"
           class="mr-4 mb-2 inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
@@ -127,20 +129,28 @@
           {{ $t("button.cancel") }}
         </t-button>
 
-        <t-button
+        <t-submit
           id="button-send-code"
-          :isDisabled="!readyToSendVerificationCode"
+          :isDisabled="submitting || !readyToSendVerificationCode"
           class="h-12 w-32 font-bold text-white shadow-sm"
         >
           {{ $t("sms.sendVerificationCode") }}
-        </t-button>
+        </t-submit>
       </div>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed, onMounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  PropType,
+} from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
 
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
@@ -159,7 +169,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion, useIsLocaleJapan, errorCode } from "@/utils/utils";
+import { useIsLocaleJapan, errorCode } from "@/utils/utils";
+import { stripe_regions_jp } from "../../config/constant";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -172,12 +183,12 @@ export default defineComponent({
   },
   props: {
     relogin: {
-      type: String,
+      type: String as PropType<string | null>,
     },
   },
   emits: ["dismissed"],
   setup(props, ctx) {
-    const countries = stripeRegion.countries;
+    const countries = stripe_regions_jp.countries;
 
     const generalStore = useGeneralStore();
     const countryCode = countries[0].code || "+1";
@@ -233,7 +244,12 @@ export default defineComponent({
       }
     });
 
+    // 2通目の SMS で1通目のコードが使えなくなる。2つの form は同時に出ないので1つで足りる。
+    const submitting = ref(false);
     const handleSubmit = async () => {
+      if (!beginSubmit(submitting)) {
+        return;
+      }
       console.log("submit");
       try {
         generalStore.setLoading(true);
@@ -258,9 +274,13 @@ export default defineComponent({
         errors.value = ["sms." + code];
       } finally {
         generalStore.setLoading(false);
+        submitting.value = false;
       }
     };
     const handleCode = async () => {
+      if (!beginSubmit(submitting)) {
+        return;
+      }
       console.log("handleCode");
       errors.value = [];
       try {
@@ -302,12 +322,15 @@ export default defineComponent({
           Sentry.captureException(error);
         }
         errors.value = ["sms." + code];
+        submitting.value = false;
       } finally {
+        // 成功時は戻さない。閉じるのは親がログインを確認してからで、その間に再送できてしまう。
         generalStore.setLoading(false);
       }
     };
     return {
       countries,
+      submitting,
 
       countryCode,
       phoneNumber,

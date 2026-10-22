@@ -1,21 +1,21 @@
 import { CallableRequest } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
+import { DocumentData, FieldValue, Firestore, Query, QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { validate_customer_auth, process_error } from "../lib/utils";
 import { deleteCustomer } from "./stripe/customer";
 
-export const deleteAccount = async (db: admin.firestore.Firestore, context: CallableRequest) => {
+export const deleteAccount = async (db: Firestore, context: CallableRequest) => {
   const customerUid = validate_customer_auth(context);
 
   try {
     const refCollection = db.collectionGroup("orders").where("uid", "==", customerUid).orderBy("timePlaced", "desc");
-    const next = async (_query: admin.firestore.Query<admin.firestore.DocumentData>) => {
+    const next = async (_query: Query<DocumentData>) => {
       const docs = (await _query.limit(100).get()).docs;
       if (docs.length > 0) {
         const batch = db.batch();
-        docs.map((doc: admin.firestore.QueryDocumentSnapshot<admin.firestore.DocumentData>) => {
+        docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
           batch.update(doc.ref, {
             accountDeleted: true,
-            timeAccountDeleted: admin.firestore.FieldValue.serverTimestamp(),
+            timeAccountDeleted: FieldValue.serverTimestamp(),
           });
         });
         await batch.commit();
@@ -27,7 +27,7 @@ export const deleteAccount = async (db: admin.firestore.Firestore, context: Call
       return null;
     };
 
-    let query: admin.firestore.Query<admin.firestore.DocumentData> | null = refCollection;
+    let query: Query<DocumentData> | null = refCollection;
     let count = -1;
     do {
       query = await next(query);

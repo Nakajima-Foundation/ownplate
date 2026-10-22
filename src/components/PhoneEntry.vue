@@ -15,7 +15,7 @@
       <p
         v-if="hasError || notice"
         class="help mt-1 text-sm"
-        :class="hasError ? 'text-red-500' : 'text-green-600'"
+        :class="hasError ? 'font-bold text-red-700' : 'text-green-600'"
       >
         {{ hasError ? $t(errors[0]) : notice }}
       </p>
@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from "vue";
 import { parsePhoneNumber } from "@/utils/phoneutil";
-import { stripeRegion } from "@/utils/utils";
+import { stripe_regions_jp } from "../config/constant";
 
 export default defineComponent({
   props: {
@@ -49,7 +49,7 @@ export default defineComponent({
   },
   emits: ["change"],
   setup(props, ctx) {
-    const countries = stripeRegion.countries;
+    const countries = stripe_regions_jp.countries;
     const countryCode = ref(countries[0].code);
 
     const errors = ref<string[]>([]);

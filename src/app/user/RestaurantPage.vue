@@ -53,7 +53,7 @@
               <div class="mt-4 flex items-center justify-center space-x-4">
                 <!-- Share Popup -->
                 <div>
-                  <share-popup :shopInfo="shopInfo" :mode="mode"></share-popup>
+                  <share-popup :shopInfo="shopInfo"></share-popup>
                 </div>
 
                 <!-- Favorite Button -->
@@ -89,7 +89,6 @@
             <div class="mx-6 mt-2 lg:mx-0">
               <TransactionsActContents
                 :shopInfo="shopInfo"
-                :isDelivery="isDelivery"
                 @closeTransactionsAct="closeTransactionsAct"
                 closeButton="button.back"
               />
@@ -115,7 +114,6 @@
             <div class="mx-6 mt-4 lg:mx-0" v-if="shopInfo.enableLunchDinner">
               <div class="rounded-lg bg-white shadow-sm">
                 <LunchDinner
-                  :shopInfo="shopInfo"
                   v-model="lunchOrDinner"
                   :hasDinnerOnlyOrder="hasDinnerOnlyOrder"
                   :hasLunchOnlyOrder="hasLunchOnlyOrder"
@@ -154,7 +152,6 @@
                       :shopInfo="shopInfo"
                       :isOpen="menuId === item.id"
                       :prices="prices[item.id] || []"
-                      :mode="mode"
                       @didOrderdChange="didOrderdChange($event)"
                       @updateSelectedOptions="
                         updateSelectedOptions(item.id, $event)
@@ -267,6 +264,8 @@ import {
   onUnmounted,
   PropType,
 } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import RestaurantMenu from "@/app/user/Restaurant/Menu.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
@@ -294,7 +293,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 import { orderCreated } from "@/lib/firebase/functions";
 
-import { order_status } from "@/config/constant";
+import { order_status, stripe_regions_jp } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -324,8 +323,8 @@ import {
   useUserData,
   useBasePath,
   defaultTitle,
-  stripeRegion,
   errorCode,
+  errorMessage,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -338,12 +337,14 @@ import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 import {
   OrderDataType,
   CartItemsType,
   CartOptionType,
 } from "@/models/cartType";
+import type { OptionValue } from "@/models/orderTypes";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -371,11 +372,11 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     notFound: {
@@ -409,7 +410,7 @@ export default defineComponent({
     const cartItems = ref<CartItemsType>({});
     const selectedOptions = ref<CartOptionType>({});
 
-    const multiple = stripeRegion.multiple;
+    const multiple = stripe_regions_jp.multiple;
 
     const basePath = useBasePath();
 
@@ -425,12 +426,10 @@ export default defineComponent({
 
     const defaultHowToReceive = (() => {
       // for 333
-      const rId = route.params.restaurantId as string;
-      if (cartStore.carts[rId]) {
-        const cart = cartStore.carts[rId] || {};
-        if (cart.howtoreceive) {
-          return cart.howtoreceive;
-        }
+      const rId = routeParamOf(route.params.restaurantId);
+      const cart = cartStore.carts[rId];
+      if (cart?.howtoreceive) {
+        return cart.howtoreceive;
       }
       if (props.shopInfo.deliveryOnlyStore) {
         return "delivery";
@@ -442,20 +441,22 @@ export default defineComponent({
     const lunchOrDinner = ref("lunch");
 
     const restaurantId = computed(() => {
-      return route.params.restaurantId as string;
+      return routeParamOf(route.params.restaurantId);
     });
     const menuId = computed(() => {
-      return route.params.menuId;
+      return routeParamOf(route.params.menuId);
     });
 
     const { user, uid, isAdmin, isUser, isLiffUser } = useUserData();
+    // 比べる uid が分かっていないときに、店舗側の uid も無いと素の比較では
+    // 一致してしまう。分かっていなければ一致しない扱いにする。
+    const belongsToShop = (candidate: string | undefined) =>
+      candidate !== undefined && candidate === props.shopInfo.uid;
     const isOwner = computed(() => {
-      return isAdmin.value && uid.value === props.shopInfo.uid;
+      return isAdmin.value && belongsToShop(uid.value);
     });
     const isSubAccount = computed(() => {
-      return (
-        isAdmin.value && userStore?.claims?.parentUid === props.shopInfo.uid
-      );
+      return isAdmin.value && belongsToShop(userStore?.claims?.parentUid);
     });
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
@@ -481,9 +482,9 @@ export default defineComponent({
     // avoid to reset cart when pickup or other not takeout
     onBeforeMount(() => {
       // Check if we came here as the result of "Edit Items"
-      console.log(cartStore.carts[restaurantId.value]);
-      if (cartStore.carts[restaurantId.value]) {
-        const cart = cartStore.carts[restaurantId.value] || {};
+      const cart = cartStore.carts[restaurantId.value];
+      console.log(cart);
+      if (cart) {
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
@@ -506,7 +507,7 @@ export default defineComponent({
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
-        values as AnalyticsMenuData[],
+        values,
         props.shopInfo,
         restaurantId.value,
       );
@@ -539,7 +540,9 @@ export default defineComponent({
       );
       return menuLists
         .map((itemId) => {
-          return { ...itemsObj[itemId] };
+          // itemsObj はこの id で引いているので、拾い直しても同じ値になる。
+          // 型の上でも id が確定し、添字として使えるようになる。
+          return { ...itemsObj[itemId], id: itemId };
         })
         .filter(lunchOrDinnerFilter)
         .filter((item) => {
@@ -604,7 +607,7 @@ export default defineComponent({
     const didOrderdChange = (eventArgs: {
       quantities: number[];
       itemId: string;
-      optionValues: string;
+      optionValues: OptionValue[][];
       itemData: MenuData;
     }) => {
       // NOTE: We need to assign a new object to trigger computed properties
@@ -631,6 +634,10 @@ export default defineComponent({
       selectedOptions.value = newSelectedOptions;
     };
     const goCheckout = async () => {
+      const signedInUser = user.value;
+      if (!signedInUser) {
+        return;
+      }
       const name = await (async () => {
         if (isLiffUser.value) {
           try {
@@ -640,7 +647,7 @@ export default defineComponent({
             return "";
           }
         }
-        return user.value.displayName;
+        return signedInUser.displayName;
       })();
 
       const isStoreUserName = props.shopInfo.personalInfo !== "notRequired";
@@ -649,7 +656,7 @@ export default defineComponent({
         options: convOptionArray2Obj(postOptions.value),
         rawOptions: convOptionArray2Obj(trimmedSelectedOptions.value),
         status: order_status.new_order,
-        uid: user.value.uid,
+        uid: signedInUser.uid,
         ownerUid: props.shopInfo.uid,
         lunchOrDinner: props.shopInfo.enableLunchDinner
           ? lunchOrDinner.value
@@ -657,7 +664,7 @@ export default defineComponent({
         isDelivery:
           (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
         isLiff: isLiffUser.value,
-        phoneNumber: user.value.phoneNumber,
+        phoneNumber: signedInUser.phoneNumber,
         name: isStoreUserName ? name : "",
         updatedAt: serverTimestamp(),
         timeCreated: serverTimestamp(),
@@ -692,9 +699,10 @@ export default defineComponent({
           const checkoutMenus: AnalyticsMenuData[] = [];
           Object.keys(orders.value).forEach((currentMenuId) => {
             orders.value[currentMenuId].forEach((quantity: number) => {
-              const menu = { ...cartItems.value[currentMenuId] };
-              menu.quantity = quantity;
-              checkoutMenus.push(menu);
+              checkoutMenus.push({
+                ...cartItems.value[currentMenuId],
+                quantity,
+              });
             });
           });
           analyticsUtil.sendBeginCheckoout(
@@ -707,7 +715,7 @@ export default defineComponent({
           console.log(e);
         }
         if (props.mode === "liff") {
-          const liffIndexId = route.params.liffIndexId;
+          const liffIndexId = routeParamOf(route.params.liffIndexId);
           router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
@@ -724,7 +732,7 @@ export default defineComponent({
             goCheckout();
           }, 500);
         } else {
-          console.error(error.message);
+          console.error(errorMessage(error));
           dialogStore.setErrorMessage({
             code: "order.checkout",
             error,
@@ -762,7 +770,7 @@ export default defineComponent({
         goCheckout();
       }
     });
-    const cartButton = ref();
+    const cartButton = ref<InstanceType<typeof CartButton> | null>(null);
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart || false;
     });

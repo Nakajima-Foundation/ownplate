@@ -13,7 +13,11 @@
         {{ $t("aboutService.paragraph1") }}
       </div>
       <div class="mt-4">
-        {{ $t("aboutService.paragraph2", { serviceName }) }}
+        {{
+          $t("aboutService.paragraph2", {
+            serviceName: $t("serviceName.omochikaeri"),
+          })
+        }}
       </div>
       <div class="mt-4">
         {{ $t("aboutService.paragraph3") }}
@@ -34,19 +38,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { serviceKey } from "@/utils/utils";
-
-export default defineComponent({
-  setup() {
-    const { t } = useI18n({ useScope: "global" });
-    const serviceName = computed(() => t(`serviceName.${serviceKey}`));
-    return {
-      serviceName,
-    };
-  },
-});
-</script>

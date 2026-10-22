@@ -1,6 +1,7 @@
 import express from "express";
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
+import { getApps, initializeApp } from "firebase-admin/app";
+import { DocumentData, Firestore, QueryDocumentSnapshot, Timestamp, getFirestore } from "firebase-admin/firestore";
 import * as fs from "fs";
 import { ownPlateConfig } from "../../common/project";
 
@@ -11,11 +12,14 @@ import * as stripeLog from "../../lib/stripeLog";
 
 import * as apis from "./apis";
 
-import * as smaregi from "./smaregiApi";
-
 import * as xmlbuilder from "xmlbuilder";
 
 import { validateFirebaseId } from "../../lib/validator";
+import { isPublicHost, llmsTxt, robotsTxt } from "../../lib/seo";
+import { readInBatches } from "../../lib/readInBatches";
+import { MAX_SITEMAP_URLS, sitemapUrls, type SitemapSource } from "../../lib/sitemap";
+import { regionalSetting } from "../../common/constant";
+import { escapeHtml, isPublicMenu, toMenu, toRestaurant, menuBodyHtml, menuItemJsonLd, orderPublicMenus, restaurantBodyHtml, restaurantJsonLd, serializeJsonLd } from "../../lib/structuredData";
 
 import moment from "moment";
 
@@ -23,13 +27,13 @@ export const app = express();
 export const router = express.Router();
 
 // for test, db is not immutable
-if (!admin.apps.length) {
-  admin.initializeApp();
+if (!getApps().some((app) => app.name === "[DEFAULT]")) {
+  initializeApp();
 }
 
-let db = admin.firestore();
+let db = getFirestore();
 
-export const updateDb = (_db: admin.firestore.Firestore) => {
+export const updateDb = (_db: Firestore) => {
   db = _db;
   apis.updateDb(db);
 };
@@ -41,7 +45,7 @@ export const hello_response = async (req: express.Request, res: express.Response
   res.json({ message: "hello" });
 };
 
-const lastmod = (restaurant: { updatedAt?: admin.firestore.Timestamp; createdAt?: admin.firestore.Timestamp }) => {
+const lastmod = (restaurant: { updatedAt?: Timestamp; createdAt?: Timestamp }) => {
   try {
     if (restaurant.updatedAt) {
       return moment(restaurant.updatedAt.toDate()).format("YYYY-MM-DD");
@@ -55,47 +59,61 @@ const lastmod = (restaurant: { updatedAt?: admin.firestore.Timestamp; createdAt?
   return "2020-07-01";
 };
 
+// sitemap を作るときに、同時に投げる Firestore の読み込みの数。
+const SITEMAP_READ_CONCURRENCY = 10;
+
+const publicMenusOf = async (restaurantId: string) => {
+  const menus = await db.collection(`restaurants/${restaurantId}/menus`).where("deletedFlag", "==", false).where("publicFlag", "==", true).get();
+  return menus.docs.filter((doc) => isPublicMenu(doc.data())).map((doc) => ({ restaurantId, id: doc.id, lastmod: lastmod(doc.data()) }));
+};
+
+// オーナーが hidePrivacy にしているお店は、ページに noindex が付く（ogpPage）。
+const noindexRestaurantIds = async (docs: QueryDocumentSnapshot[]) => {
+  const uids = [...new Set(docs.map((doc) => doc.data().uid).filter((uid): uid is string => typeof uid === "string"))];
+  const hiddenUids = new Set(await readInBatches(uids, SITEMAP_READ_CONCURRENCY, async (uid) => ((await getShopOwner(uid))?.hidePrivacy ? [uid] : [])));
+  return docs.filter((doc) => hiddenUids.has(doc.data().uid)).map((doc) => doc.id);
+};
+
 export const sitemap_response = async (req: express.Request, res: express.Response) => {
   try {
-    const hostname = "https://" + ownPlateConfig.hostName;
-
     const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
     const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs;
-    await Promise.all(
-      docs.map(async (doc) => {
-        const url = urlset.ele("url");
-        url.ele("loc", hostname + "/r/" + doc.id);
-        url.ele("lastmod", lastmod(doc.data()));
-      }),
-    );
+    const noindex = await noindexRestaurantIds(docs);
+    const withoutMenus: SitemapSource = {
+      origin: "https://" + ownPlateConfig.hostName,
+      prefectures: regionalSetting.AddressStates,
+      listedStates: docs
+        .filter((doc) => doc.data().onTheList === true)
+        .map((doc) => doc.data().state)
+        .filter((state): state is string => typeof state === "string"),
+      restaurants: docs.map((doc) => ({ id: doc.id, lastmod: lastmod(doc.data()) })),
+      menus: [],
+      noindexRestaurantIds: noindex,
+    };
+    // メニューは、上限までの残りの枠が埋まったら、それ以上読まない。
+    const menuSlots = MAX_SITEMAP_URLS - sitemapUrls(withoutMenus).length;
+    const indexedIds = docs.map((doc) => doc.id).filter((id) => !noindex.includes(id));
+    const menus = menuSlots > 0 ? await readInBatches(indexedIds, SITEMAP_READ_CONCURRENCY, publicMenusOf, (sofar) => sofar.length >= menuSlots) : [];
+    const urls = sitemapUrls({ ...withoutMenus, menus });
+    urls.forEach((sitemapUrl) => {
+      const url = urlset.ele("url");
+      url.ele("loc", sitemapUrl.loc);
+      if (sitemapUrl.lastmod) {
+        url.ele("lastmod", sitemapUrl.lastmod);
+      }
+    });
 
     const xml = urlset.dec("1.0", "UTF-8").end({ pretty: true });
 
     res.setHeader("Content-Type", "text/xml");
+    res.set("Cache-Control", "public, max-age=3600, s-maxage=3600");
     return res.send(xml);
   } catch (e) {
     console.error(e);
     Sentry.captureException(e);
     return res.status(500).end();
   }
-};
-
-const escapeHtml = (str: string): string => {
-  if (typeof str !== "string") {
-    return "";
-  }
-  const mapping: Record<string, string> = {
-    "&": "&amp;",
-    "'": "&#x27;",
-    "`": "&#x60;",
-    "\"": "&quot;",
-    "<": "&lt;",
-    ">": "&gt;",
-  };
-  return str.replace(/[&'`"<>]/g, function (match) {
-    return mapping[match];
-  });
 };
 
 const getMenuData = async (restaurantName: string, menuId: string) => {
@@ -110,6 +128,7 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
         image: (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto,
         description: menu_data?.itemDescription,
         name: menu_data?.itemName,
+        data: menu_data,
         exists: true,
       };
     }
@@ -118,8 +137,69 @@ const getMenuData = async (restaurantName: string, menuId: string) => {
     exists: false,
   };
 };
-const ogpPage = async (req: express.Request, res: express.Response): Promise<void> => {
+// Express 5 の params は wildcard ルート用に string[] も取りうる。ここは名前付き
+// パラメータだけのルートなので、実際に受け取る形を型で明示する。
+type OgpParams = { restaurantName: string; menuId: string };
+
+// 構造化データに載せるメニューの上限。メニューの多い店でも、ページとデータの読み込みを抑える。
+const MAX_STRUCTURED_MENUS = 100;
+
+const defaultBody = (title: string, introduction: unknown) =>
+  ["<h1 style=\"font-size: 50px;\">", escapeHtml(title), "</h1>", "<span style=\"font-size: 30px;\">", escapeHtml(introduction), "</span>"].join("\n");
+
+const loadPublicMenus = async (restaurantName: string, menuLists: unknown) => {
+  const menus = await db.collection(`restaurants/${restaurantName}/menus`).where("deletedFlag", "==", false).where("publicFlag", "==", true).get();
+  const order = Array.isArray(menuLists) ? menuLists.filter((id): id is string => typeof id === "string") : [];
+  return orderPublicMenus(
+    menus.docs.map((doc) => ({ id: doc.id, data: doc.data() })),
+    order,
+    MAX_STRUCTURED_MENUS,
+  );
+};
+
+// お店・メニューのページの JSON-LD と、JS を実行しないクローラー向けの本文。
+const structuredPage = async (params: {
+  restaurantName: string;
+  restaurant: DocumentData;
+  menuData: Awaited<ReturnType<typeof getMenuData>>;
+  title: string;
+  url: string;
+  image?: string;
+}) => {
+  const { restaurantName, menuData, title, url, image } = params;
+  const restaurant = toRestaurant(params.restaurant);
+  const restaurantUrl = `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
+  if (menuData.exists) {
+    if (!menuData.data) {
+      return undefined;
+    }
+    const menu = toMenu(menuData.data);
+    return {
+      jsonLd: serializeJsonLd(menuItemJsonLd({ restaurant, menu, url, restaurantUrl, image })),
+      body: menuBodyHtml({ title, restaurant, menu }),
+    };
+  }
+  const menus = (await loadPublicMenus(restaurantName, params.restaurant.menuLists)).map(toMenu);
+  return {
+    jsonLd: serializeJsonLd(restaurantJsonLd({ restaurant, menus, url, image })),
+    body: restaurantBodyHtml({ title, restaurant, menus }),
+  };
+};
+
+// 構造化データが作れなくても、OGP のページはこれまでどおり返す。
+const structuredPageOrSkip = async (params: Parameters<typeof structuredPage>[0]) => {
+  try {
+    return await structuredPage(params);
+  } catch (e) {
+    console.error(e);
+    Sentry.captureException(e);
+    return undefined;
+  }
+};
+
+const ogpPage = async (req: express.Request<OgpParams>, res: express.Response): Promise<void> => {
   const { restaurantName, menuId } = req.params;
+  const isOrderPage = req.path.includes("/order/");
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
@@ -152,6 +232,11 @@ const ogpPage = async (req: express.Request, res: express.Response): Promise<voi
     }
 
     const menuData = await getMenuData(restaurantName, menuId);
+    // 無いメニューと、お客様の画面に出ないメニューは 404。名前や画像も OGP に出さない。
+    if (menuId && (!menuData.exists || !menuData.data || !isPublicMenu(menuData.data))) {
+      res.status(404).send(template_data);
+      return;
+    }
 
     const ownerData = await getShopOwner(restaurant_data.uid);
     if (!ownerData) {
@@ -187,6 +272,7 @@ const ogpPage = async (req: express.Request, res: express.Response): Promise<voi
       `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
       "<meta property=\"og:type\" content=\"website\" />",
       `<meta property="og:url" content="${url}" />`,
+      `<link rel="canonical" href="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
       "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
@@ -202,21 +288,18 @@ const ogpPage = async (req: express.Request, res: express.Response): Promise<voi
 
     const regexBody = /<div id="app">/;
 
-    const bodyString = [
-      "<div id=\"app\">",
-      "<h1 style=\"font-size: 50px;\">",
-      escapeHtml(title),
-      "</h1>",
-      "<span style=\"font-size: 30px;\">",
-      escapeHtml(restaurant_data.introduction),
-      "</span>",
-    ].join("\n");
+    const seo = ownerData.hidePrivacy || isOrderPage ? undefined : await structuredPageOrSkip({ restaurantName, restaurant: restaurant_data, menuData, title, url, image });
+    if (seo) {
+      metas.push(`<script type="application/ld+json">${seo.jsonLd}</script>`);
+    }
+    const bodyString = ["<div id=\"app\">", seo ? seo.body : defaultBody(title, restaurant_data.introduction)].join("\n");
 
+    // 置き換える文字列は店舗の入力を含むので、$& などを置換の記法として読ませないよう関数で渡す。
     res.send(
       template_data
         .replace(/<meta[^>]*>/g, "")
-        .replace(regexTitle, metas.join("\n"))
-        .replace(regexBody, bodyString),
+        .replace(regexTitle, () => metas.join("\n"))
+        .replace(regexBody, () => bodyString),
     );
   } catch (e) {
     console.log(e);
@@ -225,7 +308,9 @@ const ogpPage = async (req: express.Request, res: express.Response): Promise<voi
   }
 };
 
-const ownerPage = async (req: express.Request, res: express.Response): Promise<void> => {
+type OwnerParams = { ownerId: string };
+
+const ownerPage = async (req: express.Request<OwnerParams>, res: express.Response): Promise<void> => {
   const { ownerId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
@@ -263,6 +348,7 @@ const ownerPage = async (req: express.Request, res: express.Response): Promise<v
       `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
       "<meta property=\"og:type\" content=\"website\" />",
       `<meta property="og:url" content="${url}" />`,
+      `<link rel="canonical" href="${url}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
       "<meta name=\"twitter:card\" content=\"summary_large_image\" />",
@@ -383,8 +469,6 @@ app.use(alogger);
 app.use("/1.0", router); // for stripe
 app.use("/api/1.0/", apis.apiRouter);
 
-app.use("/smaregi/1.0", smaregi.smaregiRouter);
-
 app.get("/r/:restaurantName", ogpPage);
 app.get("/r/:restaurantName/menus/:menuId", ogpPage);
 app.get("/r/:restaurantName/order/:orderId", ogpPage);
@@ -392,3 +476,19 @@ app.get("/r/:restaurantName/order/:orderId", ogpPage);
 app.get("/o/:ownerId", ownerPage);
 
 app.get("/sitemap.xml", sitemap_response);
+
+const TEXT_CACHE_CONTROL = "public, max-age=3600, s-maxage=3600";
+
+app.get("/robots.txt", (req: express.Request, res: express.Response) => {
+  res.set("Cache-Control", TEXT_CACHE_CONTROL);
+  res.type("text/plain").send(robotsTxt(ownPlateConfig.hostName));
+});
+
+app.get("/llms.txt", (req: express.Request, res: express.Response) => {
+  if (!isPublicHost(ownPlateConfig.hostName)) {
+    res.status(404).end();
+    return;
+  }
+  res.set("Cache-Control", TEXT_CACHE_CONTROL);
+  res.type("text/plain").send(llmsTxt(ownPlateConfig));
+});

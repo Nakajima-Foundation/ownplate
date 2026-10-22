@@ -1,12 +1,19 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Node.js CI
+# main を staging へデプロイする。検査はしない（lint / 型検査 / 試験は
+# pull_request.yaml 側。あちらも main への push で回るので、名前を分けてある）。
+name: Deploy (staging)
 
 on:
   push:
     branches:
       - main
+
+# 同じ Firebase プロジェクトへ `firebase deploy` を同時に走らせると、関数の更新が
+# 衝突して落ちる（続けてマージした 3 本が重なり、1 本が imageProcessing2 の更新に
+# 失敗した）。main の deploy は 1 本ずつにする。
+# 走行中のものは止めない。途中で切ると、どこまで反映されたか分からなくなるため。
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -17,7 +24,9 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        node-version: [24.x]
+        # Pin Node: 24.17.0 has a keep-alive regression (CVE-2026-48931) that breaks
+        # the WIF STS token exchange in `firebase deploy`. Fixed in 24.18.0.
+        node-version: [24.18.0]
 
     steps:
       - uses: actions/checkout@v6
@@ -43,7 +52,7 @@ jobs:
           SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linux yarn install
       - name: 'Authenticate to Google Cloud'
         id: auth
-        uses: 'google-github-actions/auth@v2'
+        uses: 'google-github-actions/auth@v3'
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}

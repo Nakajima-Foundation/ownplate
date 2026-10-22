@@ -17,13 +17,14 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { OrderInfoData } from "@/models/orderInfo";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
 export default defineComponent({
   props: {
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
   },

@@ -1,0 +1,208 @@
+import { isNull } from "./commonUtils";
+import { addMinutes, dateKeyOf, weekdayOf } from "./shopCalendar";
+import type { RestaurantInfoData } from "../models/RestaurantInfo";
+
+// 受け取れる日と時刻の決まり。画面（usePickupTime）が選択肢を作るのに使う。
+// Vue・store・i18n に頼らないので、時刻の表示文字列はここでは作らない。
+
+export type PickupShop = Pick<
+  RestaurantInfoData,
+  | "businessDay"
+  | "openTimes"
+  | "temporaryClosure"
+  | "closedOnHolidays"
+  | "suspendUntil"
+  | "pickUpDaysInAdvance"
+  | "lastOrderTime"
+>;
+
+export type PickupCookTimes = Pick<
+  RestaurantInfoData,
+  "pickUpMinimumCookTime" | "deliveryMinimumCookTime"
+>;
+
+export type PickupExcept = {
+  exceptDay?: { [key: string]: boolean };
+  exceptHours?: { start: number; end: number }[];
+};
+
+export type PickupSlotDay = { offset: number; date: Date; times: number[] };
+
+export type PickupDaysInput = {
+  shop: PickupShop;
+  except: PickupExcept | undefined;
+  lunchOrDinner?: string;
+  skipToday: boolean;
+  minimumTime: number;
+  now: Date;
+  // 今日から offset 日後の 0 時。画面は端末の時計で作る。
+  midNightAfter: (offset: number) => Date;
+  // その日が祝日か。祝日のデータは呼ぶ側が渡す（画面とサーバが同じものを渡す）。
+  isHoliday: (date: Date) => boolean;
+};
+
+// 商品の除外日（exceptDay）で祝日を表すキー。曜日のキーは "1"（月）〜"7"（日）。
+export const HOLIDAY_KEY = "holiday";
+
+export const PICKUP_TIME_INTERVAL_MIN = 10;
+const DEFAULT_DAYS_IN_ADVANCE = 3;
+const DEFAULT_MINIMUM_COOK_TIME_MIN = 25;
+const WEEKDAYS_FROM_SUNDAY = [7, 1, 2, 3, 4, 5, 6];
+const MS_PER_MINUTE = 60000;
+
+export const temporaryClosureDatesOf = (
+  shop: Pick<PickupShop, "temporaryClosure">,
+) =>
+  (shop.temporaryClosure || []).map((day) => {
+    return dateKeyOf(day.toDate());
+  });
+
+// 日曜始まりの曜日ごとに、店が開いていて除外もされていないか。
+export const businessDaysOf = (
+  shop: Pick<PickupShop, "businessDay">,
+  except: PickupExcept | undefined,
+) =>
+  WEEKDAYS_FROM_SUNDAY.map((day) => {
+    return shop.businessDay[day] && !((except || {}).exceptDay || {})[day];
+  });
+
+const withinExceptTime = (except: PickupExcept | undefined, time: number) =>
+  ((except || {}).exceptHours || []).some((hour) => {
+    return hour.start <= time && time <= hour.end;
+  });
+
+// 日曜始まりの曜日ごとの、受け取れる時刻（0 時からの分）。調理時間は考えない。
+export const openSlotsOf = (
+  shop: Pick<PickupShop, "openTimes">,
+  except: PickupExcept | undefined,
+  lunchOrDinner?: string,
+) =>
+  WEEKDAYS_FROM_SUNDAY.map((day) => {
+    const openTime = (() => {
+      if (lunchOrDinner === "lunch") {
+        if (shop.openTimes[day][0]) {
+          return [shop.openTimes[day][0]];
+        }
+        return [];
+      }
+      if (lunchOrDinner === "dinner") {
+        if (shop.openTimes[day][1]) {
+          return [shop.openTimes[day][1]];
+        }
+        return [];
+      }
+      return shop.openTimes[day];
+    })();
+
+    return openTime.reduce((ret: number[], value) => {
+      for (
+        let time = value.start;
+        time <= value.end;
+        time += PICKUP_TIME_INTERVAL_MIN
+      ) {
+        if (!withinExceptTime(except, time)) {
+          ret.push(time);
+        }
+      }
+      return ret;
+    }, []);
+  });
+
+export const daysInAdvanceOf = (
+  shop: Pick<PickupShop, "pickUpDaysInAdvance">,
+) => {
+  const tmp = isNull(shop.pickUpDaysInAdvance)
+    ? DEFAULT_DAYS_IN_ADVANCE
+    : shop.pickUpDaysInAdvance;
+  return tmp + 1;
+};
+
+// 注文から受け取れるまでにかかる分。店が 0 や未設定なら既定の分。
+export const minimumCookTimeOf = (shop: PickupCookTimes, isDelivery: boolean) =>
+  (isDelivery ? shop.deliveryMinimumCookTime : shop.pickUpMinimumCookTime) ||
+  DEFAULT_MINIMUM_COOK_TIME_MIN;
+
+// 調理時間と注文停止のぶん、これより前の時刻は受け取れない。
+const earliestPickupOf = (shop: PickupShop, now: Date, minimumTime: number) => {
+  const soonest = addMinutes(now, minimumTime);
+  if (shop.suspendUntil) {
+    const specifiedDate = shop.suspendUntil.toDate();
+    if (specifiedDate > soonest) {
+      return specifiedDate;
+    }
+  }
+  return soonest;
+};
+
+// 受け取れる日（今日から offset 日後）と、その日の時刻。
+// 曜日の一覧・臨時休業・時刻の一覧は、要るところまで進んでから作る（壊れた設定で例外が
+// 出るのは、画面がそこまで進んだときだけ）。
+export const availablePickupDays = (
+  input: PickupDaysInput,
+): PickupSlotDay[] => {
+  const { shop, except, now, minimumTime, midNightAfter } = input;
+  if (!shop.businessDay) {
+    return [];
+  }
+  const today = weekdayOf(now);
+  const earliest = earliestPickupOf(shop, now, minimumTime);
+  const offsets = Array.from(Array(daysInAdvanceOf(shop)).keys());
+  const businessDays = offsets.length > 0 ? businessDaysOf(shop, except) : [];
+  const businessOffsets = offsets.filter((offset) => {
+    if (input.skipToday && offset === 0) {
+      console.log("skip", input.skipToday);
+      return false;
+    }
+    return businessDays[(today + offset) % 7];
+  });
+  if (businessOffsets.length === 0) {
+    return [];
+  }
+  const closedDates = temporaryClosureDatesOf(shop);
+  const openOffsets = businessOffsets.filter((offset) => {
+    const date = dateKeyOf(midNightAfter(offset));
+    if (closedDates.includes(date)) {
+      return false;
+    }
+    // 店が祝日定休か、注文の商品のどれかが祝日を除外していれば、祝日は受け取れない。
+    const closedOnHolidays =
+      shop.closedOnHolidays || (except?.exceptDay || {})[HOLIDAY_KEY];
+    return !(closedOnHolidays && input.isHoliday(midNightAfter(offset)));
+  });
+  if (openOffsets.length === 0) {
+    return [];
+  }
+  const openSlots = openSlotsOf(shop, except, input.lunchOrDinner);
+  return openOffsets
+    .map((offset) => {
+      const date = midNightAfter(offset);
+      const delta = earliest.getTime() - date.getTime();
+      const times = openSlots[(today + offset) % 7].filter((time) => {
+        if (delta > 0) {
+          return time >= Math.ceil(delta / MS_PER_MINUTE);
+        }
+        return true;
+      });
+      return { offset, date, times };
+    })
+    .filter((day) => {
+      return day.times.length > 0;
+    });
+};
+
+// ラストオーダーを過ぎる時刻を外す。
+export const withinLastOrder = (
+  days: PickupSlotDay[],
+  shop: Pick<PickupShop, "lastOrderTime">,
+  minimumTime: number,
+): PickupSlotDay[] =>
+  days.map((day) => {
+    const { offset, date, times } = day;
+    const newTimes = times.filter((time) => {
+      if (shop.lastOrderTime) {
+        return shop.lastOrderTime + minimumTime >= time;
+      }
+      return true;
+    });
+    return { offset, date, times: newTimes };
+  });

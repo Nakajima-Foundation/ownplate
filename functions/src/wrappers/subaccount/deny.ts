@@ -1,10 +1,10 @@
-import * as admin from "firebase-admin";
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { getFirestore } from "firebase-admin/firestore";
+import { onCall } from "firebase-functions/v2/https";
 
 import { deny } from "../../functions/subAccount";
-import { enforceAppCheck } from "../firebase";
+import { enforceAppCheck, requireAppCheck } from "../firebase";
 
-const db = admin.firestore();
+const db = getFirestore();
 
 export default onCall(
   {
@@ -14,8 +14,7 @@ export default onCall(
     maxInstances: 5,
   },
   async (context) => {
-    if (context.app == undefined) {
-      throw new HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
-    }
+    requireAppCheck(context);
     return await deny(db, context.data, context);
-  });
+  },
+);

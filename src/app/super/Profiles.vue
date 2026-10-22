@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { AdminPrivateProfileData } from "@/models/ShopOwner";
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -36,7 +37,6 @@ import {
   query,
   collectionGroup,
   limit,
-  DocumentData,
 } from "firebase/firestore";
 
 import { useSuper, defaultTitle } from "@/utils/utils";
@@ -50,7 +50,9 @@ export default defineComponent({
     useSuper();
 
     const prefix = ref("");
-    const profiles = ref<DocumentData[]>([]);
+    const profiles = ref<
+      (Partial<AdminPrivateProfileData> & { uid?: string })[]
+    >([]);
 
     useHead(() => ({
       title: [defaultTitle, "Super All Profiles"].join(" / "),
