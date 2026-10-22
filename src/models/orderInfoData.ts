@@ -2,6 +2,10 @@ import { Timestamp } from "./firebaseUtils";
 import { MenuData } from "./menu";
 import { CustomerInfo } from "./customer";
 import { OrderStatus } from "./common";
+import type { RestaurantInfoData } from "./RestaurantInfo";
+
+// 注文の行番号から、その行のオプションを引く。
+export type OptionsByLine = { [lineIndex: number]: string | string[] };
 
 export interface OrderInfoData {
   id: string;
@@ -38,13 +42,25 @@ export interface OrderInfoData {
     };
   };
   shippingCost: number;
+
+  // 券を使った注文に、確定時に書かれる（functions の orderPlace）。
+  promotionId?: string;
+  promotionName?: string;
+
+  // LINE の中から注文したか。注文を作るときに画面が入れる。
+  isLiff?: boolean;
+
+  // 一覧の画面が、注文ごとに店舗を引いて後から付ける。Firestore には無い。
+  restaurant?: RestaurantInfoData;
   isDelivery: boolean;
   isEC: boolean;
   tip: number;
-  menuItems: { [key: string]: MenuData };
+  menuItems?: { [key: string]: MenuData };
   phoneNumber: string;
-  order: { [key: string]: number[] };
-  options: { [key: string]: string[] };
+  // 行ごとの数。古い注文は数値ひとつ。
+  order: { [key: string]: number[] | number };
+  // Firestore は配列の入れ子を持てないので、行番号をキーにしたオブジェクトで入る。古い注文は配列ひとつ。
+  options: { [key: string]: OptionsByLine };
   payment?: {
     stripe?: string;
   };
@@ -56,19 +72,20 @@ export interface OrderInfoData {
   orderAcceptedAt: Timestamp;
   lastUpdatedAt: Timestamp;
   orderCustomerCanceledAt: Timestamp;
+  orderRestaurantCanceledAt?: Timestamp;
+  orderCookingCompletedAt?: Timestamp;
+  transactionHideAt?: Timestamp;
   uidPaymentCanceledBy: boolean;
   discountPrice: number;
 
   customerInfo: CustomerInfo;
   memo: string;
   lunchOrDinner?: string;
-
-  cancelReason?: string; // mo
 }
 
 export interface OrderItemData {
   item: MenuData;
-  count: number | number[];
+  count: number;
   id: string;
   options: string | string[];
   orderIndex: string[];

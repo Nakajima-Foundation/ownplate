@@ -1,4 +1,5 @@
-import * as admin from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import { DocumentData, DocumentReference, FieldValue, Firestore } from "firebase-admin/firestore";
 
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import * as utils from "../lib/utils";
@@ -9,7 +10,7 @@ import { validateFirebaseId } from "../lib/validator";
 
 import { Context } from "../models/TestType";
 
-export const invite = async (db: admin.firestore.Firestore, data: SubAccountInvitateData, context: CallableRequest | Context) => {
+export const invite = async (db: Firestore, data: SubAccountInvitateData, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { email, name } = data;
@@ -20,7 +21,7 @@ export const invite = async (db: admin.firestore.Firestore, data: SubAccountInvi
       throw new HttpsError("invalid-argument", "invalid email.");
     }
 
-    const user = await admin.auth().getUserByEmail(email);
+    const user = await getAuth().getUserByEmail(email);
     if (!user) {
       throw new HttpsError("invalid-argument", "User does not exist.");
     }
@@ -42,7 +43,7 @@ export const invite = async (db: admin.firestore.Firestore, data: SubAccountInvi
     const childData = {
       name,
       email,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     };
     await childRef.set(childData);
     // send invite
@@ -54,7 +55,7 @@ export const invite = async (db: admin.firestore.Firestore, data: SubAccountInvi
       fromDisplay: true,
       toDisplay: true,
       email,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
     };
     await db.doc(`/admins/${childUid}/messages/childInvitation${adminUid}`).set(invitationData);
     return {
@@ -67,10 +68,10 @@ export const invite = async (db: admin.firestore.Firestore, data: SubAccountInvi
 };
 
 export const invitationValidateProcess = async (
-  db: admin.firestore.Firestore,
+  db: Firestore,
   data: SubAccountInvitationAcceptDenyData,
   context: CallableRequest | Context,
-  callback: (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
+  callback: (adminUid: string, messageData: DocumentData, messageRef: DocumentReference) => Promise<void>,
 ) => {
   // check admin and is not child yet.
   const { messageId } = data;
@@ -90,12 +91,12 @@ export const invitationValidateProcess = async (
   return {};
 };
 const childInvitationProcess = async (
-  db: admin.firestore.Firestore,
+  db: Firestore,
   data: SubAccountInvitationAcceptDenyData,
   context: CallableRequest | Context,
-  callback: (messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => Promise<void>,
+  callback: (messageData: DocumentData, messageRef: DocumentReference) => Promise<void>,
 ) => {
-  await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: admin.firestore.DocumentData, messageRef: admin.firestore.DocumentReference) => {
+  await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: DocumentData, messageRef: DocumentReference) => {
     if (messageData.type === "childInvitation") {
       // validation
       if (messageData.toDisplay === false) {
@@ -111,7 +112,7 @@ const childInvitationProcess = async (
     }
   });
 };
-export const accept = async (db: admin.firestore.Firestore, data: SubAccountInvitationAcceptDenyData, context: CallableRequest | Context) => {
+export const accept = async (db: Firestore, data: SubAccountInvitationAcceptDenyData, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
@@ -121,7 +122,7 @@ export const accept = async (db: admin.firestore.Firestore, data: SubAccountInvi
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
         const customClaims = { parentUid: messageData.fromUid };
-        await admin.auth().setCustomUserClaims(messageData.toUid, customClaims);
+        await getAuth().setCustomUserClaims(messageData.toUid, customClaims);
 
         const childRef = db.doc(`admins/${messageData.fromUid}/children/${messageData.toUid}`);
         await tr.get(childRef);
@@ -146,7 +147,7 @@ export const accept = async (db: admin.firestore.Firestore, data: SubAccountInvi
   }
   return {};
 };
-export const deny = async (db: admin.firestore.Firestore, data: SubAccountInvitationAcceptDenyData, context: CallableRequest | Context) => {
+export const deny = async (db: Firestore, data: SubAccountInvitationAcceptDenyData, context: CallableRequest | Context) => {
   const { messageId } = data;
   if (!validateFirebaseId(messageId)) {
     console.log(messageId);
@@ -176,7 +177,7 @@ export const deny = async (db: admin.firestore.Firestore, data: SubAccountInvita
   return {};
 };
 
-export const deleteChild = async (db: admin.firestore.Firestore, data: SubAccountDeleteChildData, context: CallableRequest | Context) => {
+export const deleteChild = async (db: Firestore, data: SubAccountDeleteChildData, context: CallableRequest | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;
@@ -197,7 +198,7 @@ export const deleteChild = async (db: admin.firestore.Firestore, data: SubAccoun
       }
       // ok!!
       const customClaims = {};
-      await admin.auth().setCustomUserClaims(childUid, customClaims);
+      await getAuth().setCustomUserClaims(childUid, customClaims);
 
       await tr.delete(childRef);
       await tr.delete(messageRef);

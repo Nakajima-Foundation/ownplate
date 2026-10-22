@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { getStripeAccount } from "./intent";
@@ -9,7 +9,7 @@ import * as utils from "../../lib/utils";
 import { validateStripeReceipt } from "../../lib/validator";
 import { StripeReceiptData } from "../../models/functionTypes";
 
-export const receipt = async (db: admin.firestore.Firestore, data: StripeReceiptData, context: CallableRequest) => {
+export const receipt = async (db: Firestore, data: StripeReceiptData, context: CallableRequest) => {
   const stripe = utils.get_stripe_v2();
 
   const customerUid = utils.validate_customer_auth(context);

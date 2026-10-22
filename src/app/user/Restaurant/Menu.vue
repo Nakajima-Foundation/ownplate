@@ -116,6 +116,9 @@
             </span>
             {{ $t("sitemenu.limitedSale") }}
           </div>
+          <div v-if="menuPickupData.exceptHoliday">
+            &#8251; {{ $t("sitemenu.unavailableOnHolidays") }}
+          </div>
           <div v-if="menuPickupData.hasExceptHour">
             &#8251; {{ $t("sitemenu.unavailableTime") }}:
             <span class="font-bold"
@@ -178,7 +181,6 @@
           <div class="mt-2 text-center">
             <share-popup
               :shopInfo="shopInfo"
-              :mode="mode"
               :suffix="urlSuffix"
               :isMenu="true"
             ></share-popup>
@@ -201,7 +203,9 @@
                 >
                   <div v-if="option.length === 1" class="field">
                     <Checkbox
-                      :modelValue="selectedOptions[quantityKey][index]"
+                      :modelValue="
+                        isOptionChecked(selectedOptions?.[quantityKey]?.[index])
+                      "
                       @update:modelValue="
                         updateSelectedOptions(quantityKey, index, $event)
                       "
@@ -217,12 +221,12 @@
                     >
                       <input
                         type="radio"
-                        :modelValue="selectedOptions[quantityKey][index]"
+                        :modelValue="selectedOptions?.[quantityKey]?.[index]"
                         @change="
                           updateSelectedOptions(
                             quantityKey,
                             index,
-                            $event.target.value,
+                            inputValueOf($event),
                           )
                         "
                         :name="`${item.id}_${quantityKey}_${index}`"
@@ -411,6 +415,7 @@
 </template>
 
 <script lang="ts">
+import { isSoldOutOn } from "@/utils/soldOut";
 import {
   defineComponent,
   ref,
@@ -427,7 +432,7 @@ import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
 import LunchDinnerIcon from "@/app/user/Restaurant/LunchDinnerIcon.vue";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
-import { daysOfWeek } from "@/config/constant";
+import { daysOfWeek, stripe_regions_jp } from "@/config/constant";
 
 import {
   useBasePath,
@@ -438,10 +443,10 @@ import {
   imageErrorHandler,
   num2time,
   displayOption,
-  stripeRegion,
 } from "@/utils/utils";
-
-import moment from "moment-timezone";
+import { inputValueOf } from "@/utils/domEvent";
+import { isOptionChecked } from "@/utils/commonUtils";
+import type { OptionValue } from "@/models/orderTypes";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -451,9 +456,9 @@ import moment from "moment-timezone";
 
 import { useGeneralStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useI18n } from "vue-i18n";
 
-import { AnalyticsMenuData } from "@/lib/firebase/analytics";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
@@ -481,8 +486,9 @@ export default defineComponent({
       type: Array<number>,
       required: true,
     },
+    // 品目ごと × 選択肢。`CartOptionType` の値そのもの。
     selectedOptions: {
-      type: Array,
+      type: Array as PropType<OptionValue[][]>,
       required: false,
     },
     initialOpenMenuFlag: {
@@ -493,12 +499,9 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    // 品目ごとの金額。`getPrices` が返す値そのもの。
     prices: {
-      type: Array,
-      required: true,
-    },
-    mode: {
-      type: String,
+      type: Array<number>,
       required: true,
     },
   },
@@ -513,7 +516,7 @@ export default defineComponent({
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
     const urlSuffix = "/menus/" + props.item.id;
-    const restaurantId = route.params.restaurantId as string;
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const basePath = useBasePath();
 
@@ -521,15 +524,14 @@ export default defineComponent({
       return !!props.item.soldOut;
     });
     const isSoldOutToday = computed(() => {
-      const today = moment(generalStore.date).format("YYYY-MM-DD");
-      return props.item.soldOutToday === today;
+      return isSoldOutOn(props.item.soldOutToday, generalStore.date);
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);
     });
     const allergens = computed(() => {
       if (props.item.allergens) {
-        return stripeRegion.allergens.filter((allergen: string) => {
+        return stripe_regions_jp.allergens.filter((allergen: string) => {
           return props.item.allergens[allergen];
         });
       }
@@ -586,11 +588,7 @@ export default defineComponent({
 
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
-        analyticsUtil.sendViewItem(
-          props.item as AnalyticsMenuData,
-          props.shopInfo,
-          restaurantId,
-        );
+        analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
       }
     });
     // TODO: improve to set default value.
@@ -606,18 +604,11 @@ export default defineComponent({
       scrollToElementById(props.item.id);
       imagePopup.value = true;
 
-      // TODO confirm 2023-01
-      const current = router.currentRoute.path;
-
-      const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
-      if (current !== to) {
+      const to = basePath.value + "/r/" + restaurantId + urlSuffix;
+      if (route.path !== to) {
         router.replace(to);
       }
-      analyticsUtil.sendViewItem(
-        props.item as AnalyticsMenuData,
-        props.shopInfo,
-        restaurantId,
-      );
+      analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
     };
     onMounted(() => {
       if (props.isOpen) {
@@ -634,7 +625,7 @@ export default defineComponent({
     const setQuantities = (key: number, newValue: number) => {
       const newQuantities = [...props.quantities];
       newQuantities[key] = newValue;
-      const newSelectedOptions = [...props.selectedOptions];
+      const newSelectedOptions = [...(props.selectedOptions ?? [])];
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
         newSelectedOptions.splice(key, 1);
@@ -650,18 +641,14 @@ export default defineComponent({
       index: number,
       e: boolean | string,
     ) => {
-      const newSelectedOptions = [...props.selectedOptions];
+      const newSelectedOptions = [...(props.selectedOptions ?? [])];
       newSelectedOptions[quantityKey][index] = e;
       ctx.emit("updateSelectedOptions", newSelectedOptions);
     };
     const toggleMenuFlag = () => {
       openMenuFlag.value = !openMenuFlag.value;
       if (openMenuFlag.value) {
-        analyticsUtil.sendSelectItem(
-          props.item as AnalyticsMenuData,
-          props.shopInfo,
-          restaurantId,
-        );
+        analyticsUtil.sendSelectItem(props.item, props.shopInfo, restaurantId);
       }
     };
     const pullQuantities = (key: number) => {
@@ -670,7 +657,7 @@ export default defineComponent({
       }
       setQuantities(key, props.quantities[key] - 1);
       analyticsUtil.sendRemoveFromCart(
-        props.item as AnalyticsMenuData,
+        props.item,
         props.shopInfo,
         restaurantId,
         1,
@@ -681,15 +668,10 @@ export default defineComponent({
       if (!openMenuFlag.value) {
         toggleMenuFlag();
       }
-      analyticsUtil.sendAddToCart(
-        props.item as AnalyticsMenuData,
-        props.shopInfo,
-        restaurantId,
-        1,
-      );
+      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
     };
     const pushItem = () => {
-      const newSelectedOptions = [...props.selectedOptions];
+      const newSelectedOptions = [...(props.selectedOptions ?? [])];
       newSelectedOptions.push([...defaultOpions.value]);
 
       const newQuantities = [...props.quantities];
@@ -702,6 +684,8 @@ export default defineComponent({
     };
 
     return {
+      isOptionChecked,
+      inputValueOf,
       openMenuFlag,
       imagePopup,
       urlSuffix,

@@ -98,6 +98,12 @@
                     : 'border-green-500'
                 "
               />
+              <p
+                v-if="errors['itemName'].length > 0"
+                class="mt-1 text-sm font-bold text-red-700"
+              >
+                {{ $t(errors["itemName"][0]) }}
+              </p>
             </div>
           </div>
 
@@ -143,6 +149,12 @@
                     {{ $t("currency." + currencyKey) }}
                   </span>
                 </div>
+                <p
+                  v-if="errors['price'].length > 0"
+                  class="mt-1 text-sm font-bold text-red-700"
+                >
+                  {{ $t(errors["price"][0]) }}
+                </p>
               </div>
             </div>
 
@@ -162,7 +174,7 @@
                     :value="taxItem"
                     :key="taxItem"
                   >
-                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
+                    {{ shopInfo && (shopInfo[`${taxItem}Tax`] || 0) + "%" }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
                 </select>
@@ -291,7 +303,14 @@
                   <Checkbox v-model="menuInfo.exceptDay[index]">
                     <span class="text-base font-bold">
                       {{ $t("week.short." + day) }}
-                      <span v-if="index !== '7'">/</span>
+                      <span>/</span>
+                    </span>
+                  </Checkbox>
+                </span>
+                <span>
+                  <Checkbox v-model="menuInfo.exceptDay[holidayKey]">
+                    <span class="text-base font-bold">
+                      {{ $t("editMenu.holiday") }}
                     </span>
                   </Checkbox>
                 </span>
@@ -355,7 +374,7 @@
           </div>
 
           <!-- Additional Photos -->
-          <div v-if="false" class="mt-4">
+          <div v-if="showAdditionalPhotos" class="mt-4">
             <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.additionalPhotos") }}
             </div>
@@ -415,27 +434,116 @@
               {{ $t("editMenu.itemOptionsNote") }}
             </div>
 
+            <!-- Option Preview Toggle -->
+            <div v-if="hasOptionContent" class="pb-2">
+              <button
+                @click="switchOptionsPreview"
+                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full bg-black/5 px-4"
+              >
+                <i class="material-icons text-op-teal mr-2 text-lg">{{
+                  showOptionsPreview ? "visibility_off" : "visibility"
+                }}</i>
+                <span class="text-op-teal text-sm font-bold">{{
+                  showOptionsPreview
+                    ? $t("editMenu.hideOptionsPreview")
+                    : $t("editMenu.showOptionsPreview")
+                }}</span>
+              </button>
+            </div>
+
+            <!-- Option Reorder Mode Toggle -->
+            <div
+              v-if="(menuInfo.itemOptionCheckbox || []).length > 1"
+              class="pb-2"
+            >
+              <button
+                @click="toggleOptionMoveMode"
+                :disabled="submitting"
+                class="inline-flex h-9 cursor-pointer items-center justify-center rounded-full px-4"
+                :class="isOptionMoveMode ? 'bg-op-teal' : 'bg-black/5'"
+              >
+                <i
+                  class="material-icons mr-2 text-lg"
+                  :class="isOptionMoveMode ? 'text-white' : 'text-op-teal'"
+                  >{{ isOptionMoveMode ? "check" : "swap_vert" }}</i
+                >
+                <span
+                  class="text-sm font-bold"
+                  :class="isOptionMoveMode ? 'text-white' : 'text-op-teal'"
+                  >{{
+                    isOptionMoveMode
+                      ? $t("editMenu.doneReorder")
+                      : $t("editMenu.reorder")
+                  }}</span
+                >
+              </button>
+            </div>
+
+            <!-- Option Settings: Reorder Mode -->
+            <draggable
+              v-if="isOptionMoveMode"
+              :modelValue="optionRows"
+              @update:modelValue="onOptionsReorder"
+              :item-key="optionRowKey"
+              :disabled="submitting"
+              handle=".option-drag-handle"
+              animation="300"
+              ghost-class="opacity-50"
+              tag="div"
+              class="space-y-2"
+            >
+              <template #item="{ element: optionRow, index }">
+                <div class="flex items-center rounded-lg bg-black/5 p-2">
+                  <i
+                    class="material-icons option-drag-handle mr-2 cursor-move text-2xl text-black/40"
+                    >drag_indicator</i
+                  >
+                  <div class="mr-2 text-sm font-bold text-black/30">
+                    {{ index + 1 }}
+                  </div>
+                  <div
+                    class="min-w-0 flex-1 truncate text-sm font-bold"
+                    :class="
+                      optionRow.text === '' ? 'text-black/30' : 'text-black/60'
+                    "
+                  >
+                    {{
+                      optionRow.text === ""
+                        ? $t("editMenu.enterItemOption")
+                        : optionRow.text
+                    }}
+                  </div>
+                </div>
+              </template>
+            </draggable>
+
             <!-- Option Settings -->
-            <div class="grid-col-1 space-y-4">
+            <div v-else class="grid-col-1 space-y-4">
               <div
                 v-for="(option, key) in menuInfo.itemOptionCheckbox"
                 :key="key"
               >
                 <div :key="key" class="mb-2 flex">
-                  <button @click="positionDown(key)" class="cursor-pointer">
+                  <button
+                    v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
+                    @click="positionDown(key)"
+                    class="cursor-pointer"
+                  >
                     <div
                       class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
-                      v-if="key !== menuInfo.itemOptionCheckbox.length - 1"
                     >
                       <i class="material-icons text-op-teal text-lg"
                         >arrow_downward</i
                       >
                     </div>
                   </button>
-                  <button @click="positionUp(key)" class="cursor-pointer">
+                  <button
+                    v-if="key !== 0"
+                    @click="positionUp(key)"
+                    class="cursor-pointer"
+                  >
                     <div
                       class="mr-2 inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
-                      v-if="key !== 0"
                     >
                       <i class="material-icons text-op-teal text-lg"
                         >arrow_upward</i
@@ -459,7 +567,10 @@
                 </div>
 
                 <!-- Option Preview -->
-                <div class="rounded-lg bg-black/5 p-4">
+                <div
+                  v-if="showOptionsPreview"
+                  class="rounded-lg bg-black/5 p-4"
+                >
                   <div class="mb-2 flex text-xs font-bold text-black/30">
                     <div class="flex-1">
                       {{ $t("editMenu.optionsPreview") }}
@@ -504,7 +615,7 @@
             </div>
 
             <!-- Add Option -->
-            <div class="mt-4">
+            <div v-if="!isOptionMoveMode" class="mt-4">
               <button class="cursor-pointer" @click="addOption">
                 <div
                   class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
@@ -705,7 +816,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, reactive, PropType } from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  reactive,
+  defineAsyncComponent,
+  PropType,
+} from "vue";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -727,36 +845,50 @@ import Checkbox from "@/components/form/checkbox.vue";
 
 import ImageUpload from "@/components/ImageUpload.vue";
 
-import { taxRates, daysOfWeek } from "@/config/constant";
-import { ownPlateConfig } from "@/config/project";
-import { halfCharactors, optionPrice } from "@/utils/strings";
+import {
+  taxRates,
+  daysOfWeek,
+  regionalSetting,
+  stripe_regions_jp,
+} from "@/config/constant";
+import { halfCharactors } from "@/utils/strings";
+import { HOLIDAY_KEY } from "@/utils/pickupDays";
+import { optionPrice } from "@/utils/commonUtils";
 import {
   doc2data,
   useAdminUids,
-  regionalSetting,
-  stripeRegion,
   countObj,
-  roundPrice,
   taxRate,
   notFoundResponse,
   smallImageErrorHandler,
   displayOption,
   defaultTitle,
 } from "@/utils/utils";
+import { roundPrice } from "@/utils/price";
+import {
+  OptionRow,
+  hasOptionsToPreview,
+  optionMovedDown,
+  optionMovedUp,
+  toOptionRows,
+  toOptionTexts,
+} from "@/utils/optionRows";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData, MenuData } from "@/models/menu";
 import { copyMenuData } from "@/models/menuUtils";
 import { checkShopOwner } from "@/utils/userPermission";
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 import { useUserStore } from "@/store/user";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { RestaurantInfoData, CategoryKey } from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "MenuItemPage",
@@ -768,6 +900,9 @@ export default defineComponent({
     HoursInput,
     ImageUpload,
     Checkbox,
+    // 並べ替えを使わない訪問でも、sortablejs は読み込まれた時点で document に passive でない
+    // touchmove を張り、この長い入力欄の巻き取りを主スレッド待ちにする。押すまで読み込まない。
+    draggable: defineAsyncComponent(() => import("vuedraggable")),
   },
   props: {
     shopInfo: {
@@ -785,7 +920,15 @@ export default defineComponent({
 
     const dummyCheckbox = ref([]);
 
-    const menuInfo = reactive<MenuData>({
+    // 追加写真はこれから作る。リテラルの false を書くと、その枝が到達不能と
+    // 見なされて型の絞り込みが戻り、同じ枝の中の束縛が読めなくなる。
+    const showAdditionalPhotos = false;
+
+    type MenuEditState = MenuData & {
+      images: NonNullable<MenuData["images"]>;
+      exceptDay: NonNullable<MenuData["exceptDay"]>;
+    };
+    const menuInfo = reactive<MenuEditState>({
       itemName: "",
       itemAliasesName: "",
       price: 0,
@@ -801,7 +944,7 @@ export default defineComponent({
       exceptHour: {},
       category1: "",
       category2: "",
-    } as MenuData);
+    } as MenuEditState);
 
     useHead(() => ({
       title:
@@ -815,16 +958,16 @@ export default defineComponent({
           : defaultTitle,
     }));
 
-    const maxPrice = 1000000.0 / stripeRegion.multiple;
-    const allergens = stripeRegion.allergens;
-    const priceStep = 1.0 / stripeRegion.multiple;
+    const maxPrice = 1000000.0 / stripe_regions_jp.multiple;
+    const allergens = stripe_regions_jp.allergens;
+    const priceStep = 1.0 / stripe_regions_jp.multiple;
 
     const notFound = ref<boolean | null>(null);
-    const menuId = route.params.menuId;
+    const menuId = routeParamOf(route.params.menuId);
     const submitting = ref(false);
 
     const files: { [key: string]: File } = {};
-    const categoryKey = ref<string | null>(null);
+    const categoryKey = ref<CategoryKey | null>(null);
     const restaurants = ref<RestaurantInfoData[]>([]);
     const copyRestaurantId = ref<string | null>(null);
 
@@ -834,8 +977,14 @@ export default defineComponent({
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }
+
+    const { toggle: showOptionsPreview, switchToggle: switchOptionsPreview } =
+      useAdminConfigToggle("menuOptionsPreview", uid.value, true);
+    const hasOptionContent = computed(() =>
+      hasOptionsToPreview(menuInfo.itemOptionCheckbox),
+    );
     const menuRestaurantId = computed(() => {
-      return route.params.restaurantId;
+      return routeParamOf(route.params.restaurantId);
     });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];
@@ -865,8 +1014,8 @@ export default defineComponent({
         restaurantsCollection.docs.length > 0
       ) {
         restaurants.value = restaurantsCollection.docs.map((r) =>
-          doc2data("r")(r),
-        ) as RestaurantInfoData[];
+          doc2data<RestaurantInfoData>("r")(r),
+        );
         copyRestaurantId.value = restaurants.value[0].id;
       }
     });
@@ -892,12 +1041,23 @@ export default defineComponent({
 
     const errors = computed(() => {
       const err: { [key: string]: string[] } = {};
-      ["itemName", "price", "tax"].forEach((name: string) => {
-        err[name] = [];
-        if (menuInfo[name as keyof MenuData] === "") {
-          err[name].push("validationError." + name + ".empty");
+      (["itemName", "price", "tax"] satisfies (keyof MenuData)[]).forEach(
+        (name) => {
+          err[name] = [];
+          if (menuInfo[name] === "") {
+            err[name].push("validationError." + name + ".empty");
+          }
+        },
+      );
+      // 値段は保存のときに Math.round(Number(...)) を通る。**そのままだと小数は
+      // 黙って丸められ、負の数はそのまま入る。** 打った値と保存される値が違うので、
+      // 丸める前に止める。守り自体は firestore.rules の側。
+      if (err["price"].length === 0) {
+        const price = Number(menuInfo.price);
+        if (!Number.isFinite(price) || price < 0 || !Number.isInteger(price)) {
+          err["price"].push("validationError.price.invalid");
         }
-      });
+      }
       err["itemDescription"] = [];
       return err;
     });
@@ -925,7 +1085,7 @@ export default defineComponent({
     const handleDismissed = () => {
       categoryKey.value = null;
     };
-    const editCategory = (key: string) => {
+    const editCategory = (key: CategoryKey) => {
       categoryKey.value = key;
     };
     const previewMenu = ref();
@@ -950,11 +1110,7 @@ export default defineComponent({
             title: shop.restaurantName,
             code: "editCommon.copyMenuAlert",
             callback: async () => {
-              const newItem = copyMenuData(
-                menuInfo,
-                ownPlateConfig.region === "JP",
-                userStore.uidAdmin,
-              );
+              const newItem = copyMenuData(menuInfo, userStore.uidAdmin);
               newItem.validatedFlag = !hasError.value;
 
               const category1 = shop.category1 || [];
@@ -996,11 +1152,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const itemData = getNewItemData(
-          menuInfo,
-          ownPlateConfig.region === "JP",
-          !hasError.value,
-        );
+        const itemData = getNewItemData(menuInfo, !hasError.value);
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
@@ -1028,19 +1180,35 @@ export default defineComponent({
       }
     };
 
+    // 並べ替えのあいだだけ、行に通し番号を振った形で持つ。モード中は入力欄を出さないので
+    // 番号と中身がずれる隙が無く、番号が保存されることもない。
+    const isOptionMoveMode = ref(false);
+    const optionRows = ref<OptionRow[]>([]);
+    const optionRowKey = (optionRow: OptionRow) => optionRow.id;
+    const toggleOptionMoveMode = () => {
+      if (!isOptionMoveMode.value) {
+        optionRows.value = toOptionRows(menuInfo.itemOptionCheckbox);
+      }
+      isOptionMoveMode.value = !isOptionMoveMode.value;
+    };
+    // 並べ替えモードを抜けるのを待たずに書き戻す。モードに入ったまま保存を押しても
+    // 並べ替えた順序が保存されるようにするため。
+    const onOptionsReorder = (newOptionRows: OptionRow[]) => {
+      optionRows.value = newOptionRows;
+      menuInfo.itemOptionCheckbox = toOptionTexts(newOptionRows);
+    };
+
     const positionDown = (key: number) => {
-      const item = [...menuInfo.itemOptionCheckbox];
-      const tmp = item[key];
-      item[key] = item[key + 1];
-      item[key + 1] = tmp;
-      menuInfo.itemOptionCheckbox = item;
+      menuInfo.itemOptionCheckbox = optionMovedDown(
+        menuInfo.itemOptionCheckbox,
+        key,
+      );
     };
     const positionUp = (key: number) => {
-      const item = [...menuInfo.itemOptionCheckbox];
-      const tmp = item[key - 1];
-      item[key - 1] = item[key];
-      item[key] = tmp;
-      menuInfo.itemOptionCheckbox = item;
+      menuInfo.itemOptionCheckbox = optionMovedUp(
+        menuInfo.itemOptionCheckbox,
+        key,
+      );
     };
 
     const openTips = (key: string) => {
@@ -1051,6 +1219,7 @@ export default defineComponent({
     return {
       dummyCheckbox,
       menuInfo,
+      showAdditionalPhotos,
 
       taxRates,
       taxRateKeys,
@@ -1087,6 +1256,7 @@ export default defineComponent({
       copyItem,
       submitItem,
 
+      holidayKey: HOLIDAY_KEY,
       daysOfWeek,
 
       smallImageErrorHandler,
@@ -1095,6 +1265,16 @@ export default defineComponent({
 
       positionDown,
       positionUp,
+
+      showOptionsPreview,
+      switchOptionsPreview,
+      hasOptionContent,
+
+      isOptionMoveMode,
+      optionRows,
+      optionRowKey,
+      toggleOptionMoveMode,
+      onOptionsReorder,
 
       openTips,
     };

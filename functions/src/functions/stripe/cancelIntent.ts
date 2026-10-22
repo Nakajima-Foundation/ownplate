@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 
 import { order_status } from "../../common/constant";
@@ -11,12 +11,12 @@ import { validateCancel } from "../../lib/validator";
 import { OrderCancelData } from "../../models/functionTypes";
 
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
-export const cancel = async (db: admin.firestore.Firestore, data: OrderCancelData, context: CallableRequest) => {
+export const cancel = async (db: Firestore, data: OrderCancelData, context: CallableRequest) => {
   const isAdmin = utils.is_admin_auth(context);
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, cancelReason } = data;
+  const { restaurantId, orderId } = data;
   utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateCancel(data);
@@ -55,16 +55,14 @@ export const cancel = async (db: admin.firestore.Firestore, data: OrderCancelDat
         }
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
-      // user can cancel if restaurant cancel just only payment and status is placed.
-      const myCancelReason = isAdmin ? cancelReason || null : "canceledByCustomer";
       const updateDataBase = {
-        timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
-        [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        timeCanceled: FieldValue.serverTimestamp(),
+        [cancelTimeKey]: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp(),
         status: order_status.order_canceled,
-        cancelReason: myCancelReason,
         uidCanceledBy: uid,
       };
+      // user can cancel if restaurant cancel just only payment and status is placed.
       const noPayment = !order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled");
       const hasPayment = !noPayment;
       if (hasPayment && order.payment.stripe !== "pending") {

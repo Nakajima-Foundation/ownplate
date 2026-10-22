@@ -20,17 +20,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, PropType } from "vue";
+import type { OrderInfoData } from "@/models/orderInfo";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { order_status } from "@/config/constant";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
     orderInfo: {
-      type: Object,
+      type: Object as PropType<OrderInfoData>,
       required: true,
     },
     timeEstimated: {

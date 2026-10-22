@@ -22,6 +22,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import type {
+  AdminPrivateProfileData,
+  ShopOwnerData,
+} from "@/models/ShopOwner";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -56,12 +61,19 @@ export default defineComponent({
     const route = useRoute();
     const generalStore = useGeneralStore();
 
-    const customClaims = ref<DocumentData>({});
-    const restaurants = ref<DocumentData[]>([]);
-    const admin = ref<DocumentData>({});
-    const adminPrivate = ref<DocumentData>({});
+    // `setCustomClaim` は条件を満たさないと `{ result: false }` を返す。権限の読みは
+    // 欄の有無で見るので、オブジェクトでないものを空として扱えば同じ結果になる。
+    const claimsOf = (result: unknown): DocumentData =>
+      typeof result === "object" && result !== null ? result : {};
 
-    const adminId = route.params.adminId;
+    const customClaims = ref<DocumentData>({});
+    const restaurants = ref<RestaurantInfoData[]>([]);
+    const admin = ref<ShopOwnerData>({});
+    const adminPrivate = ref<Partial<AdminPrivateProfileData>>({});
+
+    // route の引数は型の上では配列にもなりうる。この経路は繰り返し指定ではないので
+    // 常に文字列だが、文字列として扱うことを宣言でも言う。
+    const adminId = String(route.params.adminId);
 
     useHead(() => ({
       title: [defaultTitle, "Super Admin info"].join(" / "),
@@ -70,13 +82,17 @@ export default defineComponent({
     superDispatch({
       cmd: "getCustomeClaims",
       uid: adminId,
+      key: "",
+      value: false,
     }).then(({ data }) => {
-      customClaims.value = data.result;
+      customClaims.value = claimsOf(data.result);
     });
     getDocs(
       query(collection(db, "/restaurants/"), where("uid", "==", adminId)),
     ).then((snapshot) => {
-      restaurants.value = snapshot.docs.map(doc2data("admin"));
+      restaurants.value = snapshot.docs.map(
+        doc2data<RestaurantInfoData>("admin"),
+      );
     });
     getDoc(doc(db, "/admins/" + adminId + "/private/profile")).then(
       (adminPrivateSnapshot) => {
@@ -107,7 +123,7 @@ export default defineComponent({
             key: "operator",
             value,
           });
-          customClaims.value = data.result;
+          customClaims.value = claimsOf(data.result);
         } catch (error) {
           console.error(error);
         } finally {

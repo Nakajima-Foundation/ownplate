@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { regionalSetting } from "@/utils/utils";
+import { regionalSetting } from "@/config/constant";
 
 export default defineComponent({
   props: {

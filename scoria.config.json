@@ -1,0 +1,9 @@
+{
+  "profile": "app",
+  "stacks": [
+    "vue",
+    "ts"
+  ],
+  "mode": "report",
+  "lang": "en"
+}

@@ -16,7 +16,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
@@ -161,6 +160,9 @@ const data = {
     current: "Sebelum perubahan",
     clickAndUpload: "Klik di sini",
     clickAndUploadDetail: "Klik area abu-abu untuk mengunggah (format JPEG)",
+    imageTooLarge:
+      "Ukuran gambar maksimal {size}MB. Silakan pilih gambar yang lebih kecil.",
+    imageNotImage: "Silakan pilih berkas gambar.",
     edit: "Edit",
   },
   currency: {
@@ -323,6 +325,12 @@ const data = {
     notificationConfig: "Pengaturan notifikasi",
     moveToLineConfig:
       "Akan beralih ke halaman pengaturan notifikasi LINE. Jangan lupa simpan halaman ini sebelum beralih.",
+    invoiceNumber: "Nomor registrasi faktur",
+    enterInvoiceNumber: "mis. T1234567890123",
+    invoiceNumberNote:
+      "Nomor registrasi penerbit faktur. Tidak dicetak pada struk dan PDF jika kosong.",
+    webPushNotification: "Notifikasi push",
+    moveToPushConfig: "Pengaturan Web push",
     openDaysConfig: "Pengaturan hari/jam operasi",
     lunchOrDinnerToggle: "Beralih otomatis menu makan siang/makan malam",
     lunchOrDinnerNotice:
@@ -359,6 +367,8 @@ const data = {
     availableDayTimeSettings: "Pengaturan waktu produk dapat dipesan",
     free: "Gratis",
     optionsPreview: "Pratinjau opsi",
+    showOptionsPreview: "Tampilkan pratinjau opsi",
+    hideOptionsPreview: "Sembunyikan pratinjau opsi",
     priceChange: "Perubahan harga",
     noPriceChange: "Tidak ada",
     tax: "Pajak konsumsi",
@@ -393,6 +403,7 @@ const data = {
     category2: "Kategori 2",
     editCategory2: "Edit kategori 2",
     exclusionDate: "Tanggal pengecualian",
+    holiday: "Hari libur",
     exclusionTime: "Waktu pengecualian",
     showAllMenu: "Semua produk",
     showPublicMenu: "Hanya yang publik",
@@ -514,6 +525,12 @@ const data = {
     temporaryClosureDescription: "Pilih tanggal lalu tekan tambah",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Pilih tanggal",
+    closedOnHolidays: "Tutup pada Hari Libur",
+    closedOnHolidaysLabel: "Tutup pada hari libur nasional",
+    closedOnHolidaysDescription:
+      "Jika aktif, pesanan tidak dapat diambil pada hari libur nasional Jepang.",
+    holidayList: "Hari libur nasional (hingga akhir tahun depan)",
+    closedOnHolidaysNotice: "Tutup pada hari libur nasional",
     paymentMethod: "Metode pembayaran",
     onlinePayment: "Pembayaran online",
     onsitePayment: "Bayar saat penerimaan",
@@ -611,6 +628,7 @@ const data = {
     about: "Informasi restoran",
     limitedSale: "Hanya dijual",
     unavailableTime: "Waktu yang tidak dapat diberikan",
+    unavailableOnHolidays: "Tidak tersedia pada hari libur nasional",
     confirmCart: "Lihat keranjang",
     checkout: "Bayar",
     orderCounter: "{count} item",
@@ -887,12 +905,9 @@ const data = {
     discountPriceMessage: "Ada diskon",
     discountPrice: "Jumlah diskon",
     beforeDiscountPrice: "Harga sebelum diskon",
-    cancelReason: "Alasan pembatalan",
     productId: "Nomor produk",
     category: "Kategori",
     categoryId: "ID kategori",
-    subCategory: "Subkategori",
-    subCategoryId: "ID subkategori",
   },
   editEC: {
     postageList: "Daftar biaya pengiriman",
@@ -945,7 +960,6 @@ const data = {
     backToDiscounts: "Kembali ke daftar pengaturan diskon",
     backToDocument: "Kembali ke daftar dokumen",
     backToSubaccounts: "Kembali ke daftar subakun",
-    backToSmaregi: "Kembali ke pengaturan Smaregi",
     addTitle: "Tambah nama grup produk",
     addItem: "Tambah produk",
     downloadMenu: "Unduh brosur",
@@ -1002,6 +1016,40 @@ const data = {
     "auth/missing-verification-code": "Kode verifikasi SMS belum dimasukkan",
     "auth/code-expired":
       "Kode verifikasi SMS sudah kedaluwarsa. Silakan kirim ulang kode verifikasi SMS dan masukkan lagi",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com Notifikasi Pesanan",
+    appShortName: "Notifikasi Pesanan",
+    title: "Daftarkan perangkat untuk notifikasi",
+    installHeading: "Untuk iPhone atau iPad",
+    installStep1: "Ketuk tombol bagikan Safari",
+    installStep2: 'Pilih "Tambahkan ke Layar Utama"',
+    installStep3:
+      'Ketuk ikon yang ditambahkan ke Layar Utama untuk membuka layar "Daftarkan perangkat untuk notifikasi"',
+    nameLabel: "Nama perangkat (wajib)",
+    nameHint:
+      "Ditampilkan di daftar perangkat pada layar admin. Masukkan nama yang menunjukkan perangkat ini.",
+    namePlaceholder: "mis. iPad di kasir",
+    register: "Terima notifikasi",
+    done: "Terdaftar",
+    doneHint: "Perangkat ini akan diberi tahu saat ada pesanan baru.",
+    status: {
+      "registered-here": "Perangkat ini sudah terdaftar",
+      used: "URL ini sudah digunakan. Mintalah yang baru ke administrator.",
+      expired:
+        "URL ini telah kedaluwarsa. Mintalah yang baru ke administrator.",
+      "not-found": "URL ini tidak valid. Mintalah yang baru ke administrator.",
+    },
+    failure: {
+      unconfigured: "Notifikasi push tidak tersedia untuk restoran ini.",
+      unsupported:
+        "Perangkat atau peramban ini tidak dapat menerima notifikasi push.",
+      denied: "Notifikasi diblokir. Izinkan melalui pengaturan peramban.",
+      dismissed: "Notifikasi tidak diizinkan. Silakan coba lagi.",
+      "no-fid": "Pendaftaran gagal. Silakan coba lagi sebentar lagi.",
+      invite:
+        "URL ini sudah digunakan atau telah kedaluwarsa. Mintalah yang baru ke administrator.",
+    },
   },
   admin: {
     welcomeMessage: "Selamat datang!",
@@ -1118,13 +1166,6 @@ const data = {
         optout: "Tidak menerima",
       },
     },
-    thirdPartyService: {
-      title: "Integrasi sistem",
-      openSmaregi: "Pengaturan integrasi Smaregi",
-      smaregiManual: "Panduan Smaregi",
-      smaregiAppMarket: "Ke pasar aplikasi Smaregi",
-      smaregiManualLink: "Cara menggunakan integrasi Smaregi",
-    },
     needEmailVerification: "Silakan selesaikan verifikasi email.",
     noteEmailVerification1:
       "Silakan periksa email yang dikirim dari {email} dan klik URL dalam email untuk menyelesaikan verifikasi.",
@@ -1152,8 +1193,12 @@ const data = {
       status: "Status pencantuman di daftar restoran untuk pelanggan",
       requestWarning:
         "Silakan ajukan setelah pengaturan pembayaran dan publikasi toko",
+      requestOptionalNote:
+        "Pengajuan pencantuman bersifat opsional. Anda dapat mempublikasikan toko tanpa mengajukan. Jika ingin mengajukan, silakan publikasikan toko terlebih dahulu.",
       requestingWarning:
         "Jika pengaturan pembayaran dan publikasi toko belum selesai, silakan atur",
+      requestingPublicNote:
+        "Jika toko Anda belum dipublikasikan, toko tidak dapat dicantumkan di daftar atau diperiksa oleh tim kami. Silakan publikasikan toko Anda jika belum.",
       notListed: "Belum dicantumkan",
       requestList: "Ajukan untuk pencantuman",
       waiting: "Sedang mengajukan",
@@ -1167,6 +1212,72 @@ const data = {
     forgotPassword: "Lupa kata sandi",
     passwordReset: "Reset kata sandi",
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
+    timeline: {
+      title: "Riwayat notifikasi",
+      empty: "Belum ada notifikasi.",
+      failed: "Tidak dapat memuat notifikasi. Silakan periksa izin Anda.",
+    },
+    push: {
+      sendFailed: "Pengiriman terakhir gagal",
+      lastSentAt: "Terakhir dikirim",
+      undelivered:
+        "Notifikasi tidak sampai ke perangkat ini. Silakan daftarkan ulang.",
+      rename: "Ubah nama perangkat",
+      save: "Simpan",
+      delete: "Hapus",
+      registeredAt: "Terdaftar",
+      namePlaceholder: "mis. iPad di kasir",
+      devices: "Perangkat yang diberi notifikasi",
+      empty: "Belum ada perangkat yang terdaftar.",
+      addDevice: "Tambah perangkat",
+      inviteHeading: "Buka URL ini di perangkat yang ingin menerima notifikasi",
+      inviteHint:
+        'URL ini hanya dapat mendaftarkan satu perangkat. Untuk menambahkan perangkat kedua, tekan "Tambah perangkat" lagi. URL berlaku selama 24 jam. * Jangan bagikan URL di tempat yang dapat dilihat banyak orang, seperti grup LINE.',
+      deviceGuideHeading: "Langkah pada perangkat yang membuka URL ini",
+      deviceGuideIos:
+        'iPhone / iPad: Buka di Safari, ketuk Bagikan, pilih "Tambahkan ke Layar Utama", lalu buka kembali dari ikon baru. Notifikasi tidak dapat diterima dari tab Safari (perlu iOS 16.4 atau lebih baru).',
+      deviceGuideAndroid:
+        "Android: Buka di Chrome dan daftarkan langsung. Notifikasi tidak akan sampai jika dimatikan di pengaturan perangkat.",
+      deviceGuideDesktop:
+        "Komputer: Meskipun notifikasi diizinkan, notifikasi tidak muncul saat browser dimatikan di pengaturan notifikasi sistem, atau selama mode Fokus aktif.",
+      copy: "Salin URL",
+      copied: "Tersalin",
+      test: "Kirim uji coba",
+      testResult: {
+        noTargets: "Tidak ada perangkat dengan notifikasi aktif.",
+        allSent: "Terkirim ke {targets} perangkat.",
+        partlySent:
+          "Terkirim ke {sent} dari {targets} perangkat. Periksa daftar untuk perangkat yang tidak menerimanya.",
+        failed: "Gagal mengirim tes. Silakan coba lagi nanti.",
+      },
+      deleteConfirm: "Hentikan notifikasi ke perangkat ini?",
+    },
+    webpush: {
+      restaurantId: "ID restoran",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Jeda penerimaan pesanan",
       suspendSettings: "Pengaturan jeda penerimaan pesanan",
@@ -1190,6 +1301,9 @@ const data = {
       infinityNotificationOn: "Notifikasi ulang setiap 1 menit",
       infinityNotificationOff: "Notifikasi hanya saat menerima pesanan",
       soundTest: "Tes",
+      webPushDescription:
+        "Memberi tahu perangkat ini tentang pesanan baru meskipun halaman admin ditutup.",
+      webPushDevices: "Perangkat notifikasi push",
       paymentIsNotCompleted:
         'Perhatian: Saat menekan tombol "Diterima", pembayaran kartu akan diproses.',
       cancelButton: "Batalkan pesanan",
@@ -1309,6 +1423,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "Domain belum terdaftar di daftar putih.",
         "auth/internal-error": "Kata sandi tidak valid.",
+        "auth/missing-password": "Silakan masukkan kata sandi Anda.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
@@ -1385,12 +1500,6 @@ const data = {
       showBelow: "Berada di bagian bawah pengaturan",
       enabled: "Aktifkan",
       callbackURLCopyToLine: "Silakan salin nilai ini dan atur di sisi LINE.",
-    },
-    smaregi: {
-      index: "Koneksi Smaregi",
-      authenticating: "Sedang menghubungkan",
-      authenticationError: "Koneksi gagal",
-      smaregiShopList: "Daftar toko Smaregi",
     },
   },
   week: {
@@ -1498,6 +1607,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Terdaftar",
+      body: 'Untuk mendaftarkan perangkat lain, tekan "Tambah perangkat".',
+    },
     paymentMethods: {
       title: "Metode pembayaran di tempat",
       body: 'Fitur untuk memandu metode pembayaran yang dapat digunakan di toko bagi pelanggan yang memilih "Bayar saat penerimaan".',
@@ -1527,6 +1640,66 @@ const data = {
     reset: "Reset URL server",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Masukkan T diikuti 13 digit (karakter setengah lebar)",
+    },
+    itemName: {
+      empty: "Silakan masukkan nama item",
+    },
+    price: {
+      empty: "Silakan masukkan harga",
+      invalid: "Masukkan bilangan bulat 0 atau lebih untuk harga",
+    },
+    restaurantName: {
+      empty: "Silakan masukkan nama restoran",
+    },
+    ownerName: {
+      empty: "Silakan masukkan nama penanggung jawab",
+    },
+    streetAddress: {
+      empty: "Silakan masukkan alamat (nomor dan jalan)",
+    },
+    city: {
+      empty: "Silakan masukkan kota/kabupaten",
+    },
+    state: {
+      empty: "Silakan pilih prefektur",
+    },
+    url: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Silakan masukkan URL yang valid (diawali dengan http:// atau https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Waktu persiapan terlalu lama (maksimal 7 hari)",
+      negative: "Waktu persiapan tidak boleh negatif",
+      notNumbery: "Silakan masukkan waktu persiapan dalam bentuk angka",
+      empty: "Silakan masukkan waktu persiapan",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "Pengaturan hari mulai pemesanan tidak valid",
+      empty: "Silakan pilih hari mulai pemesanan",
+    },
+    restProfilePhoto: {
+      empty: "Silakan atur foto profil",
+    },
+    restCoverPhoto: {
+      empty: "Silakan atur foto sampul",
+    },
+    oneInEmpty: "Silakan masukkan waktu mulai dan waktu selesai",
+    validBusinessTime: "Waktu selesai harus lebih lambat dari waktu mulai",
+    noSelect: "Silakan atur jam buka",
     zip: {
       empty: "Silakan masukkan kode pos",
       invalidZip: "Silakan masukkan kode pos 7 digit yang benar",
@@ -1536,6 +1709,7 @@ const data = {
     },
     name: {
       empty: "Silakan masukkan nama lengkap",
+      length: "Silakan masukkan nama (minimal 3 karakter).",
     },
     memo: {
       length: "Silakan masukkan pesan tidak lebih dari 500 karakter.",

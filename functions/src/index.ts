@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import { getApps, initializeApp } from "firebase-admin/app";
 import * as Sentry from "@sentry/node";
 
 import exportIfNeeded from "./lib/exportifneeded";
@@ -6,8 +6,8 @@ import exportIfNeeded from "./lib/exportifneeded";
 const senty_dsn = process.env.SENTY_DSN ?? "";
 Sentry.init({ dsn: senty_dsn });
 
-if (!admin.apps.length) {
-  admin.initializeApp();
+if (!getApps().some((app) => app.name === "[DEFAULT]")) {
+  initializeApp();
 }
 
 exportIfNeeded("apiJP2", "apiJP", exports);
@@ -44,16 +44,15 @@ exportIfNeeded("stripeReceipt2", "stripe/stripeReceipt", exports);
 
 exportIfNeeded("imageProcessing2", "image/imageProcessing", exports);
 
-exportIfNeeded("smaregiAuth2", "smaregi/auth", exports);
-exportIfNeeded("smaregiStoreList2", "smaregi/storeList", exports);
-exportIfNeeded("smaregiProductList2", "smaregi/productList", exports);
-
 exportIfNeeded("subAccountInvite2", "subaccount/invite", exports);
 exportIfNeeded("subAccountInvitationAccept2", "subaccount/accept", exports);
 exportIfNeeded("subAccountInvitationDeny2", "subaccount/deny", exports);
 exportIfNeeded("subAccountDeleteChild2", "subaccount/delete", exports);
 
-
+exportIfNeeded("createPushInvite2", "webPush/createInvite", exports);
+exportIfNeeded("checkPushInvite2", "webPush/checkInvite", exports);
+exportIfNeeded("redeemPushInvite2", "webPush/redeemInvite", exports);
+exportIfNeeded("sendTestWebPush2", "webPush/sendTest", exports);
 
 exportIfNeeded("ping2", "ping", exports);
 exportIfNeeded("beforeSignIn2", "auth/beforeSignIn", exports);

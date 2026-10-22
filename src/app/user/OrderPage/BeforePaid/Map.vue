@@ -42,7 +42,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
 import { haversine_distance } from "@/utils/utils";
 import { GOOGLE_MAP_DEFAULT_CENTER } from "@/config/constant";
 import { GMAPId } from "@/config/project";
@@ -56,7 +57,7 @@ export default defineComponent({
       required: true,
     },
     deliveryInfo: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     fullAddress: {
@@ -73,11 +74,13 @@ export default defineComponent({
     let map: google.maps.Map | null = null;
     let gCenter: google.maps.LatLng | null = null;
     let gHome: google.maps.LatLng | null = null;
-    const markers: google.maps.Marker[] = [];
+    const markers: google.maps.marker.AdvancedMarkerElement[] = [];
     const circles: google.maps.Circle[] = [];
 
     const removeAllMarker = () => {
-      markers.forEach((marker) => marker.setMap(null));
+      markers.forEach((marker) => {
+        marker.map = null;
+      });
       markers.length = 0;
     };
 
@@ -151,7 +154,7 @@ export default defineComponent({
     };
 
     const setCurrentLocation = () => {
-      if (location.lat && location.lng) {
+      if (map && location.lat && location.lng) {
         gCenter = new google.maps.LatLng(location.lat, location.lng);
         map.setCenter(gCenter);
         updateMarker();

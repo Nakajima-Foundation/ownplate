@@ -12,14 +12,10 @@
           <div class="inline-flex items-center justify-center">
             <i class="material-icons text-op-teal mr-2 text-lg">place</i>
             <div class="text-op-teal text-sm font-bold">
-              <div v-if="region === 'JP'">
+              <div>
                 〒{{ shopInfo.zip }} {{ shopInfo.state }}
                 {{ shopInfo.city }}
                 {{ shopInfo.streetAddress }}
-              </div>
-              <div v-else>
-                {{ shopInfo.streetAddress }}, {{ shopInfo.city }},
-                {{ shopInfo.state }} {{ shopInfo.zip }}
               </div>
             </div>
           </div>
@@ -87,10 +83,7 @@
       <div v-if="moreInfo">
         <!-- Transactions Act -->
         <div class="mt-4">
-          <transactions-act
-            :shopInfo="shopInfo"
-            :isDelivery="isDelivery"
-          ></transactions-act>
+          <transactions-act :shopInfo="shopInfo"></transactions-act>
         </div>
 
         <!-- Restaurant Website -->
@@ -158,7 +151,7 @@
               <div
                 class="flex rounded-sm px-2 py-1 text-sm"
                 :class="
-                  weekday == key % 7
+                  weekday == Number(key) % 7
                     ? isTodayTemporaryClosure
                       ? 'bg-red-700/10'
                       : 'bg-green-600/10'
@@ -200,6 +193,12 @@
                 </div>
               </div>
             </template>
+          </div>
+          <div
+            v-if="shopInfo.closedOnHolidays"
+            class="mt-1 px-2 text-sm font-bold text-red-700"
+          >
+            {{ $t("shopInfo.closedOnHolidaysNotice") }}
           </div>
         </div>
 
@@ -259,11 +258,11 @@
               class="text-sm"
               :key="key"
             >
-              {{ moment(day.toDate()).format("YYYY/MM/DD") }}
+              {{ formatDay(day.toDate(), "YYYY/MM/DD") }}
               {{
                 $t(
                   "week.short." +
-                    days[Number(moment(day.toDate()).format("e")) || 7],
+                    days[Number(formatDay(day.toDate(), "e")) || 7],
                 )
               }}
             </div>
@@ -276,20 +275,23 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, PropType } from "vue";
+import type { PaymentInfo } from "@/models/paymentInfo";
 import moment from "moment";
 
 import { daysOfWeek, paymentMethods } from "@/config/constant";
 import { formatURL } from "@/utils/phoneutil";
-import { ownPlateConfig, GAPIKey } from "@/config/project";
+import { formatDay, weekdayOf } from "@/utils/shopCalendar";
+import { openNowByDay } from "@/utils/shopOpen";
+import { GAPIKey } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
 import {
-  isNull,
   useNationalPhoneNumber,
   validUrl,
   validLocation,
   validPlaceId,
   num2time,
 } from "@/utils/utils";
+import { isNull } from "@/utils/commonUtils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -306,7 +308,7 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     isDelivery: {
@@ -320,7 +322,7 @@ export default defineComponent({
 
     const d = new Date();
     const moreInfo = ref(false);
-    const weekday = d.getDay();
+    const weekday = weekdayOf(d);
     const today = d;
 
     const mapWidth = computed(() => {
@@ -343,8 +345,8 @@ export default defineComponent({
     const isTodayTemporaryClosure = computed(() => {
       const res = dispTemporaryClosure.value.find((day) => {
         return (
-          moment(day.toDate()).format("YYYYMMDD") ===
-          moment().format("YYYYMMDD")
+          formatDay(day.toDate(), "YYYYMMDD") ===
+          formatDay(new Date(), "YYYYMMDD")
         );
       });
       return !!res;
@@ -370,22 +372,7 @@ export default defineComponent({
     });
 
     const isOpen = computed(() => {
-      return Object.keys(daysOfWeek).reduce(
-        (tmpObj: { [key: string]: boolean }, day) => {
-          if (weekday === Number(day) && businessDay.value[day]) {
-            // get now and compaire
-            const res = openTimes.value[day].reduce((tmpOpen, time) => {
-              const now = today.getHours() * 60 + today.getMinutes();
-              return tmpOpen || (now >= time.start && now <= time.end);
-            }, false);
-            tmpObj[day] = res;
-          } else {
-            tmpObj[day] = false;
-          }
-          return tmpObj;
-        },
-        {},
-      );
+      return openNowByDay(businessDay.value, openTimes.value, today);
     });
     const hasLocation = computed(() => {
       return (
@@ -410,7 +397,6 @@ export default defineComponent({
     const hasUberEatsUrl = computed(() => {
       return props.shopInfo.uberEatsUrl && validUrl(props.shopInfo.uberEatsUrl);
     });
-    const region = ownPlateConfig.region;
 
     const stripeAccount = computed(() => {
       return props.paymentInfo.stripe;
@@ -451,10 +437,10 @@ export default defineComponent({
       const time = days[0]?.times[0]?.display;
       const date = days[0]?.date;
       console.log(locale.value);
-      moment.locale(locale.value as string);
+      moment.locale(locale.value);
       if (!isNull(time) && !isNull(date)) {
         ctx.emit("noAvailableTime", false);
-        return [moment(date).format("MM/DD (ddd)"), time].join(" ");
+        return [formatDay(date, "MM/DD (ddd)"), time].join(" ");
       } else {
         ctx.emit("noAvailableTime", true);
         return t("shopInfo.noAvailableTime");
@@ -500,7 +486,6 @@ export default defineComponent({
       hasLineUrl,
       hasInstagramUrl,
       hasUberEatsUrl,
-      region,
       showPayment,
       stripeAccount,
       inStorePayment,
@@ -521,7 +506,7 @@ export default defineComponent({
       //
       temporaryClosure,
 
-      moment,
+      formatDay,
 
       businessDay,
       openTimes,

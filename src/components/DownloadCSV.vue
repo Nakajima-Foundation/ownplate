@@ -5,27 +5,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { data2csv } from "@/utils/csv";
+import { defineComponent, computed, PropType } from "vue";
+import { data2csv, type CsvRow } from "@/utils/csv";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   props: {
     data: {
-      type: Object,
+      type: Object as PropType<CsvRow[]>,
       required: true,
     },
     fields: {
-      type: Object,
+      type: Object as PropType<string[]>,
       required: true,
     },
     fieldNames: {
-      type: Object,
-      required: true,
+      type: Object as PropType<string[]>,
+      required: false,
     },
     fileName: {
       type: String,
       required: true,
+    },
+    formulas: {
+      type: Object as PropType<{ [key: string]: string }>,
+      required: false,
     },
   },
   emits: ["success"],
@@ -37,6 +41,7 @@ export default defineComponent({
           data: props.data,
           fields: props.fields,
           fieldNames: props.fieldNames,
+          formulas: props.formulas,
         },
         t,
       );

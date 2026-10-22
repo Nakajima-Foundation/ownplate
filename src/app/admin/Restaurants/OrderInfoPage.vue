@@ -32,16 +32,14 @@
                   <div class="text-xs">
                     {{ $t("order.totalCharge") }}
                   </div>
-                  <div v-if="hasStripe" class="text-base">
+                  <div v-if="stripeState" class="text-base">
                     <a :href="search" target="stripe">
                       <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
                       <StripeStatus
-                        :stripeState="orderInfo.payment.stripe"
+                        :stripeState="stripeState"
                         class="stripe_ text-xs font-bold"
                       >
-                        {{
-                          $t("order.status.stripe_" + orderInfo.payment.stripe)
-                        }}
+                        {{ $t("order.status.stripe_" + stripeState) }}
                       </StripeStatus>
                     </a>
                   </div>
@@ -70,7 +68,7 @@
             >
               {{ $t("admin.order.waitingPaymentWarninig") }}
             </div>
-            <div v-if="hasStripe && orderInfo.payment.stripe !== 'canceled'">
+            <div v-if="stripeState && stripeState !== 'canceled'">
               <div
                 class="mt-2 inline-flex h-9 w-full justify-center rounded-lg bg-yellow-500/10 px-4 py-1 font-bold text-yellow-500"
               >
@@ -125,7 +123,7 @@
               class="mt-4 text-center"
               v-if="
                 isValidTransition('order_canceled') &&
-                (paymentIsNotCompleted || !hasStripe)
+                (paymentIsNotCompleted || !stripeState)
               "
             >
               <button @click="openCancel()">
@@ -251,7 +249,8 @@
                     {{ $t("order.lastOrder") }}:
                     {{
                       userLog.lastOrder
-                        ? moment(userLog.lastOrder.toDate()).format(
+                        ? formatDay(
+                            userLog.lastOrder.toDate(),
                             "YYYY/MM/DD HH:mm",
                           )
                         : "--"
@@ -259,7 +258,8 @@
                     {{ $t("order.thisOrder") }}:
                     {{
                       orderInfo.timePlaced
-                        ? moment(orderInfo.timePlaced.toDate()).format(
+                        ? formatDay(
+                            orderInfo.timePlaced.toDate(),
                             "YYYY/MM/DD HH:mm",
                           )
                         : "--"
@@ -270,7 +270,8 @@
                   {{ $t("order.lastOrder") }}:
                   {{
                     userLog.lastOrder
-                      ? moment(userLog.lastOrder.toDate()).format(
+                      ? formatDay(
+                          userLog.lastOrder.toDate(),
                           "YYYY/MM/DD HH:mm",
                         )
                       : "--"
@@ -527,19 +528,25 @@ import {
   where,
   documentId,
   Timestamp,
-  DocumentData,
 } from "firebase/firestore";
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
+import { OrderUpdateData } from "@/models/functionTypes";
+import type { MenuData } from "@/models/menu";
+import type { UserLogData } from "@/models/userLog";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
+import type { CustomerInfo as CustomerInfoData } from "@/models/customer";
 
 import {
   order_status,
   possible_transitions,
   timeEventMapping,
+  OrderStatusName,
+  stripe_regions_jp,
 } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
-import moment from "moment-timezone";
+import { dateKeyOf, formatDay } from "@/utils/shopCalendar";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -554,33 +561,33 @@ import ButtonLoading from "@/components/form/Loading.vue";
 import CancelModal from "@/app/admin/Order/CancelModal.vue";
 import PaymentCancelModal from "@/app/admin/Order/PaymentCancelModal.vue";
 
-import { costCal } from "@/utils/commonUtils";
+import { costCal, isEmpty, type PostageInfo } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 
 import { checkShopAccount } from "@/utils/userPermission";
 import {
+  collectionData,
   doc2data,
   useAdminUids,
   useRestaurantId,
   notFoundResponse,
-  stripeRegion,
   convOrderStateForText,
   isDev,
-  isEmpty,
   // isNull,
-  getShopOwner,
   getOrderItems,
   arrayChunk,
   array2obj,
   defaultTitle,
   errorMessage,
 } from "@/utils/utils";
+import { getShopOwner } from "@/utils/shopOwner";
 
 import { useUserStore } from "@/store/user";
 import { useGeneralStore } from "@/store";
 import { useDialogStore } from "@/store/dialog";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useI18n } from "vue-i18n";
 import { useHead } from "@unhead/vue";
 
@@ -617,13 +624,16 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { d } = useI18n({ useScope: "global" });
-    const menuObj = ref({});
-    const orderInfo = ref<OrderInfoData>({} as OrderInfoData);
-    const customer = ref({});
-    const postageInfo = ref({});
-    const deliveryData = ref<DocumentData>({});
+    const menuObj = ref<{ [key: string]: MenuData }>({});
+    const orderInfo = ref<OrderInfoData>(collectionData<OrderInfoData>({}));
+    const customer = ref<CustomerInfoData>({});
+    const postageInfo = ref<Partial<PostageInfo>>({});
+    // 配達を有効にした店でだけ読む。読むまでは空。
+    const deliveryData = ref<DeliveryAreaData>(
+      collectionData<DeliveryAreaData>({}),
+    );
     const shopOwner = ref<ShopOwnerData | null>(null);
-    const userLog = ref<DocumentData>({});
+    const userLog = ref<Partial<UserLogData>>({});
 
     const updating = ref("");
     const changing = ref(false);
@@ -665,12 +675,14 @@ export default defineComponent({
     if (props.shopInfo.enableDelivery) {
       getDoc(doc(db, `restaurants/${restaurantId.value}/delivery/area`)).then(
         (snapshot) => {
-          deliveryData.value = snapshot.data() || {};
+          deliveryData.value = collectionData<DeliveryAreaData>(
+            snapshot.data() || {},
+          );
         },
       );
     }
     const orderId = computed(() => {
-      return route.params.orderId as string;
+      return routeParamOf(route.params.orderId);
     });
 
     const order_detacher = onSnapshot(
@@ -681,7 +693,7 @@ export default defineComponent({
           return;
         }
         const order_data = order.data();
-        orderInfo.value = order_data as OrderInfoData;
+        orderInfo.value = collectionData<OrderInfoData>(order_data);
         if (orderInfo.value.isDelivery || props.shopInfo.isEC) {
           const tmpCustomer = await getDoc(
             doc(
@@ -718,7 +730,7 @@ export default defineComponent({
         }
       });
       const menuRestaurantId = restaurantId.value;
-      const menuIds = Object.keys(orderInfo.value.menuItems);
+      const menuIds = Object.keys(orderInfo.value.menuItems || {});
       arrayChunk(menuIds, 10).forEach((arr) => {
         getDocs(
           query(
@@ -727,7 +739,9 @@ export default defineComponent({
           ),
         ).then((menu) => {
           if (!menu.empty) {
-            const tmpMenuObj = array2obj(menu.docs.map(doc2data("menu")));
+            const tmpMenuObj = array2obj(
+              menu.docs.map(doc2data<MenuData>("menu")),
+            );
             menuObj.value = { ...menuObj.value, ...tmpMenuObj };
           }
         });
@@ -737,7 +751,9 @@ export default defineComponent({
     const orderUpdateInterval = computed(() => {
       if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
+          (Number(orderInfo.value.orderPlacedAt) -
+            Number(userLog.value.lastUpdatedAt)) /
+          3600;
         return intervalHour;
       }
       return -1000000;
@@ -745,16 +761,16 @@ export default defineComponent({
     const orderPickupInterval = computed(() => {
       if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
+          (Number(orderInfo.value.timeCreated) -
+            Number(userLog.value.lastUpdatedAt)) /
+          3600;
         return intervalHour;
       }
       return -1000000;
     });
     const isWarningOrder = computed(() => {
       if (orderUpdateInterval.value < 4 && orderUpdateInterval.value > -4) {
-        if (Number.isNaN(orderUpdateInterval.value)) {
-          return true;
-        }
+        return true;
       }
 
       if (orderPickupInterval.value === 0) {
@@ -786,18 +802,20 @@ export default defineComponent({
     });
     watch(orderItems, () => {
       Object.keys(orderItems.value).forEach((key: string) => {
-        editedAvailableOrders.value[key] = true;
+        editedAvailableOrders.value[Number(key)] = true;
       });
     });
-    const timeStampToText = (timestamp: Timestamp) => {
+    const timeStampToText = (timestamp?: Timestamp) => {
       if (timestamp) {
         return d(timestamp.toDate(), "long");
       }
       return "";
     };
     const timeOfEvents = computed(() => {
-      const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
-        tmp[key] = timeStampToText(orderInfo.value[timeEventMapping[key]]);
+      const mapping = Object.entries(timeEventMapping).reduce<{
+        [key: string]: string;
+      }>((tmp, [key, field]) => {
+        tmp[key] = timeStampToText(orderInfo.value[field]);
         return tmp;
       }, {});
       return mapping;
@@ -844,13 +862,14 @@ export default defineComponent({
       }
       return undefined; // backward compatibility
     });
-    const hasStripe = computed(() => {
+    // 支払いの状態そのもの。現地払いの注文には無いので undefined になる。
+    const stripeState = computed(() => {
       return orderInfo.value.payment && orderInfo.value.payment.stripe;
     });
     const paymentIsNotCompleted = computed(() => {
       return (
-        // hasStripe.value && orderInfo.value.status < order_status.ready_to_pickup
-        hasStripe.value && orderInfo.value.payment?.stripe === "pending"
+        // stripeState.value && orderInfo.value.status < order_status.ready_to_pickup
+        stripeState.value && orderInfo.value.payment?.stripe === "pending"
       );
     });
     const phoneNumber = computed(() => {
@@ -870,11 +889,11 @@ export default defineComponent({
         return `/admin/restaurants/${restaurantId.value}/history`;
       }
       const day = orderInfo.value.timePlaced
-        ? moment(orderInfo.value.timePlaced.toDate()).format("YYYY-MM-DD")
+        ? dateKeyOf(orderInfo.value.timePlaced.toDate())
         : null;
       return `/admin/restaurants/${restaurantId.value}/orders?day=${day}`;
     });
-    const orderStates = [
+    const orderStates: OrderStatusName[] = [
       "order_placed",
       "order_accepted",
       "ready_to_pickup",
@@ -885,8 +904,9 @@ export default defineComponent({
     const edited_available_order_info = computed(() => {
       const ret: { menuId: string; index: number }[] = [];
       Object.keys(editedAvailableOrders.value).forEach((key: string) => {
-        if (editedAvailableOrders.value[key]) {
-          const indexes = orderItems.value[key]?.orderIndex;
+        const itemIndex = Number(key);
+        if (editedAvailableOrders.value[itemIndex]) {
+          const indexes = orderItems.value[itemIndex]?.orderIndex;
           if (indexes) {
             ret.push({ menuId: indexes[0], index: Number(indexes[1]) });
           }
@@ -896,8 +916,8 @@ export default defineComponent({
     });
 
     const editable_order_info = computed(() => {
-      const tmpMenuObj = orderInfo.value.menuItems;
-      const multiple = stripeRegion.multiple;
+      const tmpMenuObj = orderInfo.value.menuItems || {};
+      const multiple = stripe_regions_jp.multiple;
       const ret = edited_available_order_info.value.reduce(
         (tmp, info) => {
           const { menuId, index } = info;
@@ -947,7 +967,7 @@ export default defineComponent({
       }
       const shippingCost = costCal(
         postageInfo.value,
-        orderInfo.value?.customerInfo?.prefectureId as number,
+        orderInfo.value?.customerInfo?.prefectureId,
         ret.total,
       );
 
@@ -998,13 +1018,13 @@ export default defineComponent({
 
     const updateEnable = (value: [number, boolean]) => {
       const newData = editedAvailableOrders.value.concat();
-      newData[value[0] as number] = value[1];
+      newData[value[0]] = value[1];
       editedAvailableOrders.value = newData;
     };
     const toggleIsOrderChange = () => {
       isOrderChange.value = !isOrderChange.value;
     };
-    const isValidTransition = (newStatus: string) => {
+    const isValidTransition = (newStatus: OrderStatusName) => {
       const newStatusValue = order_status[newStatus];
       return possibleTransitions.value[newStatusValue];
     };
@@ -1025,7 +1045,7 @@ export default defineComponent({
       const date = new Date(time + timeOffset.value * 60000);
       return Timestamp.fromDate(date);
     };
-    const handleChangeStatus = async (statusKey: string) => {
+    const handleChangeStatus = async (statusKey: OrderStatusName) => {
       const newStatus = order_status[statusKey];
       if (newStatus === orderInfo.value.status) {
         return;
@@ -1033,12 +1053,7 @@ export default defineComponent({
       updating.value = statusKey;
       try {
         generalStore.setLoading(true);
-        const params: {
-          restaurantId: string;
-          orderId: string;
-          status: number;
-          timeEstimated?: Date;
-        } = {
+        const params: OrderUpdateData = {
           restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
@@ -1062,6 +1077,7 @@ export default defineComponent({
       } catch (error) {
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "order.update",
         });
       } finally {
@@ -1088,6 +1104,7 @@ export default defineComponent({
           } catch (error) {
             console.error(errorMessage(error), error);
             dialogStore.setErrorMessage({
+              error,
               code: "order.update",
             });
           } finally {
@@ -1097,7 +1114,7 @@ export default defineComponent({
         },
       });
     };
-    const classOf = (statusKey: string) => {
+    const classOf = (statusKey: OrderStatusName) => {
       if (order_status[statusKey] === orderInfo.value.status) {
         return statusKey;
       }
@@ -1148,7 +1165,7 @@ export default defineComponent({
       estimatedTimes,
       timeRequested,
       timeEstimated,
-      hasStripe,
+      stripeState,
       paymentIsNotCompleted,
 
       nationalPhoneNumber,
@@ -1184,7 +1201,7 @@ export default defineComponent({
 
       convOrderStateForText,
 
-      moment,
+      formatDay,
       restaurantId,
     };
   },

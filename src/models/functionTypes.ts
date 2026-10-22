@@ -13,8 +13,9 @@ export interface OrderPlacedData {
   orderId: string;
   tip: number;
   timeToPickup: Timestamp;
-  promotionId: string;
-  affiliateId: string;
+  // 値引きを使わないとき、画面は null を送る（validateOrderPlaced も省略を許す）。
+  promotionId?: string | null;
+  affiliateId?: string;
   waitingPayment: boolean;
   memo: string;
   userName: string;
@@ -38,7 +39,6 @@ export interface ConfirmIntentData {
 export interface OrderCancelData {
   restaurantId: string;
   orderId: string;
-  cancelReason: string;
 }
 
 export interface NewOrderData {
@@ -50,6 +50,12 @@ export interface OrderChangeData {
   restaurantId: string;
   orderId: string;
   newOrder: NewOrderData[];
+}
+
+// 決済（functions の stripe/orderPay.ts）。
+export interface OrderPayData {
+  restaurantId: string;
+  orderId: string;
   isSavePay: boolean;
 }
 
@@ -103,18 +109,6 @@ export interface SubAccountDeleteChildData {
   childUid: string;
 }
 
-// Smaregi related function call types
-export interface SmaregiAuthData {
-  code: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SmaregiStoreListData {}
-
-export interface SmaregiProductListData {
-  store_id: string;
-}
-
 // Ping function call types
 export interface PingData {
   restaurantId: string;
@@ -137,4 +131,60 @@ export interface DispatchData {
   uid: string;
   key: string;
   value: boolean;
+}
+
+// Web Push function call types
+export interface CreatePushInviteData {
+  restaurantId: string;
+}
+
+export interface CreatePushInviteResult {
+  result: boolean;
+  url: string;
+  expiresAt: number;
+  // 登録が済んだかを管理画面が知るための目印。招待文書の id と同じで、
+  // トークンそのものではない。引き換え時に pushRegistrations へ書かれる。
+  // 省略可にしてあるのは、画面を先に配ったときに古い Functions が返さないため。
+  inviteId?: string;
+}
+
+// 押す前に招待が使えるか確かめる。状態は変えない。
+export interface CheckPushInviteData {
+  token: string;
+  fid?: string;
+}
+
+export type PushInviteStatus =
+  "usable" | "registered-here" | "not-found" | "used" | "expired";
+
+export interface CheckPushInviteResult {
+  result: boolean;
+  status: PushInviteStatus;
+}
+
+// 登録するのは非ログインの端末なので、uid ではなくトークンが唯一の資格になる
+export interface RedeemPushInviteData {
+  token: string;
+  fid: string;
+  platform: string;
+  name: string;
+}
+
+export interface RedeemPushInviteResult {
+  result: boolean;
+  restaurantId: string;
+}
+
+export interface SendTestWebPushData {
+  restaurantId: string;
+  title: string;
+  body: string;
+}
+
+export interface SendTestWebPushResult {
+  result: boolean;
+  sent: number;
+  failed: number;
+  targets: number;
+  codes: string[];
 }

@@ -84,23 +84,26 @@ export default defineComponent({
       return !!(error.value || alert.value);
     });
     const errorMessage = computed(() => {
-      Sentry.captureException(error.value?.error);
-      if (error.value.message) {
+      // 例外を捕まえずに出すダイアログ（結果が失敗だったときなど）は、送るものが無い。
+      if (error.value?.error !== undefined) {
+        Sentry.captureException(error.value.error);
+      }
+      if (error.value?.message) {
         return error.value.message;
-      } else if (error.value.code) {
+      } else if (error.value?.code) {
         return t("errorPage.code." + error.value.code);
       }
       return "";
     });
     const errorMessage2 = computed(() => {
-      return error.value.message2 || "errorPage.message.generic";
+      return error.value?.message2 || "errorPage.message.generic";
     });
     const close = () => {
       dialogStore.resetDialog();
     };
     const handleYes = () => {
       console.log("handleYes");
-      alert.value.callback();
+      alert.value?.callback();
       close();
     };
     return {

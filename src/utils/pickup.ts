@@ -1,14 +1,22 @@
 import { computed, Ref, ComputedRef } from "vue";
-import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import {
   num2time,
   num2simpleTime,
   num2simpleFormatedTime,
-  isNull,
 } from "@/utils/utils";
-import moment from "moment";
+import { isNull } from "@/utils/commonUtils";
 import { MenuData } from "@/models/menu";
+import {
+  availablePickupDays,
+  HOLIDAY_KEY,
+  minimumCookTimeOf,
+  temporaryClosureDatesOf,
+  withinLastOrder,
+  type PickupSlotDay,
+} from "@/utils/pickupDays";
+import { startOfDayAfter } from "@/utils/shopCalendar";
+import { isJapaneseHoliday } from "@/utils/holiday";
 import { useGeneralStore } from "../store";
 
 type AvailableDay = {
@@ -35,23 +43,10 @@ export const usePickupTime = (
 
   // public
   const temporaryClosure = computed(() => {
-    return (shopInfo.temporaryClosure || []).map((day) => {
-      return moment(day.seconds ? day.toDate() : day).format("YYYY-MM-DD");
-    });
+    return temporaryClosureDatesOf(shopInfo);
   });
   const shopInfoBusinessDay = computed(() => {
     return shopInfo.businessDay;
-  });
-  const shopInfoOpenTimes = computed(() => {
-    return shopInfo.openTimes;
-  });
-  const businessDays = computed(() => {
-    return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return (
-        shopInfoBusinessDay.value[day] &&
-        !((exceptData.value || {}).exceptDay || {})[day]
-      );
-    });
   });
   const availableBusinessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].reduce(
@@ -64,61 +59,11 @@ export const usePickupTime = (
       {},
     );
   });
-  const timeInterval = computed(() => {
-    return 10; // LATER: Make it customizable
-  });
-  const withinExceptTime = (time: number) => {
-    return ((exceptData.value || {}).exceptHours || []).some((hour) => {
-      return hour.start <= time && time <= hour.end;
-    });
-  };
-  // just for open time not consider with cooking time.
-  const openSlots = computed(() => {
-    return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      const openTime = (() => {
-        if (lunchOrDinner === "lunch") {
-          if (shopInfoOpenTimes.value[day][0]) {
-            return [shopInfoOpenTimes.value[day][0]];
-          }
-          return [];
-        }
-        if (lunchOrDinner === "dinner") {
-          if (shopInfoOpenTimes.value[day][1]) {
-            return [shopInfoOpenTimes.value[day][1]];
-          }
-          return [];
-        }
-        return shopInfoOpenTimes.value[day];
-      })();
-
-      return openTime.reduce(
-        (ret: { time: number; display: string }[], value) => {
-          for (
-            let time = value.start;
-            time <= value.end;
-            time += timeInterval.value
-          ) {
-            if (!withinExceptTime(time)) {
-              ret.push({ time, display: num2time(time) });
-            }
-          }
-          return ret;
-        },
-        [],
-      );
-    });
-  });
   const minimumCookTime = computed(() => {
-    return shopInfo.pickUpMinimumCookTime || 25;
+    return minimumCookTimeOf(shopInfo, false);
   });
   const minimumDeliveryTime = computed(() => {
-    return shopInfo.deliveryMinimumCookTime || 25;
-  });
-  const daysInAdvance = computed(() => {
-    const tmp = isNull(shopInfo.pickUpDaysInAdvance)
-      ? 3
-      : shopInfo.pickUpDaysInAdvance;
-    return tmp + 1;
+    return minimumCookTimeOf(shopInfo, true);
   });
 
   // just for display
@@ -150,64 +95,41 @@ export const usePickupTime = (
     return null;
   };
 
-  // for public days api.
-  const getAvailableDays = (minimumTime: number) => {
+  const withDisplay = (days: PickupSlotDay[]): AvailableDay[] => {
+    return days.map(({ offset, date, times }) => {
+      return {
+        offset,
+        date,
+        times: times.map((time) => ({ time, display: num2time(time) })),
+      };
+    });
+  };
+  const pickupDaysFor = (minimumTime: number) => {
     if (!shopInfoBusinessDay.value) {
       return []; // it means shopInfo is empty (not yet loaded)
     }
     const now = generalStore.date;
     console.log(generalStore.date); // never delete this line;
-    const today = now.getDay();
-    let suspendUntil = new Date(now);
-    suspendUntil.setMinutes(now.getMinutes() + minimumTime);
-    if (shopInfo.suspendUntil) {
-      const specifiedDate = shopInfo.suspendUntil.toDate();
-      if (specifiedDate > suspendUntil) {
-        suspendUntil = specifiedDate;
-      }
-    }
-    return Array.from(Array(daysInAdvance.value).keys())
-      .filter((offset) => {
-        if (skipToday && skipToday.value && offset === 0) {
-          console.log("skip", skipToday);
-          return false;
-        }
-        return businessDays.value[(today + offset) % 7];
-      })
-      .filter((offset) => {
-        const date = moment(midNight(offset)).format("YYYY-MM-DD");
-        return !temporaryClosure.value.includes(date);
-      })
-      .map((offset) => {
-        const date = midNight(offset);
-        const delta = suspendUntil.getTime() - date.getTime();
-        const times = openSlots.value[(today + offset) % 7].filter(
-          (time: { time: number }) => {
-            if (delta > 0) {
-              return time.time >= Math.ceil(delta / 60000);
-            }
-            return true;
-          },
-        );
-        return { offset, date, times };
-      })
-      .filter((day) => {
-        return day.times.length > 0;
-      });
+    return availablePickupDays({
+      shop: shopInfo,
+      except: exceptData.value,
+      lunchOrDinner,
+      skipToday: Boolean(skipToday && skipToday.value),
+      minimumTime,
+      now,
+      midNightAfter: (offset: number) => startOfDayAfter(new Date(), offset),
+      isHoliday: isJapaneseHoliday,
+    });
+  };
+
+  // for public days api.
+  const getAvailableDays = (minimumTime: number) => {
+    return withDisplay(pickupDaysFor(minimumTime));
   };
   const getAvailableDaysWithLastOrderTime = (minimumTime: number) => {
-    return getAvailableDays(minimumTime).map((a) => {
-      const { offset, date, times } = a;
-      const newTimes = times.filter((b: { time: number }) => {
-        // console.log(b, shopInfo.lastOrderTime);
-        if (shopInfo.lastOrderTime) {
-          // console.log(shopInfo.lastOrderTime, b.time)
-          return shopInfo.lastOrderTime + minimumTime >= b.time;
-        }
-        return true;
-      });
-      return { offset, date, times: newTimes };
-    });
+    return withDisplay(
+      withinLastOrder(pickupDaysFor(minimumTime), shopInfo, minimumTime),
+    );
   };
 
   // for last order
@@ -253,6 +175,7 @@ export const usePickupTime = (
     hasExceptData: boolean;
     hasExceptDay: boolean;
     hasExceptHour: boolean;
+    exceptHoliday: boolean;
     menuAvailableDays: string[];
     exceptHour: MenuData["exceptHour"];
   };
@@ -266,8 +189,12 @@ export const usePickupTime = (
         !isNull(exceptHour) &&
         !isNull(exceptHour?.start) &&
         !isNull(exceptHour?.end);
+      // 曜日の除外だけを数える。祝日の除外は別の行で出す。
       const hasExceptDay =
-        (Object.values(exceptDay || {}) || []).filter((a) => a).length > 0;
+        Object.entries(exceptDay || {}).filter(
+          ([day, excluded]) => day !== HOLIDAY_KEY && excluded,
+        ).length > 0;
+      const exceptHoliday = !!(exceptDay || {})[HOLIDAY_KEY];
       const menuAvailableDays = Object.keys(
         availableBusinessDays.value || {},
       ).reduce<string[]>((arr, day) => {
@@ -281,9 +208,10 @@ export const usePickupTime = (
       }, []);
 
       tmp[key] = {
-        hasExceptData: hasExceptDay || hasExceptHour,
+        hasExceptData: hasExceptDay || hasExceptHour || exceptHoliday,
         hasExceptDay,
         hasExceptHour,
+        exceptHoliday,
         menuAvailableDays,
         exceptHour,
       };

@@ -15,7 +15,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
@@ -159,6 +158,9 @@ const data = {
     current: "Trước khi thay đổi",
     clickAndUpload: "Nhấp vào đây",
     clickAndUploadDetail: "Nhấp vào vùng xám để tải lên (định dạng JPEG)",
+    imageTooLarge:
+      "Ảnh phải có dung lượng tối đa {size}MB. Vui lòng chọn ảnh nhỏ hơn.",
+    imageNotImage: "Vui lòng chọn một tệp ảnh.",
     edit: "Chỉnh sửa",
   },
   currency: {
@@ -322,6 +324,12 @@ const data = {
     notificationConfig: "Cài đặt thông báo",
     moveToLineConfig:
       "Sẽ chuyển đến trang cài đặt thông báo LINE. Đừng quên lưu trang này trước khi chuyển.",
+    invoiceNumber: "Số đăng ký hóa đơn",
+    enterInvoiceNumber: "ví dụ: T1234567890123",
+    invoiceNumberNote:
+      "Số đăng ký của đơn vị phát hành hóa đơn. Không in trên biên lai và PDF nếu chưa đặt.",
+    webPushNotification: "Thông báo đẩy",
+    moveToPushConfig: "Cài đặt Web push",
     openDaysConfig: "Cài đặt ngày/giờ hoạt động",
     lunchOrDinnerToggle: "Tự động chuyển đổi menu trưa/tối",
     lunchOrDinnerNotice:
@@ -357,6 +365,8 @@ const data = {
     availableDayTimeSettings: "Cài đặt thời gian có thể đặt sản phẩm",
     free: "Miễn phí",
     optionsPreview: "Xem trước tùy chọn",
+    showOptionsPreview: "Hiện xem trước tùy chọn",
+    hideOptionsPreview: "Ẩn xem trước tùy chọn",
     priceChange: "Thay đổi giá",
     noPriceChange: "Không",
     tax: "Thuế tiêu thụ",
@@ -390,6 +400,7 @@ const data = {
     category2: "Danh mục 2",
     editCategory2: "Chỉnh sửa danh mục 2",
     exclusionDate: "Ngày loại trừ",
+    holiday: "Ngày lễ",
     exclusionTime: "Thời gian loại trừ",
     showAllMenu: "Tất cả sản phẩm",
     showPublicMenu: "Chỉ công khai",
@@ -511,6 +522,12 @@ const data = {
     temporaryClosureDescription: "Vui lòng chọn ngày rồi nhấn thêm",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Chọn ngày",
+    closedOnHolidays: "Nghỉ ngày lễ",
+    closedOnHolidaysLabel: "Nghỉ vào các ngày lễ",
+    closedOnHolidaysDescription:
+      "Khi bật, không thể nhận hàng vào các ngày lễ của Nhật Bản.",
+    holidayList: "Các ngày lễ (đến hết năm sau)",
+    closedOnHolidaysNotice: "Nghỉ vào các ngày lễ",
     paymentMethod: "Phương thức thanh toán",
     onlinePayment: "Thanh toán trực tuyến",
     onsitePayment: "Thanh toán khi nhận hàng",
@@ -605,6 +622,7 @@ const data = {
     about: "Thông tin nhà hàng",
     limitedSale: "Chỉ bán",
     unavailableTime: "Thời gian không thể giao hàng",
+    unavailableOnHolidays: "Không nhận vào các ngày lễ",
     confirmCart: "Xem giỏ hàng",
     checkout: "Thanh toán",
     orderCounter: "{count} món",
@@ -879,12 +897,9 @@ const data = {
     discountPriceMessage: "Có giảm giá",
     discountPrice: "Số tiền giảm",
     beforeDiscountPrice: "Giá trước giảm",
-    cancelReason: "Lý do hủy",
     productId: "Mã sản phẩm",
     category: "Danh mục",
     categoryId: "ID danh mục",
-    subCategory: "Danh mục phụ",
-    subCategoryId: "ID danh mục phụ",
   },
   editEC: {
     postageList: "Danh sách phí vận chuyển",
@@ -936,7 +951,6 @@ const data = {
     backToDiscounts: "Quay lại danh sách cài đặt giảm giá",
     backToDocument: "Quay lại danh sách tài liệu",
     backToSubaccounts: "Quay lại danh sách tài khoản phụ",
-    backToSmaregi: "Quay lại cài đặt Smaregi",
     addTitle: "Thêm tên nhóm sản phẩm",
     addItem: "Thêm sản phẩm",
     downloadMenu: "Tải xuống tờ rơi",
@@ -993,6 +1007,41 @@ const data = {
     "auth/missing-verification-code": "Chưa nhập mã xác thực SMS",
     "auth/code-expired":
       "Mã xác thực SMS đã hết hạn. Vui lòng gửi lại mã xác thực SMS và nhập lại",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com Thông báo đơn hàng",
+    appShortName: "Thông báo đơn hàng",
+    title: "Đăng ký thiết bị nhận thông báo",
+    installHeading: "Với iPhone hoặc iPad",
+    installStep1: "Chạm nút chia sẻ của Safari",
+    installStep2: 'Chọn "Thêm vào Màn hình chính"',
+    installStep3:
+      'Chạm vào biểu tượng đã thêm vào Màn hình chính để mở màn hình "Đăng ký thiết bị nhận thông báo"',
+    nameLabel: "Tên thiết bị (bắt buộc)",
+    nameHint:
+      "Hiển thị trong danh sách thiết bị trên màn hình quản trị. Hãy nhập tên giúp nhận biết thiết bị này.",
+    namePlaceholder: "ví dụ: iPad ở quầy thu ngân",
+    register: "Nhận thông báo",
+    done: "Đã đăng ký",
+    doneHint: "Thiết bị này sẽ được thông báo khi có đơn hàng mới.",
+    status: {
+      "registered-here": "Thiết bị này đã được đăng ký",
+      used: "URL này đã được dùng. Vui lòng xin URL mới từ quản trị viên.",
+      expired: "URL này đã hết hạn. Vui lòng xin URL mới từ quản trị viên.",
+      "not-found":
+        "URL này không hợp lệ. Vui lòng xin URL mới từ quản trị viên.",
+    },
+    failure: {
+      unconfigured: "Nhà hàng này không sử dụng được thông báo đẩy.",
+      unsupported:
+        "Thiết bị hoặc trình duyệt này không nhận được thông báo đẩy.",
+      denied:
+        "Thông báo đang bị chặn. Vui lòng cho phép trong cài đặt trình duyệt.",
+      dismissed: "Thông báo chưa được cho phép. Vui lòng thử lại.",
+      "no-fid": "Đăng ký không thành công. Vui lòng thử lại sau giây lát.",
+      invite:
+        "URL này đã được dùng hoặc đã hết hạn. Vui lòng liên hệ quản trị viên.",
+    },
   },
   admin: {
     welcomeMessage: "Chào mừng!",
@@ -1108,13 +1157,6 @@ const data = {
         optout: "Không nhận",
       },
     },
-    thirdPartyService: {
-      title: "Kết nối hệ thống",
-      openSmaregi: "Cài đặt kết nối Smaregi",
-      smaregiManual: "Hướng dẫn Smaregi",
-      smaregiAppMarket: "Đến chợ ứng dụng Smaregi",
-      smaregiManualLink: "Cách sử dụng kết nối Smaregi",
-    },
     needEmailVerification: "Vui lòng hoàn tất xác thực email.",
     noteEmailVerification1:
       "Vui lòng kiểm tra email được gửi từ {email} và nhấp URL trong email để hoàn tất xác thực.",
@@ -1142,8 +1184,12 @@ const data = {
         "Trạng thái đăng tin trong danh sách nhà hàng dành cho khách hàng",
       requestWarning:
         "Sau khi cài đặt thanh toán và công khai cửa hàng, vui lòng nộp đơn",
+      requestOptionalNote:
+        "Việc đăng ký đăng tin là tùy chọn. Bạn có thể công khai cửa hàng mà không cần nộp đơn. Nếu nộp đơn, vui lòng công khai cửa hàng trước.",
       requestingWarning:
         "Nếu chưa cài đặt thanh toán và công khai cửa hàng, vui lòng cài đặt",
+      requestingPublicNote:
+        "Nếu cửa hàng của bạn chưa được công khai, cửa hàng sẽ không thể được đăng trong danh sách hoặc được đội ngũ của chúng tôi kiểm tra. Nếu chưa, vui lòng công khai cửa hàng của bạn.",
       notListed: "Chưa đăng tin",
       requestList: "Đăng ký đăng tin",
       waiting: "Đang xin",
@@ -1157,6 +1203,72 @@ const data = {
     forgotPassword: "Quên mật khẩu",
     passwordReset: "Đặt lại mật khẩu",
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
+    timeline: {
+      title: "Lịch sử thông báo",
+      empty: "Chưa có thông báo nào.",
+      failed: "Không thể tải thông báo. Vui lòng kiểm tra quyền truy cập.",
+    },
+    push: {
+      sendFailed: "Lần gửi gần nhất đã thất bại",
+      lastSentAt: "Gửi lần cuối",
+      undelivered:
+        "Thông báo không đến được thiết bị này. Vui lòng đăng ký lại.",
+      rename: "Đổi tên thiết bị",
+      save: "Lưu",
+      delete: "Xoá",
+      registeredAt: "Đã đăng ký",
+      namePlaceholder: "ví dụ: iPad ở quầy thu ngân",
+      devices: "Thiết bị nhận thông báo",
+      empty: "Chưa có thiết bị nào được đăng ký.",
+      addDevice: "Thêm thiết bị",
+      inviteHeading: "Mở URL này trên thiết bị muốn nhận thông báo",
+      inviteHint:
+        'URL này chỉ đăng ký được 1 thiết bị. Để thêm thiết bị thứ hai, hãy nhấn "Thêm thiết bị" lần nữa. URL hết hạn sau 24 giờ. ※ Không chia sẻ URL ở nơi nhiều người có thể xem, như nhóm LINE.',
+      deviceGuideHeading: "Các bước trên thiết bị mở URL này",
+      deviceGuideIos:
+        'iPhone / iPad: Mở bằng Safari, nhấn nút Chia sẻ, chọn "Thêm vào Màn hình chính", rồi mở lại từ biểu tượng vừa thêm. Không thể nhận thông báo từ tab Safari (cần iOS 16.4 trở lên).',
+      deviceGuideAndroid:
+        "Android: Mở bằng Chrome và đăng ký trực tiếp. Thông báo sẽ không đến nếu đã tắt trong cài đặt thiết bị.",
+      deviceGuideDesktop:
+        "Máy tính: Dù đã cho phép thông báo, thông báo vẫn không hiển thị khi trình duyệt bị tắt trong cài đặt thông báo của hệ điều hành, hoặc trong lúc bật chế độ Tập trung.",
+      copy: "Sao chép URL",
+      copied: "Đã sao chép",
+      test: "Gửi thử",
+      testResult: {
+        noTargets: "Không có thiết bị nào bật thông báo.",
+        allSent: "Đã gửi đến {targets} thiết bị.",
+        partlySent:
+          "Đã gửi đến {sent}/{targets} thiết bị. Hãy kiểm tra danh sách các thiết bị chưa nhận được.",
+        failed: "Gửi thử thất bại. Vui lòng thử lại sau.",
+      },
+      deleteConfirm: "Ngừng thông báo tới thiết bị này?",
+    },
+    webpush: {
+      restaurantId: "ID nhà hàng",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Tạm ngừng nhận đơn",
       suspendSettings: "Cài đặt tạm ngừng nhận đơn",
@@ -1180,6 +1292,9 @@ const data = {
       infinityNotificationOn: "Thông báo lại mỗi 1 phút",
       infinityNotificationOff: "Chỉ thông báo khi nhận đơn",
       soundTest: "Thử",
+      webPushDescription:
+        "Thông báo đơn hàng mới đến thiết bị này ngay cả khi đã đóng trang quản trị.",
+      webPushDevices: "Thiết bị nhận thông báo đẩy",
       paymentIsNotCompleted:
         'Lưu ý: Khi nhấn nút "Đã nhận đơn", thanh toán thẻ sẽ được xử lý.',
       cancelButton: "Hủy đơn hàng",
@@ -1299,6 +1414,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "Tên miền chưa được đăng ký trong danh sách trắng.",
         "auth/internal-error": "Mật khẩu không hợp lệ.",
+        "auth/missing-password": "Vui lòng nhập mật khẩu.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
@@ -1376,12 +1492,6 @@ const data = {
       enabled: "Kích hoạt",
       callbackURLCopyToLine:
         "Vui lòng sao chép giá trị này và cài đặt trong LINE.",
-    },
-    smaregi: {
-      index: "Kết nối Smaregi",
-      authenticating: "Đang kết nối",
-      authenticationError: "Kết nối thất bại",
-      smaregiShopList: "Danh sách cửa hàng Smaregi",
     },
   },
   week: {
@@ -1488,6 +1598,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Đã đăng ký",
+      body: 'Để đăng ký tiếp, hãy nhấn "Thêm thiết bị".',
+    },
     paymentMethods: {
       title: "Phương thức thanh toán tại cửa hàng",
       body: 'Chức năng hướng dẫn phương thức thanh toán có thể sử dụng tại cửa hàng cho khách hàng chọn "Thanh toán khi nhận hàng".',
@@ -1517,6 +1631,66 @@ const data = {
     reset: "Đặt lại URL máy chủ",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Nhập T theo sau là 13 chữ số (ký tự nửa chiều rộng)",
+    },
+    itemName: {
+      empty: "Vui lòng nhập tên món",
+    },
+    price: {
+      empty: "Vui lòng nhập giá",
+      invalid: "Vui lòng nhập giá là số nguyên từ 0 trở lên",
+    },
+    restaurantName: {
+      empty: "Vui lòng nhập tên nhà hàng",
+    },
+    ownerName: {
+      empty: "Vui lòng nhập tên người phụ trách",
+    },
+    streetAddress: {
+      empty: "Vui lòng nhập địa chỉ (số nhà và đường)",
+    },
+    city: {
+      empty: "Vui lòng nhập quận/huyện",
+    },
+    state: {
+      empty: "Vui lòng chọn tỉnh",
+    },
+    url: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Vui lòng nhập URL hợp lệ (bắt đầu bằng http:// hoặc https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Thời gian chuẩn bị quá dài (tối đa 7 ngày)",
+      negative: "Thời gian chuẩn bị không được là số âm",
+      notNumbery: "Vui lòng nhập thời gian chuẩn bị dưới dạng số",
+      empty: "Vui lòng nhập thời gian chuẩn bị",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "Cài đặt ngày bắt đầu nhận đặt chỗ không hợp lệ",
+      empty: "Vui lòng chọn ngày bắt đầu nhận đặt chỗ",
+    },
+    restProfilePhoto: {
+      empty: "Vui lòng đặt ảnh hồ sơ",
+    },
+    restCoverPhoto: {
+      empty: "Vui lòng đặt ảnh bìa",
+    },
+    oneInEmpty: "Vui lòng nhập cả thời gian bắt đầu và kết thúc",
+    validBusinessTime: "Thời gian kết thúc phải sau thời gian bắt đầu",
+    noSelect: "Vui lòng đặt giờ mở cửa",
     zip: {
       empty: "Vui lòng nhập mã bưu điện",
       invalidZip: "Vui lòng nhập mã bưu điện 7 chữ số chính xác",
@@ -1526,6 +1700,7 @@ const data = {
     },
     name: {
       empty: "Vui lòng nhập họ tên",
+      length: "Vui lòng nhập tên (ít nhất 3 ký tự).",
     },
     memo: {
       length: "Vui lòng nhập tin nhắn không quá 500 ký tự.",

@@ -1,0 +1,301 @@
+import { describe, it } from "node:test";
+import assert from "node:assert";
+
+import { getOrderItems } from "../../src/utils/utils.ts";
+import { orderInfoFixture } from "../fixtures/orderInfo.ts";
+import { menuFixture } from "../fixtures/menu.ts";
+
+// 注文画面・注文履歴・店舗の注文一覧が出す明細は、ここで組み立てられる。
+// 一行でも落とすと、作られない商品・請求されない商品が出る。
+//
+// menuItems は注文した時点の商品の写し。menuObj はいまのメニュー。値段や商品名は
+// 写しから取る（あとで値段を変えても、確定した注文の額は動かない）。
+const ordered = menuFixture({ itemName: "から揚げ弁当", price: 500 });
+const current = menuFixture({ itemName: "から揚げ弁当（新）", price: 800 });
+
+describe("getOrderItems", () => {
+  const itemsOf = (
+    order: { [key: string]: number[] },
+    options: { [key: string]: string[] },
+    menuItems: { [key: string]: typeof ordered } = { bento: ordered },
+    menuObj: { [key: string]: typeof current } = { bento: current },
+  ) => getOrderItems(orderInfoFixture({ order, options, menuItems }), menuObj);
+
+  it("makes one row per line of the order", () => {
+    const rows = itemsOf({ bento: [2] }, { bento: ["L(+300)"] });
+    assert.strictEqual(rows.length, 1);
+    assert.strictEqual(rows[0].count, 2);
+    assert.strictEqual(rows[0].id, "bento");
+    assert.strictEqual(rows[0].options, "L(+300)");
+  });
+
+  // 同じ商品を違うオプションで頼める。行ごとに数もオプションも別。
+  it("keeps each line of the same item apart", () => {
+    const rows = itemsOf({ bento: [2, 1] }, { bento: ["L(+300)", "S(+100)"] });
+    assert.strictEqual(rows.length, 2);
+    assert.deepStrictEqual(
+      rows.map((row) => row.count),
+      [2, 1],
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => row.options),
+      ["L(+300)", "S(+100)"],
+    );
+  });
+
+  it("covers every item in the order, not just the first", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: [1], beer: [3] },
+        options: { bento: [""], beer: [""] },
+        menuItems: {
+          bento: ordered,
+          beer: menuFixture({ itemName: "ビール" }),
+        },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => row.id),
+      ["bento", "beer"],
+    );
+  });
+
+  // 行を指す目印。編集や取り消しはこれで行を特定するので、番号が文字列であることまで含めて
+  // 揃っていないと別の行に当たる。
+  it("marks each row with the item and its position", () => {
+    const rows = itemsOf({ bento: [1, 1] }, { bento: ["", ""] });
+    assert.deepStrictEqual(rows[0].orderIndex, ["bento", "0"]);
+    assert.deepStrictEqual(rows[1].orderIndex, ["bento", "1"]);
+  });
+
+  // 実際に保存される options は、品目ごとに「行の添字 → その行で選んだオプションの配列」。
+  // Firestore は入れ子の配列を保存できないので、行は配列ではなく添字を鍵にした object で持つ。
+  it("reads the options in the shape they are stored", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: [2, 1] },
+        options: { bento: { 0: ["L(+300)", "辛口"], 1: ["S(+100)"] } },
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [
+        [2, ["L(+300)", "辛口"]],
+        [1, ["S(+100)"]],
+      ],
+    );
+  });
+
+  // 数が配列ではなく数値ひとつで入っている古い注文も読める。
+  it("reads an old order whose count is a single number", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: 2 },
+        options: { bento: ["L(+300)"] },
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options, row.orderIndex]),
+      [[2, ["L(+300)"], ["bento", "0"]]],
+    );
+  });
+
+  it("reads an old order that kept no options", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: 2 },
+        options: {},
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [[2, undefined]],
+    );
+  });
+
+  // 数は数値ひとつなのに、オプションが今の形（行の object）で入っている注文は書かれない。
+  // 来ても object をまるごと 1 行のオプションとして渡さず、オプション無しとして読む。
+  it("reads no options for an old count paired with the current options shape", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: 2 },
+        options: { bento: { 0: ["L(+300)"] } },
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [[2, undefined]],
+    );
+  });
+
+  it("leaves a line without options when its slot is missing", () => {
+    const rows = getOrderItems(
+      orderInfoFixture({
+        order: { bento: [1, 2, 3] },
+        options: { bento: { 0: ["L(+300)"], 2: ["S(+100)"] } },
+        menuItems: { bento: ordered },
+      }),
+      {},
+    );
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.options]),
+      [
+        [1, ["L(+300)"]],
+        [2, undefined],
+        [3, ["S(+100)"]],
+      ],
+    );
+  });
+
+  // 数が 0 の行も行として残す。消すと orderIndex の番号がずれる。
+  it("keeps a line whose count is zero", () => {
+    const rows = itemsOf({ bento: [0, 2] }, { bento: ["", "L(+300)"] });
+    assert.deepStrictEqual(
+      rows.map((row) => [row.count, row.orderIndex]),
+      [
+        [0, ["bento", "0"]],
+        [2, ["bento", "1"]],
+      ],
+    );
+  });
+
+  it("ignores options for an item that is not in the order", () => {
+    const rows = itemsOf({ bento: [1] }, { bento: [""], beer: ["大"] });
+    assert.deepStrictEqual(
+      rows.map((row) => row.id),
+      ["bento"],
+    );
+  });
+
+  // 今の形の注文で、品目の options がまるごと無いと落ちる。orderCreated は注文の全品目に
+  // options を書くので起きないはずの形で、落ちるのは今の挙動をそのまま記録したもの。
+  it("throws when a current-shape order has no options for an item", () => {
+    assert.throws(
+      () =>
+        getOrderItems(
+          orderInfoFixture({
+            order: { bento: [1] },
+            options: {},
+            menuItems: { bento: ordered },
+          }),
+          {},
+        ),
+      TypeError,
+    );
+  });
+
+  it("takes the name and the price from the order, not from the menu today", () => {
+    const rows = itemsOf({ bento: [1] }, { bento: [""] });
+    assert.strictEqual(rows[0].item.itemName, "から揚げ弁当");
+    assert.strictEqual(rows[0].item.price, 500);
+  });
+
+  // 写しが無い古い注文は、いまのメニューで補う。
+  it("falls back to today's menu when the order kept no copy", () => {
+    const rows = itemsOf({ bento: [1] }, { bento: [""] }, { other: ordered });
+    assert.strictEqual(rows[0].item.itemName, "から揚げ弁当（新）");
+  });
+
+  it("still makes the row when neither has the item", () => {
+    const rows = itemsOf(
+      { bento: [1] },
+      { bento: [""] },
+      { other: ordered },
+      {},
+    );
+    assert.strictEqual(rows.length, 1);
+    assert.strictEqual(rows[0].item.itemName, undefined);
+    assert.strictEqual(rows[0].count, 1);
+  });
+
+  // 写真だけは逆で、いまのメニューから取る。店舗が写真を差し替えたら過去の注文にも反映される。
+  it("takes the photo from today's menu even when the order kept a copy", () => {
+    const rows = itemsOf(
+      { bento: [1] },
+      { bento: [""] },
+      { bento: ordered },
+      {
+        bento: menuFixture({ itemPhoto: "https://example.com/new.jpg" }),
+      },
+    );
+    assert.strictEqual(rows[0].item.itemPhoto, "https://example.com/new.jpg");
+  });
+
+  it("makes no rows for an order with nothing in it", () => {
+    assert.deepStrictEqual(itemsOf({}, {}), []);
+  });
+
+  it("makes no rows for an order that kept no copy of the menu at all", () => {
+    assert.deepStrictEqual(
+      getOrderItems(
+        orderInfoFixture({ order: { bento: [1] }, menuItems: undefined }),
+        { bento: current },
+      ),
+      [],
+    );
+  });
+
+  it("makes no rows when the copy of the menu is null", () => {
+    assert.deepStrictEqual(
+      getOrderItems(
+        orderInfoFixture({
+          order: { bento: [1] },
+          menuItems: JSON.parse("null"),
+        }),
+        { bento: current },
+      ),
+      [],
+    );
+  });
+
+  it("makes no rows when the order itself is missing", () => {
+    assert.deepStrictEqual(
+      getOrderItems(orderInfoFixture({ order: undefined }), { bento: current }),
+      [],
+    );
+  });
+
+  // 明細の v-for の鍵はこの orderIndex から作る。重複すると Vue が別の行の DOM を
+  // 使い回すので、商品 id に区切り文字や数字が混ざっても衝突しないことを確かめる。
+  it("orderIndex は行ごとに必ず違う", () => {
+    const menuIds = ["bento", "bento-1", "bento-12", "1", "1-2", "a-b-c"];
+    const lineCounts = [1, 2, 3];
+    const menuItems = Object.fromEntries(menuIds.map((id) => [id, ordered]));
+    const menuObj = Object.fromEntries(menuIds.map((id) => [id, current]));
+
+    const checkOne = (lines: number[]) => {
+      const order: { [key: string]: number[] } = {};
+      const options: { [key: string]: string[] } = {};
+      menuIds.forEach((id, index) => {
+        const count = lines[index];
+        order[id] = Array.from({ length: count }, (_unused, n) => n + 1);
+        options[id] = Array.from({ length: count }, (_unused, n) => `opt${n}`);
+      });
+      const keys = itemsOf(order, options, menuItems, menuObj).map((row) =>
+        row.orderIndex.join("-"),
+      );
+      assert.strictEqual(new Set(keys).size, keys.length);
+    };
+
+    let checked = 0;
+    const walk = (lines: number[]) => {
+      if (lines.length === menuIds.length) {
+        checkOne(lines);
+        checked += 1;
+        return;
+      }
+      lineCounts.forEach((count) => walk([...lines, count]));
+    };
+    walk([]);
+    assert.strictEqual(checked, lineCounts.length ** menuIds.length);
+  });
+});

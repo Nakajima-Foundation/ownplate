@@ -54,6 +54,7 @@ import MarkdownIt from "markdown-it";
 import newsList from "@/app/admin/News/data";
 import NotFound from "@/components/NotFound.vue";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { defaultTitle } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
@@ -63,7 +64,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const newsId = route.params.newsId;
+    const newsId = routeParamOf(route.params.newsId);
     const news = newsList.find((element) => element.date === newsId);
 
     useHead(() => ({

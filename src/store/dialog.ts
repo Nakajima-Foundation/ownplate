@@ -2,7 +2,9 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 
 interface DialogAlertData {
-  title: string;
+  // 見出しは無くてよい。DialogBox が v-if で出し分けており、確認だけのダイアログは
+  // code だけで呼ばれる（PaymentSection の Stripe 連携解除など）。
+  title?: string;
   code: string;
   callback: () => void;
 }
@@ -10,6 +12,8 @@ interface DialogErrorData {
   message?: string;
   message2?: string;
   code?: string;
+  // DialogBox が Sentry へ渡すもの。捕まえた例外をそのまま入れる。
+  error?: unknown;
 }
 interface DialogTipsData {
   key: string;

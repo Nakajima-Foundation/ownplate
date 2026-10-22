@@ -42,7 +42,7 @@
             :value="day.index"
             :key="day.index"
           >
-            {{ moment(day.date).format("YYYY-MM") }}
+            {{ formatDay(day.date, "YYYY-MM") }}
           </option>
         </select>
       </div>
@@ -64,7 +64,11 @@
           <!-- Table Body -->
           <tr v-for="order in orders" :key="order.id" class="text-sm">
             <td class="p-2">
-              <div class="text-right">{{ $d(order.timeConfirmed) }}</div>
+              <div class="text-right">
+                {{
+                  $d(order.timeConfirmed.toDate(), { timeZone: shopTimeZone })
+                }}
+              </div>
             </td>
             <td class="p-2">
               <div class="text-right">
@@ -199,6 +203,7 @@
 
 <script lang="ts">
 import { db } from "@/lib/firebase/firebase9";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import {
   query,
   collection,
@@ -208,8 +213,14 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 
-import { defineComponent, ref, computed, watch, onUnmounted } from "vue";
-import moment from "moment";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+  PropType,
+} from "vue";
 
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
@@ -219,7 +230,11 @@ import NotFound from "@/components/NotFound.vue";
 
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
-import { midNightOfMonth } from "@/utils/dateUtils";
+import {
+  formatDay,
+  SHOP_TIME_ZONE,
+  startOfMonthAfter,
+} from "@/utils/shopCalendar";
 import { revenueCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
@@ -232,7 +247,7 @@ import {
   defaultTitle,
 } from "@/utils/utils";
 
-import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
+import { order2ReportData, OrderInfoData, ReportRow } from "@/models/orderInfo";
 
 import { checkShopOwner } from "@/utils/userPermission";
 import { useI18n } from "vue-i18n";
@@ -248,13 +263,13 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
   setup(props) {
     const { t } = useI18n({ useScope: "global" });
-    const orders = ref<OrderInfoData[]>([]);
+    const orders = ref<ReportRow[]>([]);
     const total = ref({
       food: {
         revenue: 0,
@@ -299,7 +314,7 @@ export default defineComponent({
     const tableData = computed(() => {
       return orders.value.map((order: OrderInfoData) => {
         return {
-          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          date: formatDay(order.timeConfirmed.toDate(), "YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
           restaurantName: props.shopInfo.restaurantName,
@@ -313,7 +328,7 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce(
+          totalCount: Object.values(order.order).reduce<number>(
             (count, currentOrder) => {
               return count + arrayOrNumSum(currentOrder);
             },
@@ -328,15 +343,13 @@ export default defineComponent({
     });
     const lastSeveralMonths = computed(() => {
       return Array.from(Array(12).keys()).map((index) => {
-        const date = midNightOfMonth(-index);
+        const date = startOfMonthAfter(new Date(), -index);
         return { index, date };
       });
     });
     const fileNameSummary = computed(() => {
       return [
-        moment(lastSeveralMonths.value[monthIndex.value].date).format(
-          "YYYY-MM",
-        ),
+        formatDay(lastSeveralMonths.value[monthIndex.value].date, "YYYY-MM"),
         "revenue",
         props.shopInfo.restaurantId,
         "summary",
@@ -344,9 +357,7 @@ export default defineComponent({
     });
     const fileNameDetail = computed(() => {
       return [
-        moment(lastSeveralMonths.value[monthIndex.value].date).format(
-          "YYYY-MM",
-        ),
+        formatDay(lastSeveralMonths.value[monthIndex.value].date, "YYYY-MM"),
         "revenue",
         props.shopInfo.restaurantId,
         "detail",
@@ -378,10 +389,8 @@ export default defineComponent({
         (snapshot) => {
           const serviceTaxRate = props.shopInfo.alcoholTax / 100;
           orders.value = snapshot.docs
-            .map(doc2data("order"))
-            .map((order) =>
-              order2ReportData(order as OrderInfoData, serviceTaxRate),
-            );
+            .map(doc2data<OrderInfoData>("order"))
+            .map((order) => order2ReportData(order, serviceTaxRate));
           total.value = orders.value.reduce(
             (resultTotal, order) => {
               const accounting = order.accounting;
@@ -431,6 +440,7 @@ export default defineComponent({
       updateQuery();
     });
     return {
+      shopTimeZone: SHOP_TIME_ZONE,
       orders,
       total,
       monthIndex,
@@ -449,7 +459,7 @@ export default defineComponent({
 
       notFound: false,
 
-      moment,
+      formatDay,
       resizedProfileImage,
     };
   },

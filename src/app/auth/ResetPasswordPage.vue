@@ -34,7 +34,11 @@
 
         <!-- Submit Button -->
         <div class="mt-2 text-center">
-          <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
+          <button
+            type="button"
+            @click="handleCancel"
+            class="mr-4 mb-2 cursor-pointer"
+          >
             <div
               class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
             >
@@ -45,7 +49,7 @@
           </button>
 
           <t-submit
-            :isDisabled="Object.keys(errors).length > 0"
+            :isDisabled="submitting || Object.keys(errors).length > 0"
             class="h-12 w-32 font-bold text-white shadow-sm"
           >
             {{ $t("button.next") }}
@@ -66,11 +70,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
 import isEmail from "validator/lib/isEmail";
 import { auth } from "@/lib/firebase/firebase9";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { defaultTitle } from "@/utils/utils";
+import { defaultTitle, errorCode } from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -80,7 +85,7 @@ export default defineComponent({
 
     const email = ref("");
     let badEmail = "---invalid---";
-    const apiError = ref(null);
+    const apiError = ref<string | null>(null);
     const emailSent = ref(false);
     const submitted = ref(false);
 
@@ -106,9 +111,14 @@ export default defineComponent({
     const handleCancel = () => {
       router.push("/admin/user/signin");
     };
+    // ボタンの無効化だけでは素早いダブルクリックや Enter の連打が通るので、ここでも止める。
+    const submitting = ref(false);
     const handleNext = () => {
       submitted.value = true;
       if (Object.keys(errors.value).length > 0) {
+        return;
+      }
+      if (!beginSubmit(submitting)) {
         return;
       }
       const options = { url: window.location.href.replace(/reset$/, "signin") };
@@ -118,20 +128,25 @@ export default defineComponent({
           console.log("success");
           emailSent.value = true;
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           console.error("reset", error);
-          if (error.code === "auth/user-not-found") {
+          const code = errorCode(error);
+          if (code === "auth/user-not-found") {
             badEmail = email.value;
           } else {
             badEmail = "---Invalid---";
-            apiError.value = error.code;
+            apiError.value = code ?? null;
           }
+        })
+        .finally(() => {
+          submitting.value = false;
         });
     };
     return {
       handleNext,
       handleCancel,
       errors,
+      submitting,
 
       email,
       emailSent,

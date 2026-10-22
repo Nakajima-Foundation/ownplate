@@ -12,7 +12,7 @@
         :type="type"
         :placeholder="$t(placeholder)"
         @update:modelValue="input"
-        @input="input($event.target.value)"
+        @input="input(inputValueOf($event))"
         :maxlength="maxlength"
         class="input w-full rounded border bg-white px-3 py-2"
         :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
@@ -24,17 +24,21 @@
         :type="type"
         :placeholder="$t(placeholder)"
         @update:modelValue="input"
-        @input="input($event.target.value)"
+        @input="input(inputValueOf($event))"
         :maxlength="maxlength"
         class="input w-full rounded border bg-white px-3 py-2"
         :class="error.length > 0 ? 'border-red-500' : 'border-gray-300'"
       />
+      <p v-if="error.length > 0" class="mt-1 text-sm font-bold text-red-700">
+        {{ $t(error[0]) }}
+      </p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { inputValueOf } from "@/utils/domEvent";
 import { useDialogStore } from "@/store/dialog";
 
 export default defineComponent({
@@ -60,18 +64,18 @@ export default defineComponent({
     },
     placeholder: {
       type: String,
-      required: false,
+      required: true,
     },
     maxlength: {
       type: Number,
       required: true,
     },
     error: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
     modelValue: {
-      type: String,
+      type: String as PropType<string | undefined>,
       required: true,
     },
   },
@@ -87,6 +91,7 @@ export default defineComponent({
       });
     };
     return {
+      inputValueOf,
       input,
       open,
     };

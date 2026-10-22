@@ -1,7 +1,13 @@
 import { ref, onUnmounted, computed, Ref } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { query, onSnapshot, collection, where } from "firebase/firestore";
+import {
+  query,
+  onSnapshot,
+  collection,
+  where,
+  type Unsubscribe,
+} from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
 import { MenuData, TitleData } from "@/models/menu";
@@ -9,7 +15,7 @@ import { MenuData, TitleData } from "@/models/menu";
 export const useTitles = (restaurantId: Ref) => {
   const titles = ref<TitleData[]>([]);
 
-  const titleDetacher = ref();
+  const titleDetacher = ref<Unsubscribe>();
   const detacheTitle = () => {
     if (titleDetacher.value) {
       titleDetacher.value();
@@ -28,7 +34,7 @@ export const useTitles = (restaurantId: Ref) => {
       ),
       (title) => {
         if (!title.empty) {
-          titles.value = title.docs.map(doc2data("title"));
+          titles.value = title.docs.map(doc2data<TitleData>("title"));
         }
       },
     );
@@ -46,7 +52,7 @@ export const useTitles = (restaurantId: Ref) => {
 
 export const useMenu = (restaurantId: Ref<string>) => {
   const menuCache = ref<MenuData[]>([]);
-  const menuDetacher = ref();
+  const menuDetacher = ref<Unsubscribe>();
 
   const menus = computed(() => {
     return menuCache.value;
@@ -81,7 +87,7 @@ export const useMenu = (restaurantId: Ref<string>) => {
             const data = a.data();
             return data.validatedFlag === undefined || data.validatedFlag;
           })
-          .map(doc2data("menu")) as MenuData[];
+          .map(doc2data<MenuData>("menu"));
         menuCache.value = ret;
         if (callback) {
           callback();

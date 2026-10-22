@@ -3,6 +3,8 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "bundler",
@@ -12,7 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "types": ["vite/client", "@types/gtag.js"],
+    "types": ["vite/client", "@types/gtag.js", "google.maps"],
     "paths": {
       "@/*": ["./src/*"]
     },
@@ -21,9 +23,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/**/*.vue"
   ],
   "exclude": ["node_modules"]
 }

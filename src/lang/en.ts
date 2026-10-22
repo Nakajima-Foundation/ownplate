@@ -16,7 +16,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "おもちかえり.com",
   },
   pageTitle: {
@@ -161,6 +160,9 @@ const data = {
     current: "Current",
     clickAndUpload: "Click and Upload",
     clickAndUploadDetail: "Click gray area to upload image(JPEG only)",
+    imageTooLarge:
+      "Images must be {size}MB or smaller. Please choose a smaller image.",
+    imageNotImage: "Please choose an image file.",
     edit: "Edit",
   },
   currency: {
@@ -317,6 +319,12 @@ const data = {
     notificationConfig: "Notification settings",
     moveToLineConfig:
       "Go to the LINE notification settings screen. Don't forget to save this page before moving.",
+    invoiceNumber: "Invoice registration number",
+    enterInvoiceNumber: "e.g. T1234567890123",
+    invoiceNumberNote:
+      "Qualified invoice issuer registration number. Left off the receipt and PDF when unset.",
+    webPushNotification: "Push notifications",
+    moveToPushConfig: "Web push settings",
     openDaysConfig: "Business date and time setting",
     lunchOrDinnerToggle: "Automatic lunch/dinner switch",
     lunchOrDinnerNotice:
@@ -354,6 +362,8 @@ const data = {
     availableDayTimeSettings: "Product orderable time setting",
     free: "Free",
     optionsPreview: "Options Preview",
+    showOptionsPreview: "Show Options Preview",
+    hideOptionsPreview: "Hide Options Preview",
     priceChange: "Price Change",
     noPriceChange: "No Change",
     tax: "Tax",
@@ -388,6 +398,7 @@ const data = {
     category2: "Category 2",
     editCategory2: "Edit Category 2",
     exclusionDate: "Exclusion Date",
+    holiday: "Holidays",
     exclusionTime: "Exclusion Time",
     showAllMenu: "All Items",
     showPublicMenu: "Published Items",
@@ -509,6 +520,12 @@ const data = {
     temporaryClosureDescription: "Please select a date and then press Add",
     temporaryClosureOkay: "OK",
     temporaryClosureSelect: "Select a date",
+    closedOnHolidays: "Closed on Holidays",
+    closedOnHolidaysLabel: "Closed on public holidays",
+    closedOnHolidaysDescription:
+      "When on, orders cannot be picked up on Japanese public holidays.",
+    holidayList: "Public holidays (through the end of next year)",
+    closedOnHolidaysNotice: "Closed on public holidays",
     paymentMethod: "Payment Method",
     onlinePayment: "Online Payment",
     onsitePayment: "On Site Payment",
@@ -604,6 +621,7 @@ const data = {
     about: "About",
     limitedSale: "Limited sale on the day of the week",
     unavailableTime: "Unavailable Time",
+    unavailableOnHolidays: "Not available on public holidays",
     confirmCart: "Confirm Cart",
     checkout: "Checkout",
     orderCounter: "{count} item | {count} items",
@@ -876,12 +894,9 @@ const data = {
     discountPriceMessage: "There is a discount",
     discountPrice: "Discount Price",
     beforeDiscountPrice: "Before Discount Price",
-    cancelReason: "Cancel Reason",
     productId: "Product Id",
     category: "Category",
     categoryId: "Category Id",
-    subCategory: "SubCategory",
-    subCategoryId: "SubCategory Id",
   },
   editEC: {
     postageList: "Shipping list",
@@ -935,7 +950,6 @@ const data = {
     backToDiscounts: "View Promotions",
     backToDocument: "View Documents",
     backToSubaccounts: "View Subaccounts",
-    backToSmaregi: "View Smaregi",
     addTitle: "Add Group Title",
     addItem: "Add Item",
     downloadMenu: "Download menu",
@@ -991,6 +1005,41 @@ const data = {
     "auth/missing-verification-code": "SMS verification code is missing.",
     "auth/code-expired":
       "The SMS verification code has expired. Please resend the SMS verification code and enter it again",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com Order Alerts",
+    appShortName: "Order Alerts",
+    title: "Register a device for notifications",
+    installHeading: "On iPhone or iPad",
+    installStep1: "Tap the Safari share button",
+    installStep2: 'Choose "Add to Home Screen"',
+    installStep3:
+      'Tap the icon added to your Home Screen to open the "Register a device for notifications" screen',
+    nameLabel: "Device name (required)",
+    nameHint:
+      "Shown in the device list on the admin screen. Enter a name that identifies this device.",
+    namePlaceholder: "e.g. iPad at the register",
+    register: "Receive notifications",
+    done: "Registered",
+    doneHint: "This device will be notified when a new order arrives.",
+    status: {
+      "registered-here": "This device is already registered",
+      used: "This URL has already been used. Please ask your administrator for a new one.",
+      expired:
+        "This URL has expired. Please ask your administrator for a new one.",
+      "not-found":
+        "This URL is not valid. Please ask your administrator for a new one.",
+    },
+    failure: {
+      unconfigured: "Push notifications are not available for this restaurant.",
+      unsupported: "This device or browser cannot receive push notifications.",
+      denied:
+        "Notifications are blocked. Please allow them in your browser settings.",
+      dismissed: "Notifications were not allowed. Please try again.",
+      "no-fid": "Registration failed. Please try again in a moment.",
+      invite:
+        "This URL has already been used or has expired. Please ask your administrator for a new one.",
+    },
   },
   admin: {
     welcomeMessage: "Welcome!",
@@ -1104,13 +1153,6 @@ const data = {
         optout: "Don't Receive",
       },
     },
-    thirdPartyService: {
-      title: "Third Party Service",
-      openSmaregi: "Open Smaregi",
-      smaregiManual: "Smaregi Manual",
-      smaregiAppMarket: "Go to Smaregi App Market",
-      smaregiManualLink: "How to use Smaregi",
-    },
     needEmailVerification:
       "Please complete the verification of your e-mail address.",
     noteEmailVerification1:
@@ -1138,8 +1180,12 @@ const data = {
       status: "Restaurant Directory",
       requestWarning:
         "Please apply after setting up payment and opening the restaurant to the public.",
+      requestOptionalNote:
+        "Listing your restaurant is optional. You can open your restaurant to the public without applying. If you do apply, please open your restaurant to the public first.",
       requestingWarning:
         "Please set up your payment settings and store listing if you have not already done so.",
+      requestingPublicNote:
+        "If your restaurant is not open to the public, it cannot be listed in the directory or reviewed by our team. Please open your restaurant to the public if you have not done so.",
       notListed: "Not Listed",
       requestList: "Request to be Listed",
       waiting: "Waiting for Approval",
@@ -1153,6 +1199,73 @@ const data = {
     forgotPassword: "Forgot Password？",
     passwordReset: "Reset Password",
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
+    timeline: {
+      title: "Notification history",
+      empty: "No notifications yet.",
+      failed: "Could not load notifications. Please check your permissions.",
+    },
+    push: {
+      sendFailed: "The most recent send failed",
+      lastSentAt: "Last sent",
+      undelivered:
+        "Notifications are not reaching this device. Please register it again.",
+      rename: "Rename device",
+      save: "Save",
+      delete: "Delete",
+      registeredAt: "Registered",
+      namePlaceholder: "e.g. iPad at the register",
+      devices: "Devices to notify",
+      empty: "No device has been registered yet.",
+      addDevice: "Add a device",
+      inviteHeading:
+        "Open this URL on the device that should receive notifications",
+      inviteHint:
+        'This URL can register only one device. To add a second device, press "Add a device" again. The URL expires in 24 hours. * Do not share the URL where many people can see it, such as a LINE group.',
+      deviceGuideHeading: "Steps on the device that opens this URL",
+      deviceGuideIos:
+        'iPhone / iPad: Open it in Safari, tap Share, choose "Add to Home Screen", then reopen from the new icon. Notifications cannot be received from a Safari tab (iOS 16.4 or later required).',
+      deviceGuideAndroid:
+        "Android: Open it in Chrome and register as is. Notifications will not arrive if they are turned off in the device settings.",
+      deviceGuideDesktop:
+        "Computer: Even when notifications are allowed, they are not shown while the browser is off in the OS notification settings, or while Focus mode is on.",
+      copy: "Copy URL",
+      copied: "Copied",
+      test: "Send a test",
+      testResult: {
+        noTargets: "No devices have notifications turned on.",
+        allSent: "Sent to {targets} device(s).",
+        partlySent:
+          "Sent to {sent} of {targets} devices. Check the list for devices that did not receive it.",
+        failed: "The test failed to send. Please try again later.",
+      },
+      deleteConfirm: "Stop notifying this device?",
+    },
+    webpush: {
+      restaurantId: "Restaurant ID",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "Suspend",
       suspendSettings: "Suspension Settings",
@@ -1176,6 +1289,9 @@ const data = {
       infinityNotificationOn: "Remind Every Minute",
       infinityNotificationOff: "Notify One Time",
       soundTest: "Test",
+      webPushDescription:
+        "Notifies this device of new orders even when the admin page is closed.",
+      webPushDevices: "Push notification devices",
       paymentIsNotCompleted:
         "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       cancelButton: "Cancel this order",
@@ -1294,6 +1410,7 @@ const data = {
           "The email or the password is invalid.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
         "auth/internal-error": "Password is invalid.",
+        "auth/missing-password": "Please enter your password.",
         "auth/invalid-credential": "Email or Password is invalid.",
       },
     },
@@ -1372,12 +1489,6 @@ const data = {
       showBelow: "it's at the bottom of the settings",
       enabled: "Enabled",
       callbackURLCopyToLine: "Copy this value and set it on the LINE side.",
-    },
-    smaregi: {
-      index: "Smaregi",
-      authenticating: "Authenticating",
-      authenticationError: "Faild Authentication",
-      smaregiShopList: "Smaregi store list",
     },
   },
   week: {
@@ -1484,6 +1595,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "Registered",
+      body: 'To register another device, press "Add a device".',
+    },
     paymentMethods: {
       title: "Payment Methods",
       body: "This function provides information on payment methods available at the store for customers who have selected 'On Site Payment'",
@@ -1513,6 +1628,66 @@ const data = {
     reset: "Reset Server URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "Enter T followed by 13 digits (half-width characters)",
+    },
+    itemName: {
+      empty: "Please enter the item name",
+    },
+    price: {
+      empty: "Please enter the price",
+      invalid: "Please enter a whole number of 0 or more for the price",
+    },
+    restaurantName: {
+      empty: "Please enter the restaurant name",
+    },
+    ownerName: {
+      empty: "Please enter the owner's name",
+    },
+    streetAddress: {
+      empty: "Please enter the street address",
+    },
+    city: {
+      empty: "Please enter the city",
+    },
+    state: {
+      empty: "Please select the prefecture",
+    },
+    url: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    lineUrl: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    instagramUrl: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    uberEatsUrl: {
+      invalidUrl:
+        "Please enter a valid URL (starting with http:// or https://)",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "Preparation time is too long (up to 7 days)",
+      negative: "Preparation time cannot be negative",
+      notNumbery: "Please enter the preparation time as a number",
+      empty: "Please enter the preparation time",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "The reservation start day setting is invalid",
+      empty: "Please select the reservation start day",
+    },
+    restProfilePhoto: {
+      empty: "Please set a profile photo",
+    },
+    restCoverPhoto: {
+      empty: "Please set a cover photo",
+    },
+    oneInEmpty: "Please enter both the start and end times",
+    validBusinessTime: "The end time must be later than the start time",
+    noSelect: "Please set the business hours",
     zip: {
       empty: "Please enter your zip code",
       invalidZip: "Please enter your valid zip code",
@@ -1522,6 +1697,7 @@ const data = {
     },
     name: {
       empty: "Please enter your full name",
+      length: "Please enter your name (at least 3 characters).",
     },
     memo: {
       length: "Please enter your message within 500 characters.",

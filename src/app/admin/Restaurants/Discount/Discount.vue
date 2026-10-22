@@ -113,7 +113,7 @@
           ~
           <DateTimePicker
             v-model="termToDate"
-            :min-date="new Date()"
+            :min-date="termFromDate"
             :placeholder="$t('shopInfo.temporaryClosureSelect')"
             class="ml-4 lg:w-96"
           />
@@ -235,7 +235,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { db } from "@/lib/firebase/firebase9";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -253,10 +254,12 @@ import {
   promotionPaymentRestrictionsSelect,
 } from "@/config/constant";
 
-import { getPromotion, getPromotionDocumentPath } from "@/utils/promotion";
+import { getPromotion } from "@/utils/promotion";
+import { getPromotionDocumentPath } from "@/utils/promotionRules";
 import { PromotionData } from "@/models/promotion";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useAdminUids, notFoundResponse } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -267,14 +270,14 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
   setup(props) {
     const route = useRoute();
     const router = useRouter();
-    const discountId = route.params.discountId as string;
+    const discountId = routeParamOf(route.params.discountId);
 
     const id = props.shopInfo.restaurantId;
     const promotion = ref<PromotionData | null>(null);
@@ -290,7 +293,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    getPromotion(id as string, discountId).then((data) => {
+    getPromotion(id, discountId).then((data) => {
       promotion.value = data;
       termFromDate.value = data.termFrom.toDate();
       termToDate.value = data.termTo.toDate();
@@ -324,7 +327,7 @@ export default defineComponent({
         termFrom: Timestamp.fromDate(termFromDate.value),
         termTo: Timestamp.fromDate(termToDate.value),
       };
-      const path = getPromotionDocumentPath(id as string, discountId);
+      const path = getPromotionDocumentPath(id, discountId);
       await updateDoc(doc(db, path), updateData);
 
       back();

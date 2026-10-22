@@ -35,7 +35,8 @@
 
       <!-- Sign In Card -->
       <div class="mt-2 rounded-lg bg-white p-6 shadow-sm">
-        <form @submit.prevent="onSignin">
+        <!-- ブラウザの email 検証は登録時の検証より狭く、既存のアカウントを締め出しうる -->
+        <form novalidate @submit.prevent="onSignin">
           <div class="text-xl font-bold text-black/30">
             {{ $t("admin.pleaseSignIn") }}
           </div>
@@ -103,7 +104,11 @@
 
           <!-- Submit Button -->
           <div class="mt-2 text-center">
-            <button @click="handleCancel" class="mr-4 mb-2 cursor-pointer">
+            <button
+              type="button"
+              @click="handleCancel"
+              class="mr-4 mb-2 cursor-pointer"
+            >
               <div
                 class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-black/5"
               >
@@ -112,9 +117,12 @@
                 </div>
               </div>
             </button>
-            <t-button @click="onSignin" class="h-12 w-32 font-bold text-white">
+            <t-submit
+              :isDisabled="submitting"
+              class="h-12 w-32 font-bold text-white"
+            >
               {{ $t("button.next") }}
-            </t-button>
+            </t-submit>
           </div>
 
           <!-- Forgot Password -->
@@ -155,13 +163,20 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
+import { beginSubmit } from "../../utils/beginSubmit";
+import { signinErrorField } from "../../utils/signinErrorField";
 import { auth } from "@/lib/firebase/firebase9";
 import {
   signInWithEmailAndPassword,
   MultiFactorResolver,
   getMultiFactorResolver,
 } from "firebase/auth";
-import { useUserData, defaultTitle } from "@/utils/utils";
+import {
+  useUserData,
+  defaultTitle,
+  errorCode,
+  errorMessage,
+} from "@/utils/utils";
 
 import { useRoute, useRouter } from "vue-router";
 import { useGeneralStore } from "@/store";
@@ -180,7 +195,10 @@ export default defineComponent({
 
     const email = ref("");
     const password = ref("");
-    const errors = ref({});
+    // 欄ごとの文面。どの欄になるかは signinErrorField が決めるので、そこから型を取る。
+    const errors = ref<
+      Partial<Record<ReturnType<typeof signinErrorField>, string[]>>
+    >({});
     const showTotpVerification = ref(false);
     const mfaResolver = ref<MultiFactorResolver | null>(null);
 
@@ -231,19 +249,29 @@ export default defineComponent({
       generalStore.setLoading(false);
     };
 
+    // 読み込み中の覆いはマウスしか止めないので、Enter の連打もここで止める。
+    const submitting = ref(false);
     const onSignin = () => {
+      if (!beginSubmit(submitting)) {
+        return;
+      }
       generalStore.setLoading(true);
       errors.value = {};
       signInWithEmailAndPassword(auth, email.value, password.value)
         .then(() => {
+          // 成功時は戻さない。画面の遷移は user の監視から遅れて起き、その間に再送できてしまう。
           console.log("onSignin success");
           generalStore.setLoading(false);
         })
+        // 引数に型を付けない。下の getMultiFactorResolver が Firebase の誤りを
+        // そのまま要求するので、unknown にすると渡せなくなる。読むほうだけ通す。
         .catch((error) => {
-          console.log("onSignin failed", error.code, error.message);
+          submitting.value = false;
+          const code = errorCode(error);
+          console.log("onSignin failed", code, errorMessage(error));
 
           // Check if MFA is required
-          if (error.code === "auth/multi-factor-auth-required") {
+          if (code === "auth/multi-factor-auth-required") {
             // Get the multi-factor resolver
             mfaResolver.value = getMultiFactorResolver(auth, error);
             showTotpVerification.value = true;
@@ -251,15 +279,9 @@ export default defineComponent({
             return;
           }
 
-          const errorCode = "admin.error.code." + error.code;
-          if (
-            error.code === "auth/wrong-password" ||
-            error.code === "auth/internal-error"
-          ) {
-            errors.value = { password: [errorCode] };
-          } else {
-            errors.value = { email: [errorCode] };
-          }
+          errors.value = {
+            [signinErrorField(code ?? "")]: ["admin.error.code." + code],
+          };
           generalStore.setLoading(false);
         });
     };
@@ -267,6 +289,7 @@ export default defineComponent({
       email,
       password,
       errors,
+      submitting,
       showTotpVerification,
       mfaResolver,
 

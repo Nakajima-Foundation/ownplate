@@ -15,7 +15,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
@@ -156,6 +155,8 @@ const data = {
     current: "变更前",
     clickAndUpload: "点击此处",
     clickAndUploadDetail: "点击灰色部分上传 (JPEG 格式)",
+    imageTooLarge: "图片大小不能超过 {size}MB，请选择更小的图片。",
+    imageNotImage: "请选择图片文件。",
     edit: "编辑",
   },
   currency: {
@@ -305,6 +306,12 @@ const data = {
     orderConfirmViewConfig: "订单确认界面设置",
     notificationConfig: "通知设置",
     moveToLineConfig: "跳转至 LINE 通知设置界面。跳转前请记得保存此页。",
+    invoiceNumber: "发票登记号",
+    enterInvoiceNumber: "例如：T1234567890123",
+    invoiceNumberNote:
+      "合格发票开具者登记号。未设置时不会打印在小票和 PDF 上。",
+    webPushNotification: "推送通知",
+    moveToPushConfig: "Web 推送设置",
     openDaysConfig: "营业日时设置",
     lunchOrDinnerToggle: "午餐/晚餐自动切换",
     lunchOrDinnerNotice:
@@ -339,6 +346,8 @@ const data = {
     availableDayTimeSettings: "商品可下单时间设置",
     free: "免费",
     optionsPreview: "选项预览",
+    showOptionsPreview: "显示选项预览",
+    hideOptionsPreview: "隐藏选项预览",
     priceChange: "价格变化",
     noPriceChange: "无",
     tax: "消费税",
@@ -371,6 +380,7 @@ const data = {
     category2: "分类 2",
     editCategory2: "编辑分类 2",
     exclusionDate: "排除日",
+    holiday: "节假日",
     exclusionTime: "排除时间",
     showAllMenu: "全部商品",
     showPublicMenu: "仅公开中",
@@ -492,6 +502,11 @@ const data = {
     temporaryClosureDescription: "请选择日期后按添加",
     temporaryClosureOkay: "确定",
     temporaryClosureSelect: "选择日期",
+    closedOnHolidays: "节假日休息",
+    closedOnHolidaysLabel: "节假日定休",
+    closedOnHolidaysDescription: "开启后，节假日无法取餐。",
+    holidayList: "适用的节假日（至明年年底）",
+    closedOnHolidaysNotice: "节假日为定休日",
     paymentMethod: "支付方式",
     onlinePayment: "在线支付",
     onsitePayment: "现场支付",
@@ -579,6 +594,7 @@ const data = {
     about: "店铺信息",
     limitedSale: "仅销售",
     unavailableTime: "不可取餐时间",
+    unavailableOnHolidays: "节假日无法取餐",
     confirmCart: "查看购物车",
     checkout: "结账",
     orderCounter: "{count} 件",
@@ -841,12 +857,9 @@ const data = {
     discountPriceMessage: "有折扣",
     discountPrice: "折扣金额",
     beforeDiscountPrice: "折扣前价格",
-    cancelReason: "取消原因",
     productId: "商品编号",
     category: "分类",
     categoryId: "分类 ID",
-    subCategory: "子分类",
-    subCategoryId: "子分类 ID",
   },
   editEC: {
     postageList: "运费列表",
@@ -894,7 +907,6 @@ const data = {
     backToDiscounts: "返回折扣设置列表",
     backToDocument: "返回文档列表",
     backToSubaccounts: "返回子账号列表",
-    backToSmaregi: "返回 Smaregi 设置",
     addTitle: "添加商品组名",
     addItem: "添加商品",
     downloadMenu: "下载传单",
@@ -949,6 +961,35 @@ const data = {
       "SMS 验证码无效。请重新发送 SMS 验证码并输入",
     "auth/missing-verification-code": "未输入 SMS 验证码",
     "auth/code-expired": "SMS 验证码已过期。请重新发送 SMS 验证码并输入",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com 订单通知",
+    appShortName: "订单通知",
+    title: "注册接收通知的设备",
+    installHeading: "使用 iPhone 或 iPad 时",
+    installStep1: "点按 Safari 的分享按钮",
+    installStep2: "选择“添加到主屏幕”",
+    installStep3: "点按添加到主屏幕的图标，打开“注册接收通知的设备”画面",
+    nameLabel: "设备名称（必填）",
+    nameHint: "将显示在管理画面的设备列表中。请输入能识别此设备的名称。",
+    namePlaceholder: "例如：收银台的 iPad",
+    register: "接收通知",
+    done: "已注册",
+    doneHint: "有新订单时，本设备将收到通知。",
+    status: {
+      "registered-here": "本设备已注册",
+      used: "此网址已被使用。请向管理员索取新的网址。",
+      expired: "此网址已过期。请向管理员索取新的网址。",
+      "not-found": "此网址无效。请向管理员索取新的网址。",
+    },
+    failure: {
+      unconfigured: "本店铺无法使用推送通知。",
+      unsupported: "此设备或浏览器无法接收推送通知。",
+      denied: "通知已被阻止。请在浏览器设置中允许。",
+      dismissed: "未允许通知。请再试一次。",
+      "no-fid": "注册失败。请稍后再试。",
+      invite: "此网址已被使用或已过期。请联系管理员。",
+    },
   },
   admin: {
     welcomeMessage: "欢迎光临！",
@@ -1057,13 +1098,6 @@ const data = {
         optout: "不接收",
       },
     },
-    thirdPartyService: {
-      title: "系统联动",
-      openSmaregi: "Smaregi 联动设置",
-      smaregiManual: "Smaregi 手册",
-      smaregiAppMarket: "前往 Smaregi 应用市场",
-      smaregiManualLink: "Smaregi 联动使用方法",
-    },
     needEmailVerification: "请完成邮箱地址验证。",
     noteEmailVerification1:
       "请查收从 {email} 发送的邮件，点击邮件中的 URL 完成验证。",
@@ -1088,7 +1122,11 @@ const data = {
     directory: {
       status: "客户用店铺列表的刊登状态",
       requestWarning: "请在支付设置、店铺公开后申请",
+      requestOptionalNote:
+        "※ 刊登申请为可选项。即使不申请也可以公开店铺。如需申请，请先公开店铺。",
       requestingWarning: "如支付设置、店铺公开尚未完成请先设置",
+      requestingPublicNote:
+        "※ 店铺未公开时，将无法在列表中刊登或由运营方确认。如尚未公开，请先公开店铺。",
       notListed: "未刊登",
       requestList: "申请刊登",
       waiting: "申请中",
@@ -1102,6 +1140,71 @@ const data = {
     forgotPassword: "忘记密码",
     passwordReset: "重置密码",
     pleaseCheckInbox: "邮件已发送。请查看收件箱。",
+    timeline: {
+      title: "通知记录",
+      empty: "暂无通知。",
+      failed: "无法加载通知。请确认您的权限。",
+    },
+    push: {
+      sendFailed: "最近一次发送失败",
+      lastSentAt: "最后发送",
+      undelivered: "通知未能送达此设备。请重新注册。",
+      rename: "修改设备名称",
+      save: "保存",
+      delete: "删除",
+      registeredAt: "注册",
+      namePlaceholder: "例如：收银台的 iPad",
+      devices: "接收通知的设备",
+      empty: "尚未注册任何设备。",
+      addDevice: "添加设备",
+      inviteHeading: "请在需要接收通知的设备上打开此网址",
+      inviteHint:
+        "此网址只能注册 1 台设备。如需添加第 2 台设备，请再次点击“添加设备”。有效期为 24 小时。※ 请勿将网址分享到 LINE 群组等不特定多数人可以看到的地方。",
+      deviceGuideHeading: "打开此 URL 的设备上的操作步骤",
+      deviceGuideIos:
+        'iPhone / iPad：请用 Safari 打开，点击共享按钮选择"添加到主屏幕"，然后从新增的图标重新打开。在 Safari 标签页中无法接收通知（需要 iOS 16.4 及以上）。',
+      deviceGuideAndroid:
+        "Android：用 Chrome 直接打开即可注册。如果在设备设置中关闭了通知，将收不到。",
+      deviceGuideDesktop:
+        "电脑：即使已允许通知，若在系统通知设置中关闭了浏览器，或处于专注模式期间，也不会显示。",
+      copy: "复制网址",
+      copied: "已复制",
+      test: "发送测试",
+      testResult: {
+        noTargets: "没有开启通知的设备。",
+        allSent: "已发送到 {targets} 台设备。",
+        partlySent:
+          "已发送到 {targets} 台中的 {sent} 台设备。请在列表中查看未收到的设备。",
+        failed: "测试发送失败。请稍后再试。",
+      },
+      deleteConfirm: "要删除对该设备的通知吗？",
+    },
+    webpush: {
+      restaurantId: "店铺 ID",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "接单暂停",
       suspendSettings: "接单暂停设置",
@@ -1124,6 +1227,8 @@ const data = {
       infinityNotificationOn: "每分钟重新通知",
       infinityNotificationOff: "仅接单时通知",
       soundTest: "测试",
+      webPushDescription: "即使关闭管理页面，也会将新订单通知到此设备。",
+      webPushDevices: "推送通知设备",
       paymentIsNotCompleted: "注意: 按「已受理」按钮将处理卡片支付。",
       cancelButton: "取消订单",
       cancelTitle: "取消订单",
@@ -1231,6 +1336,7 @@ const data = {
         "auth/invalid-login-credentials": "邮箱或密码无效。",
         "auth/unauthorized-continue-uri": "域名未注册在白名单中。",
         "auth/internal-error": "密码无效。",
+        "auth/missing-password": "请输入密码。",
         "auth/invalid-credential": "邮箱或密码无效。",
       },
     },
@@ -1301,12 +1407,6 @@ const data = {
       showBelow: "在设置的下方",
       enabled: "启用",
       callbackURLCopyToLine: "请复制此值并设置到 LINE。",
-    },
-    smaregi: {
-      index: "Smaregi 联动",
-      authenticating: "认证中",
-      authenticationError: "认证失败",
-      smaregiShopList: "Smaregi 店铺列表",
     },
   },
   week: {
@@ -1411,6 +1511,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "已注册",
+      body: "如需继续注册，请点击“添加设备”。",
+    },
     paymentMethods: {
       title: "支付方式",
       body: "此功能为选择「现场支付」的客户提供店铺可用的支付方式信息",
@@ -1439,6 +1543,62 @@ const data = {
     reset: "重置服务器 URL",
   },
   validationError: {
+    invoiceNumber: {
+      format: "请输入半角 T 加 13 位数字",
+    },
+    itemName: {
+      empty: "请输入商品名称",
+    },
+    price: {
+      empty: "请输入价格",
+      invalid: "请输入0以上的整数作为价格",
+    },
+    restaurantName: {
+      empty: "请输入餐厅名称",
+    },
+    ownerName: {
+      empty: "请输入负责人姓名",
+    },
+    streetAddress: {
+      empty: "请输入门牌号及以下地址",
+    },
+    city: {
+      empty: "请输入市区町村",
+    },
+    state: {
+      empty: "请选择都道府县",
+    },
+    url: {
+      invalidUrl: "请输入有效的URL（以 http:// 或 https:// 开头）",
+    },
+    lineUrl: {
+      invalidUrl: "请输入有效的URL（以 http:// 或 https:// 开头）",
+    },
+    instagramUrl: {
+      invalidUrl: "请输入有效的URL（以 http:// 或 https:// 开头）",
+    },
+    uberEatsUrl: {
+      invalidUrl: "请输入有效的URL（以 http:// 或 https:// 开头）",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "准备时间过长（最多7天）",
+      negative: "准备时间不能为负数",
+      notNumbery: "请以数字输入准备时间",
+      empty: "请输入准备时间",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "预约受理开始日的设置不正确",
+      empty: "请选择预约受理开始日",
+    },
+    restProfilePhoto: {
+      empty: "请设置头像图片",
+    },
+    restCoverPhoto: {
+      empty: "请设置封面图片",
+    },
+    oneInEmpty: "请同时输入开始时间和结束时间",
+    validBusinessTime: "结束时间必须晚于开始时间",
+    noSelect: "请设置营业时间",
     zip: {
       empty: "请输入邮政编码",
       invalidZip: "请输入有效的邮政编码",
@@ -1448,6 +1608,7 @@ const data = {
     },
     name: {
       empty: "请输入姓名",
+      length: "请输入至少 3 个字的姓名。",
     },
     memo: {
       length: "请在 500 字以内输入消息。",

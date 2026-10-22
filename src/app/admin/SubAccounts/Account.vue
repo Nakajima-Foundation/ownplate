@@ -31,11 +31,11 @@
           </span>
         </div>
         <div>
-          {{ child.email }} /
+          {{ child?.email }} /
           {{
             $t(
               "admin.subAccounts.messageResult." +
-                (child.accepted === true ? "accepted" : "waiting"),
+                (child?.accepted === true ? "accepted" : "waiting"),
             )
           }}
         </div>
@@ -67,7 +67,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
+import type { SubAccountChildData } from "@/models/subAccount";
 import { useRouter, useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 import { db } from "@/lib/firebase/firebase9";
@@ -80,7 +82,6 @@ import {
   collection,
   where,
   orderBy,
-  DocumentData,
 } from "firebase/firestore";
 
 import { doc2data, array2obj, useAdminUids, defaultTitle } from "@/utils/utils";
@@ -99,13 +100,13 @@ export default defineComponent({
     const router = useRouter();
 
     const subAccountId = computed(() => {
-      return route.params.subAccountId;
+      return routeParamOf(route.params.subAccountId);
     });
     useHead(() => ({
       title: [defaultTitle, "Admin Subaccount Account"].join(" / "),
     }));
 
-    const restaurantObj = ref({});
+    const restaurantObj = ref<{ [key: string]: RestaurantInfoData }>({});
     const restaurants = ref<RestaurantInfoData[]>([]);
 
     const { uid } = useAdminUids();
@@ -119,15 +120,17 @@ export default defineComponent({
       ),
     ).then((restaurantCollection) => {
       restaurantObj.value = array2obj(
-        restaurantCollection.docs.map(doc2data("restaurant")),
+        restaurantCollection.docs.map(
+          doc2data<RestaurantInfoData>("restaurant"),
+        ),
       );
       restaurants.value = restaurantCollection.docs
-        .map(doc2data("restaurant"))
-        .filter((r) => r.publicFlag) as RestaurantInfoData[];
+        .map(doc2data<RestaurantInfoData>("restaurant"))
+        .filter((r) => r.publicFlag);
     });
-    const name = ref("");
+    const name = ref<string | undefined>("");
 
-    const child = ref<DocumentData | undefined | { [key: string]: string }>({});
+    const child = ref<Partial<SubAccountChildData> | undefined>({});
     getDoc(doc(db, `admins/${uid.value}/children/${subAccountId.value}`)).then(
       (childrenDoc) => {
         child.value = childrenDoc.data();

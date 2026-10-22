@@ -1,18 +1,17 @@
-import { ref, computed, onMounted, Ref } from "vue";
-import { User } from "firebase/auth";
-import { db } from "@/lib/firebase/firebase9";
-import {
-  DocumentData,
-  DocumentSnapshot,
-  QueryDocumentSnapshot,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { ref, computed, onMounted, unref, Ref } from "vue";
+import type { DocumentData } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
-import { OrderInfoData, OrderItemData } from "@/models/orderInfoData";
+import {
+  OrderInfoData,
+  OrderItemData,
+  OptionsByLine,
+} from "@/models/orderInfoData";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { roundPrice } from "./price";
 import { MenuData } from "@/models/menu";
+import { CartItemsType } from "@/models/cartType";
+import type { OptionValue } from "@/models/orderTypes";
 
 import {
   order_status,
@@ -21,7 +20,7 @@ import {
   stripe_regions_jp,
   soundFiles,
 } from "@/config/constant";
-import { firebaseConfig, ownPlateConfig } from "@/config/project";
+import { firebaseConfig } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
 
@@ -30,47 +29,68 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
 
-import { isNull, isEmpty } from "./commonUtils";
+import {
+  convOptionArray2Obj,
+  isNull,
+  selectedOptionNames,
+  selectedOptionsPrice,
+  type TaxableMenu,
+  type TaxableShop,
+} from "./commonUtils";
 
 import { useRoute, useRouter } from "vue-router";
+import { routeParamOf } from "./routeParam";
 import { useGeneralStore } from "../store";
 import { useUserStore } from "@/store/user";
 import { useI18n } from "vue-i18n";
+import i18n from "../lib/vue-i18n";
 
-export { isNull, isEmpty, regionalSetting };
-
+// 捕まえたものは何でもありうる。在否の判定も読みも try の中に置く。どちらも
+// getter や Proxy の罠になりうるので、外に置くと守りを素通りして投げる。
 export const errorCode = (error: unknown): string | undefined => {
-  if (error !== null && typeof error === "object" && "code" in error) {
+  try {
+    if (error === null || typeof error !== "object" || !("code" in error)) {
+      return undefined;
+    }
     const code = error.code;
     return typeof code === "string" ? code : undefined;
+  } catch {
+    return undefined;
   }
-  return undefined;
 };
 
 export const errorMessage = (error: unknown): string | undefined => {
-  if (error !== null && typeof error === "object" && "message" in error) {
+  try {
+    if (error === null || typeof error !== "object" || !("message" in error)) {
+      return undefined;
+    }
     const message = error.message;
     return typeof message === "string" ? message : undefined;
+  } catch {
+    return undefined;
   }
-  return undefined;
 };
 
-export const stripeRegion = stripe_regions_jp; // TODO remove
 // from mixin
 export const useRestaurantId = () => {
   const route = useRoute();
   return computed(() => {
-    return route.params.restaurantId as string;
+    return routeParamOf(route.params.restaurantId);
   });
 };
 
 export const getRestaurantId = () => {
   const route = useRoute();
-  return route.params.restaurantId as string;
+  return routeParamOf(route.params.restaurantId);
 };
 
+// 店舗そのものと、店名と写真だけを複製した「いいね」の記録の両方から呼ばれるので、
+// 実際に読む2つの欄だけを要求する。
 export const resizedProfileImage = (
-  restaurant: RestaurantInfoData,
+  restaurant: {
+    images?: { profile?: { resizedImages?: { [key: string]: string } } };
+    restProfilePhoto?: string;
+  },
   size: string,
 ) => {
   return (
@@ -106,20 +126,26 @@ export const sleep = async (seconds: number) => {
 
 export const shareUrl = (prefix: string) => {
   const route = useRoute();
-  const restaurantId = route.params.restaurantId;
+  const restaurantId = routeParamOf(route.params.restaurantId);
   return (
     location.protocol + "//" + location.host + prefix + "/r/" + restaurantId
   );
 };
 
+// Firestore の data() は DocumentData を返すが、読む先のコレクションごとに形は
+// 決まっている。値には触れず型だけを当てる。当て場所をここ一箇所に集める。
+export const collectionData = <T = DocumentData>(data: DocumentData): T =>
+  data as T;
+
 export const doc2data = <T = DocumentData>(dataType: string) => {
-  return (
-    _doc: DocumentSnapshot<DocumentData> | QueryDocumentSnapshot<DocumentData>,
-  ): T => {
-    const data = _doc.data() || ({} as DocumentData);
+  // 受け取るのは Firestore の snapshot だが、使うのは id と data() だけ。型をその2つに
+  // 狭めてあるので、試験から最小の値で呼べる。Firestore の DocumentSnapshot も
+  // QueryDocumentSnapshot もこの形を構造的に満たすため、呼び出し側は変わらない。
+  return (_doc: { id: string; data: () => DocumentData | undefined }): T => {
+    const data = _doc.data() || {};
     data.id = _doc.id;
     data._dataType = dataType;
-    return data as T;
+    return collectionData<T>(data);
   };
 };
 
@@ -146,8 +172,11 @@ export const num2simpleFormatedTime = (num: number) => {
   ].join("");
 };
 
+// computed の再計算は setup の外で走るので、useI18n ではなく global を使う。
 export const num2time = (num: number) => {
-  const { locale, t } = useI18n();
+  const { locale, t } = i18n.global;
+  // legacy: false では locale は ref だが、型は文字列と宣言されている。
+  const localeName = unref(locale);
 
   if (num === 0 || num === 60 * 24) {
     return t("shopInfo.midnight");
@@ -155,7 +184,7 @@ export const num2time = (num: number) => {
   if (num === 60 * 12) {
     return t("shopInfo.noon");
   }
-  const offsetTime = locale.value === "ja" ? 12 : 13;
+  const offsetTime = localeName === "ja" ? 12 : 13;
   const isPm = num >= 60 * 12;
   if (num >= 60 * offsetTime) {
     num = num - 60 * 12;
@@ -207,7 +236,7 @@ export const useSoundPlay = () => {
   };
 };
 
-export const getSoundIndex = (nameKey: string) => {
+export const getSoundIndex = (nameKey: string | null | undefined) => {
   if (nameKey) {
     const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
     return index >= 0 ? index : 0;
@@ -215,14 +244,6 @@ export const getSoundIndex = (nameKey: string) => {
   return 0;
 };
 
-export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
-  const defaultData = { hidePrivacy: false };
-  const admin = (await getDoc(doc(db, `/admins/${uid}`))).data();
-  if (admin) {
-    return admin as ShopOwnerData;
-  }
-  return defaultData;
-};
 export const arraySum = (arr: number[]) => {
   return Object.values(arr || [0]).reduce(
     (accumulator, currentValue) => accumulator + currentValue,
@@ -255,17 +276,22 @@ export const getOrderItems = (
   orderInfo: OrderInfoData,
   menuObj: { [key: string]: MenuData },
 ) => {
-  if (orderInfo.order && orderInfo.menuItems) {
+  const { menuItems } = orderInfo;
+  if (orderInfo.order && menuItems) {
     return Object.keys(orderInfo.order).reduce(
       (tmp: OrderItemData[], menuId) => {
         const numArray = Array.isArray(orderInfo.order[menuId])
           ? orderInfo.order[menuId]
           : [orderInfo.order[menuId]];
-        const optArray = Array.isArray(orderInfo.order[menuId])
-          ? orderInfo.options[menuId]
-          : [orderInfo.options[menuId]];
+        const itemOptions = orderInfo.options[menuId];
+        // 古い注文は、オプションが商品ごとにひとつの配列で入っている。
+        const optArray: OptionsByLine = Array.isArray(orderInfo.order[menuId])
+          ? itemOptions
+          : Array.isArray(itemOptions)
+            ? [itemOptions]
+            : [];
         Object.keys(numArray).forEach((numKey: string) => {
-          const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
+          const item = menuItems[menuId] || menuObj[menuId] || {};
           item.images = (menuObj[menuId] || {}).images;
           item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
           tmp.push({
@@ -302,7 +328,7 @@ export const itemOptionCheckbox2options = (
     });
   });
 };
-export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
+export const taxRate = (shopInfo: TaxableShop, item: TaxableMenu) => {
   if (shopInfo.inclusiveTax) {
     return 1;
   }
@@ -312,19 +338,12 @@ export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
   return 1 + shopInfo.foodTax * 0.01;
 };
 
-export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
-  return Math.round(
-    (() => {
-      if (shopInfo.inclusiveTax) {
-        return menu.price;
-      }
-      if (menu.tax === "alcohol") {
-        return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
-      }
-      return (1 + shopInfo.foodTax * 0.01) * menu.price;
-    })(),
-  );
-};
+// 問い合わせ先に使う提携先。`getPartner` は知らない id を穴のまま残すので、
+// 先頭が穴のこともある。埋まっている最初のものを選ぶ。
+export const firstKnownPartner = (
+  found: (PartnerData | undefined)[],
+): PartnerData | undefined =>
+  found.find((partner): partner is PartnerData => partner !== undefined);
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
@@ -333,13 +352,6 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
     });
     return match;
   });
-};
-
-export const isLineEnabled = !!ownPlateConfig.line;
-
-export const roundPrice = (price: number) => {
-  const m = stripe_regions_jp.multiple;
-  return Math.round(price * m) / m;
 };
 
 export const displayOption = (
@@ -353,14 +365,6 @@ export const displayOption = (
   });
 };
 
-const optionPrice = (option: string) => {
-  const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
-  const match = (option || "").match(regex);
-  if (match) {
-    return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
-  }
-  return 0;
-};
 const useIsInLiff = () => {
   const route = useRoute();
 
@@ -373,7 +377,7 @@ export const useLiffIndexId = () => {
   const route = useRoute();
 
   return computed(() => {
-    return route.params.liffIndexId as string;
+    return routeParamOf(route.params.liffIndexId);
   });
 };
 
@@ -436,21 +440,7 @@ export const validPlaceId = (placeId: string) => {
   return /^[a-zA-Z0-9-_]+$/.test(placeId) || placeId === "";
 };
 
-export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
-  return Object.keys(obj).reduce<{ [key: string]: { [key: string]: T } }>(
-    (newObj, objKey) => {
-      newObj[objKey] = obj[objKey].reduce<{ [key: string]: T }>(
-        (tmp, value, key) => {
-          tmp[key] = value;
-          return tmp;
-        },
-        {},
-      );
-      return newObj;
-    },
-    {},
-  );
-};
+export { convOptionArray2Obj };
 
 export const prices2subtotal = (prices: { [key: string]: number[] }) => {
   return Object.keys(prices).reduce<{ [key: string]: number }>(
@@ -464,8 +454,8 @@ export const prices2subtotal = (prices: { [key: string]: number[] }) => {
 
 export const getPriceWithTax = (
   subTotal: number,
-  menu: MenuData,
-  shopInfo: RestaurantInfoData,
+  menu: TaxableMenu,
+  shopInfo: TaxableShop,
 ) => {
   if (!shopInfo.inclusiveTax) {
     if (menu.tax === "alcohol") {
@@ -478,11 +468,11 @@ export const getPriceWithTax = (
 
 export const subtotal2total = (
   subTotal: { [key: string]: number },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
   shopInfo: RestaurantInfoData,
 ) => {
   return Object.keys(subTotal).reduce((tmp, menuId) => {
-    const menu = cartItems[menuId] || {};
+    const menu: Partial<MenuData> = cartItems[menuId] || {};
     return tmp + getPriceWithTax(subTotal[menuId], menu, shopInfo);
   }, 0);
 };
@@ -490,34 +480,20 @@ export const subtotal2total = (
 export const getPrices = (
   multiple: number,
   orders: { [key: string]: number[] },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
   trimmedSelectedOptions: { [key: string]: SelectedOption[] },
 ) => {
   const ret: { [key: string]: number[] } = {};
 
   Object.keys(orders).forEach((menuId) => {
-    const menu = cartItems[menuId] || {};
+    const menu: Partial<MenuData> = cartItems[menuId] || {};
     ret[menuId] = [];
     orders[menuId].forEach((num, orderKey) => {
       const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
-      const price = selectedOptionsRaw.reduce(
-        (tmpPrice: number, selectedOpt, key) => {
-          const opt = (menu.itemOptionCheckbox[key] || "").split(",");
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return (
-                tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple
-              );
-            }
-          } else {
-            return (
-              tmpPrice +
-              Math.round(optionPrice(opt[Number(selectedOpt)]) * multiple) /
-                multiple
-            );
-          }
-          return tmpPrice;
-        },
+      const price = selectedOptionsPrice(
+        selectedOptionsRaw,
+        menu.itemOptionCheckbox,
+        multiple,
         menu.price,
       );
       ret[menuId].push(price * num);
@@ -526,18 +502,17 @@ export const getPrices = (
   return ret;
 };
 
-type SelectedOption = (boolean | string)[];
+type SelectedOption = OptionValue[];
 
 export const getTrimmedSelectedOptions = (
   orders: { [key: string]: number[] },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
   selectedOptions: { [key: string]: SelectedOption[] },
 ) => {
   return Object.keys(orders).reduce<{ [key: string]: SelectedOption[] }>(
     (ret, id) => {
-      const options = itemOptionCheckbox2options(
-        (cartItems[id] || {}).itemOptionCheckbox,
-      );
+      const menu: Partial<MenuData> = cartItems[id] || {};
+      const options = itemOptionCheckbox2options(menu.itemOptionCheckbox);
       const selectedOption = selectedOptions[id].map((selected) => {
         if (Array.isArray(selected) && selected.length > options.length) {
           const newopt = [...selected];
@@ -554,26 +529,15 @@ export const getTrimmedSelectedOptions = (
 
 export const getPostOption = (
   trimmedSelectedOptions: { [key: string]: SelectedOption[] },
-  cartItems: { [key: string]: MenuData },
+  cartItems: CartItemsType,
 ) => {
   return Object.keys(trimmedSelectedOptions).reduce<{
     [key: string]: string[][];
   }>((ret, id) => {
-    ret[id] = (trimmedSelectedOptions[id] || []).map((item) => {
-      return item
-        .map((selectedOpt, key) => {
-          const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(",");
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return opt[0];
-            }
-          } else {
-            return opt[Number(selectedOpt)];
-          }
-          return "";
-        })
-        .map((s) => s.trim());
-    });
+    const menu: Partial<MenuData> = cartItems[id] || {};
+    ret[id] = (trimmedSelectedOptions[id] || []).map((item) =>
+      selectedOptionNames(item, menu.itemOptionCheckbox),
+    );
     return ret;
   }, {});
 };
@@ -645,9 +609,6 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
-export const isJapan = ownPlateConfig.region === "JP";
-export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
-
 export const defaultTitle = defaultHeader.title;
 
 export const useAdminUids = () => {
@@ -663,7 +624,7 @@ export const useAdminUids = () => {
     return userStore.isSubAccount ? userStore.parentId : userStore.uidAdmin;
   });
   const emailVerified = computed(() => {
-    return (userStore.user as User)?.emailVerified;
+    return userStore.user?.emailVerified;
   });
   return {
     isOwner,
@@ -698,7 +659,12 @@ export const usePhoneNumber = (shopInfo: Ref<RestaurantInfoData>) => {
     nationalPhoneNumber,
   };
 };
-export const scrollToElementById = (id: string) => {
+// 呼び手が渡す id は、まだ保存されていない品目では無い。
+// 無いまま getElementById に渡しても何も見つからないので、先に返す。
+export const scrollToElementById = (id: string | undefined) => {
+  if (id === undefined) {
+    return;
+  }
   const elem = document.getElementById(id);
   if (elem) {
     scrollTo(0, elem.getBoundingClientRect().y + window.pageYOffset);
@@ -733,9 +699,15 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
   };
 };
 
-export const notFoundResponse = {
+// 型を `true` のまま留める。広がって `boolean` になると、画面側で
+// 「権限が無いときの形」として宣言した型に代入できなくなる。
+export const notFoundResponse: { notFound: true } = {
   notFound: true,
 };
+
+// 画面から離れることが決まった setup が返すもの。`return;` にすると setup の戻り型が
+// undefined との union になり、template がその画面の値を一つも読めなくなる。
+export const redirectedResponse: Record<string, never> = {};
 
 const setImageFallbackSrc = (e: Event, src: string) => {
   if (e.target instanceof HTMLImageElement) {

@@ -107,7 +107,6 @@
             :orders="filteredOrders"
             :fileName="fileName"
             :hideTable="true"
-            :withStatus="true"
             :shopInfo="shopInfo"
             buttonTitle="admin.report.download-csv-history-details"
           />
@@ -118,7 +117,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -133,7 +133,7 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
 } from "firebase/firestore";
-import { order_status, order_status_for_form } from "@/config/constant";
+import { order_status_for_form, orderStatusOf } from "@/config/constant";
 import { OrderInfoData } from "@/models/orderInfo";
 import { CustomerInfo } from "@/models/customer";
 
@@ -167,7 +167,7 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
@@ -175,12 +175,12 @@ export default defineComponent({
     const limitNum = 60;
     const last = ref<QueryDocumentSnapshot<DocumentData> | null>(null);
     const orders = ref<OrderInfoData[]>([]);
-    const notFound = ref(null);
+    const notFound = ref<boolean | null>(null);
 
     const orderState = ref(0);
     const orderStatus = Object.keys(order_status_for_form).map((key) => {
       return {
-        index: order_status[key],
+        index: orderStatusOf(key),
         key: key === "error" ? "" : key,
       };
     });
@@ -226,7 +226,9 @@ export default defineComponent({
       }
       const docs = (await getDocs(dbQuery)).docs;
       last.value = docs.length === limitNum ? docs[limitNum - 1] : null;
-      const tmpOrders = docs.map(doc2data("order")).filter(orderFilter);
+      const tmpOrders = docs
+        .map(doc2data<OrderInfoData>("order"))
+        .filter(orderFilter);
       const customers: { [key: string]: CustomerInfo } = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);
@@ -253,13 +255,6 @@ export default defineComponent({
 
       tmpOrders.forEach((order: OrderInfoData) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
-        order.timePlaced = order.timePlaced.toDate();
-        if (order.timeEstimated) {
-          order.timeEstimated = order.timeEstimated.toDate();
-        }
-        if (order.timeConfirmed) {
-          order.timeConfirmed = order.timeConfirmed.toDate();
-        }
         order.type = orderType(order);
         orders.value.push(order);
       });
@@ -281,7 +276,7 @@ export default defineComponent({
         })
         .sort(
           (a: OrderInfoData, b: OrderInfoData) =>
-            (a.timePlaced > b.timePlaced ? -1 : 1) *
+            (a.timePlaced.toDate() > b.timePlaced.toDate() ? -1 : 1) *
             (sortOrder.value === 0 ? 1 : -1),
         );
     });

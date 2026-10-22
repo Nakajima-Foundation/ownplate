@@ -56,7 +56,7 @@
                 :order="order"
               />
               <router-link :to="`/s/restaurants/${order.restaurantId}`">
-                {{ order.restaurant.restaurantName }}
+                {{ order.restaurant?.restaurantName }}
               </router-link>
             </div>
           </div>
@@ -96,13 +96,19 @@
 import { defineComponent, ref, computed } from "vue";
 
 import moment from "moment";
+import { formatDay } from "@/utils/shopCalendar";
 
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 
-import { order_status, order_status_keys } from "@/config/constant";
 import {
+  order_status,
+  order_status_keys,
+  orderStatusOf,
+} from "@/config/constant";
+import {
+  collectionData,
   arrayOrNumSum,
   defaultTitle,
   getBackUrl,
@@ -158,7 +164,7 @@ export default defineComponent({
     const orderStatus = (() => {
       return Object.keys(order_status).map((key) => {
         return {
-          index: order_status[key],
+          index: orderStatusOf(key),
           key: key === "error" ? "" : key,
         };
       });
@@ -192,10 +198,9 @@ export default defineComponent({
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const myDoc = snapshot.docs[i];
-            const order = myDoc.data() as OrderInfoData;
+            const order = collectionData<OrderInfoData>(myDoc.data());
             order.restaurantId = myDoc.ref.path.split("/")[1];
             order.id = myDoc.id;
-            order.timePlaced = order.timePlaced.toDate();
             if (!restaurants.value[order.restaurantId]) {
               const orderSnapshot = await getDoc(
                 doc(db, `restaurants/${order.restaurantId}`),
@@ -204,9 +209,6 @@ export default defineComponent({
                 orderSnapshot.data() as RestaurantInfoData;
             }
             order.restaurant = restaurants.value[order.restaurantId];
-            if (order.timeEstimated) {
-              order.timeEstimated = order.timeEstimated.toDate();
-            }
             orders.value.push(order);
           }
         }
@@ -261,13 +263,16 @@ export default defineComponent({
       return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? moment(time).format("YYYY/MM/DD") : "",
-          restaurantName: order.restaurant.restaurantName,
+          date: time ? formatDay(time.toDate(), "YYYY/MM/DD") : "",
+          restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           revenue: order.totalCharge,
-          total: Object.values(order.order).reduce((count, currentOrder) => {
-            return count + arrayOrNumSum(currentOrder);
-          }, 0),
+          total: Object.values(order.order).reduce<number>(
+            (count, currentOrder) => {
+              return count + arrayOrNumSum(currentOrder);
+            },
+            0,
+          ),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
         };

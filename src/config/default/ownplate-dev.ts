@@ -32,15 +32,6 @@ export const ownPlateConfig = {
 export const sentryDsn =
   "https://8bdfd641d3b54e4bb93e37d2d412cdae@o391740.ingest.sentry.io/5238306";
 
-export const smaregi = {
-  authUrl: "https://id.smaregi.dev/authorize",
-  clientId: "cc470a5f488dcab4ce1f40bbf0838670",
-  //  for server
-  host: "https://id.smaregi.dev",
-  auth_host_name: "id.smaregi.dev",
-  host_name: "api.smaregi.dev",
-};
-
 export const appCheckKey = "6LepU9whAAAAAJPu9PD7LfzB5uREF-fg9j1g5xLY";
 
 export const gtmID = "GTM-M8DN5VQ";
@@ -48,3 +39,7 @@ export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const GMAPId = "DEMO_MAP_ID";
 export const fromEmail = "noreply@ownplate-dev.firebaseapp.com";
 export const bucketRegion = "us-central1";
+
+// Firebase Console → プロジェクト設定 → Cloud Messaging → ウェブプッシュ証明書 の公開鍵。
+// 空の間は Web Push の UI が無効になるので、鍵が無くてもビルドと実行はできる
+export const webPushVapidPublicKey = "BHY7mVg05JGKhbk3he-WV09wQcHqNwRRAmm1nssYAkcKk3FNOwmgC595zyk1Eoe3PuHlBUo3_c5yu2nblhqSTYg";

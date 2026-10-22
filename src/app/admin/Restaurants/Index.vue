@@ -116,7 +116,7 @@
               />
             </div>
             <div class="pl-4">
-              <state v-model="editShopInfo.state" />
+              <state v-model="editShopInfo.state" :error="errors['state']" />
             </div>
           </div>
           <!-- City -->
@@ -260,6 +260,12 @@
                 </div>
               </div>
             </div>
+            <p
+              v-if="errors['restProfilePhoto'].length > 0"
+              class="mt-1 text-sm font-bold text-red-700"
+            >
+              {{ $t(errors["restProfilePhoto"][0]) }}
+            </p>
 
             <!-- Description -->
             <div class="pt-2 text-sm text-black/60">
@@ -308,6 +314,12 @@
                 </div>
               </div>
             </div>
+            <p
+              v-if="errors['restCoverPhoto'].length > 0"
+              class="mt-1 text-sm font-bold text-red-700"
+            >
+              {{ $t(errors["restCoverPhoto"][0]) }}
+            </p>
             <!-- Description -->
             <div class="pt-2 text-sm text-black/60">
               {{ $t("editCommon.clickAndUploadDetail") }}
@@ -471,8 +483,23 @@
                   :key="k"
                 >
                   {{ $t("editMenu." + taxRateKeys[taxItem]) }}
-                  {{ editShopInfo[taxItem + "Tax"] }}%
+                  {{ editShopInfo[`${taxItem}Tax`] }}%
                 </div>
+              </div>
+            </div>
+
+            <!-- Invoice Number -->
+            <div class="mt-4">
+              <text-form
+                v-model="editShopInfo.invoiceNumber"
+                titleKey="editRestaurant.invoiceNumber"
+                placeholder="editRestaurant.enterInvoiceNumber"
+                :error="errors['invoiceNumber']"
+                :maxlength="14"
+                :required="false"
+              />
+              <div class="mt-1 text-xs text-black/60">
+                {{ $t("editRestaurant.invoiceNumberNote") }}
               </div>
             </div>
 
@@ -548,6 +575,12 @@
                     >
                   </div>
                 </div>
+                <p
+                  v-if="errors['pickUpMinimumCookTime'].length > 0"
+                  class="mt-1 text-sm font-bold text-red-700"
+                >
+                  {{ $t(errors["pickUpMinimumCookTime"][0]) }}
+                </p>
 
                 <div class="mt-2">
                   <template
@@ -578,7 +611,12 @@
                 </div>
                 <select
                   v-model.number="editShopInfo.pickUpDaysInAdvance"
-                  class="mt-1 rounded-lg border border-teal-400 bg-white px-3 py-2 hover:border-teal-400 focus:ring-teal-400"
+                  class="mt-1 rounded-lg border bg-white px-3 py-2 focus:ring-teal-400"
+                  :class="
+                    errors['pickUpDaysInAdvance'].length > 0
+                      ? 'border-red-500 hover:border-red-500'
+                      : 'border-teal-400 hover:border-teal-400'
+                  "
                 >
                   <option
                     v-for="(day, index) in reservationTheDayBefore"
@@ -588,6 +626,12 @@
                     {{ $t(day.messageKey) }}
                   </option>
                 </select>
+                <p
+                  v-if="errors['pickUpDaysInAdvance'].length > 0"
+                  class="mt-1 text-sm font-bold text-red-700"
+                >
+                  {{ $t(errors["pickUpDaysInAdvance"][0]) }}
+                </p>
               </div>
             </div>
           </div>
@@ -654,7 +698,7 @@
           </div>
 
           <!-- Delivery Config -->
-          <div v-if="region === 'JP'" class="mt-4">
+          <div class="mt-4">
             <a id="deliveryConfig" />
             <div class="pb-2 text-sm font-bold">
               {{ $t("editRestaurant.deliveryConfigTitle") }}
@@ -776,6 +820,21 @@
                 </router-link>
               </div>
             </div>
+
+            <div class="mt-4 ml-8">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("editRestaurant.webPushNotification") }}
+              </div>
+              <div class="rounded-lg bg-black/5 p-4">
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId}/pushlist`"
+                >
+                  <span class="text-op-teal text-sm font-bold">
+                    {{ $t("editRestaurant.moveToPushConfig") }}
+                  </span>
+                </router-link>
+              </div>
+            </div>
           </div>
           <!-- end of notification -->
         </div>
@@ -854,9 +913,7 @@
                       <hours-input
                         v-model="editShopInfo.openTimes[index][0]"
                         :variant="
-                          errors['time'][index][0].length > 0
-                            ? 'danger'
-                            : 'success'
+                          timeErrors[index][0].length > 0 ? 'danger' : 'success'
                         "
                         :disabled="!editShopInfo.businessDay[index]"
                       ></hours-input>
@@ -867,6 +924,12 @@
                         :{{ $t("shopInfo.lunch") }}
                       </div>
                     </div>
+                    <p
+                      v-if="timeErrors[index][0].length > 0"
+                      class="mt-1 text-sm font-bold text-red-700"
+                    >
+                      {{ $t(timeErrors[index][0][0]) }}
+                    </p>
                   </div>
 
                   <!-- Another Hours -->
@@ -878,9 +941,7 @@
                       <hours-input
                         v-model="editShopInfo.openTimes[index][1]"
                         :variant="
-                          errors['time'][index][1].length > 0
-                            ? 'danger'
-                            : 'success'
+                          timeErrors[index][1].length > 0 ? 'danger' : 'success'
                         "
                         :disabled="!editShopInfo.businessDay[index]"
                       ></hours-input>
@@ -891,6 +952,12 @@
                         :{{ $t("shopInfo.dinner") }}
                       </div>
                     </div>
+                    <p
+                      v-if="timeErrors[index][1].length > 0"
+                      class="mt-1 text-sm font-bold text-red-700"
+                    >
+                      {{ $t(timeErrors[index][1][0]) }}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -930,12 +997,9 @@
                 <!-- Date Picker -->
                 <DatePicker
                   class="w-full"
-                  icon="calendar-today"
+                  icon="calendar_today"
                   v-model="newTemporaryClosure"
-                  ref="datepicker"
-                  :min-date="now"
                   :max-date="maxDate"
-                  expanded
                   :placeholder="$t('shopInfo.temporaryClosureSelect')"
                 >
                 </DatePicker>
@@ -953,10 +1017,8 @@
 
                 <!-- Saved Closure Days -->
                 <div class="mb-2 grid grid-cols-1 space-y-2">
-                  <template
-                    v-for="(day, key) in editShopInfo.temporaryClosure || []"
-                  >
-                    <template v-if="day.getTime() >= now">
+                  <template v-for="(day, key) in temporaryClosureDates">
+                    <template v-if="day.getTime() >= now.getTime()">
                       <div
                         :key="key"
                         class="flex items-center rounded-sm bg-white/50 px-2"
@@ -982,6 +1044,42 @@
                       </div>
                     </template>
                   </template>
+                </div>
+              </div>
+            </div>
+            <!-- Closed on Holidays -->
+            <div class="mt-4">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("shopInfo.closedOnHolidays") }}
+              </div>
+              <div class="rounded-lg bg-black/5 p-4">
+                <Checkbox v-model="editShopInfo.closedOnHolidays">
+                  <span class="font-bold">
+                    {{ $t("shopInfo.closedOnHolidaysLabel") }}
+                  </span>
+                </Checkbox>
+                <div class="mt-2 text-sm text-black/60">
+                  {{ $t("shopInfo.closedOnHolidaysDescription") }}
+                </div>
+
+                <!-- Holidays through the end of next year -->
+                <div class="mt-4 text-sm font-bold text-black/40">
+                  {{ $t("shopInfo.holidayList") }}
+                </div>
+                <div class="mt-1 grid grid-cols-1 space-y-1">
+                  <div
+                    v-for="holiday in upcomingHolidays"
+                    :key="holiday.dateKey"
+                    class="flex rounded-sm bg-white/50 px-2 py-1 text-sm"
+                  >
+                    <div class="w-36">
+                      {{ holiday.dateKey.replaceAll("-", "/") }}
+                      {{ $t("week.short." + days[holiday.weekday]) }}
+                    </div>
+                    <div class="flex-1">
+                      {{ holiday.name }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1084,10 +1182,10 @@ import {
 } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig, GMAPId } from "@/config/project";
+import { GMAPId } from "@/config/project";
 
 import DatePicker from "@/components/DatePicker.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -1107,25 +1205,21 @@ import ImageUpload from "@/components/ImageUpload.vue";
 
 import { checkShopOwner } from "@/utils/userPermission";
 
-import {
-  getEditShopInfo,
-  shopInfoValidator,
-  copyRestaurant,
-} from "@/utils/admin/RestaurantPageUtils";
+import { copyRestaurant } from "@/utils/admin/RestaurantPageUtils";
+import { shopInfoValidator } from "@/utils/admin/shopInfoForm";
+import { getEditShopInfo } from "@/utils/admin/shopInfoPayload";
+import { isValidInvoiceNumber, isNull } from "@/utils/commonUtils";
 import {
   cleanObject,
-  isNull,
   countObj,
-  regionalSetting,
   useAdminUids,
   notFoundResponse,
   num2time,
   useRestaurantId,
   defaultTitle,
 } from "@/utils/utils";
-import { uploadFile } from "@/lib/firebase/storage";
-
 import {
+  regionalSetting,
   taxRates,
   daysOfWeek,
   reservationTheDayBefore,
@@ -1134,13 +1228,24 @@ import {
   paymentMethods,
   GOOGLE_MAP_DEFAULT_CENTER,
 } from "@/config/constant";
+import { uploadFile } from "@/lib/firebase/storage";
 
 import { useDialogStore } from "@/store/dialog";
 import { useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
 import moment from "moment";
+import { useI18n } from "vue-i18n";
 
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { holidaysThroughNextYear } from "@/utils/holiday";
+import { startOfDayOfKey, weekdayOf } from "@/utils/shopCalendar";
+
+// 曜日のキーは月曜 "1"〜日曜 "7"。weekdayOf は日曜が 0。
+const SUNDAY_KEY = 7;
+
+import {
+  ConvertedRestaurantInfoData,
+  RestaurantInfoData,
+} from "@/models/RestaurantInfo";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -1172,11 +1277,20 @@ export default defineComponent({
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
     const now = moment().subtract(1, "days").toDate();
+
+    // 祝日定休の対象を誤解なく見せるため、今日から翌年末までの祝日を並べる。
+    const { locale } = useI18n({ useScope: "global" });
+    const upcomingHolidays = computed(() =>
+      holidaysThroughNextYear(new Date()).map((holiday) => ({
+        dateKey: holiday.dateKey,
+        weekday: weekdayOf(startOfDayOfKey(holiday.dateKey)) || SUNDAY_KEY,
+        name: locale.value === "ja" ? holiday.name : holiday.nameEn,
+      })),
+    );
     const taxRateKeys = regionalSetting["taxRateKeys"];
-    const region = ownPlateConfig.region;
 
     const notFound = ref<boolean | null>(null);
-    const gMap = ref();
+    const gMap = ref<HTMLElement | null>(null);
     let mapObj: google.maps.Map | null = null;
 
     // internal ref;
@@ -1200,6 +1314,15 @@ export default defineComponent({
     const selectedResult = ref(0);
 
     const editShopInfo = reactive(props.shopInfo);
+    // editShopInfo は Wrapper の店舗設定そのもの。臨時休業日を Date にして書き戻すと、
+    // ほかの管理画面が Timestamp のつもりで読むので、フォームの中だけで持つ。
+    const temporaryClosureDates = ref<Date[]>(
+      (props.shopInfo.temporaryClosure || []).map((day) => day.toDate()),
+    );
+    const shopInfoToSave = (): ConvertedRestaurantInfoData => ({
+      ...editShopInfo,
+      temporaryClosure: temporaryClosureDates.value,
+    });
 
     useHead(() => ({
       title: props.shopInfo.restaurantName
@@ -1213,7 +1336,8 @@ export default defineComponent({
 
     // only owner
     const { uid } = useAdminUids();
-    if (!checkShopOwner(props.shopInfo, uid.value)) {
+    const ownerUid = uid.value;
+    if (!ownerUid || !checkShopOwner(props.shopInfo, ownerUid)) {
       return notFoundResponse;
     }
     notFound.value = false;
@@ -1254,6 +1378,9 @@ export default defineComponent({
         files.value["cover"],
       );
     });
+    // 曜日と枠で入れ子になっているのは time だけ。他の欄と同じ形で読ませると、
+    // 一覧の添字が文字列の一覧を指していることになって型が合わない。
+    const timeErrors = computed(() => errors.value.time ?? {});
     const hasError = computed(() => {
       const num = countObj(errors.value);
       return num > 0;
@@ -1273,7 +1400,7 @@ export default defineComponent({
     const removeAllMarker = () => {
       if (markers && markers.length > 0) {
         markers.forEach((marker) => {
-          marker.setMap(null);
+          marker.map = null;
         });
         markers.splice(0);
       }
@@ -1283,8 +1410,8 @@ export default defineComponent({
       move = true,
     ) => {
       if (location && location.lat && location.lng) {
-        if (move) {
-          mapObj.setCenter(location);
+        if (move && mapObj) {
+          mapObj.setCenter({ lat: location.lat, lng: location.lng });
         }
         removeAllMarker();
         markers.push(
@@ -1311,21 +1438,18 @@ export default defineComponent({
       const func = (elem: Date) => {
         return elem.getTime() === day.getTime();
       };
-      return !editShopInfo.temporaryClosure.some(func);
+      return !temporaryClosureDates.value.some(func);
     };
     const deleteTemporaryClosure = (key: number) => {
-      editShopInfo.temporaryClosure = editShopInfo.temporaryClosure.filter(
+      temporaryClosureDates.value = temporaryClosureDates.value.filter(
         (v, n) => n !== key,
       );
     };
     const addNewTemporaryClosure = () => {
-      if (
-        !isNull(newTemporaryClosure.value) &&
-        isNewTemporaryClosure(newTemporaryClosure.value as Date) &&
-        isFuture(newTemporaryClosure.value as Date)
-      ) {
-        editShopInfo.temporaryClosure.push(newTemporaryClosure.value);
-        editShopInfo.temporaryClosure.sort((a, b) => {
+      const day = newTemporaryClosure.value;
+      if (!isNull(day) && isNewTemporaryClosure(day) && isFuture(day)) {
+        temporaryClosureDates.value.push(day);
+        temporaryClosureDates.value.sort((a, b) => {
           return a.getTime() > b.getTime() ? 1 : -1;
         });
       }
@@ -1400,8 +1524,8 @@ export default defineComponent({
     const copyRestaurantFunc = async () => {
       try {
         const id = await copyRestaurant(
-          editShopInfo,
-          uid.value,
+          shopInfoToSave(),
+          ownerUid,
           restaurantId.value,
         );
         router.push({
@@ -1436,7 +1560,7 @@ export default defineComponent({
     };
     const saveRestaurant = async () => {
       submitting.value = true;
-      const newData = { ...editShopInfo };
+      const newData = shopInfoToSave();
       try {
         if (files.value["profile"]) {
           const path = `/images/restaurants/${restaurantId.value}/${uid.value}/profile.jpg`;
@@ -1457,7 +1581,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const restaurantData = getEditShopInfo(newData);
+        const restaurantData = getEditShopInfo(newData, serverTimestamp());
         await updateRestaurantData(restaurantData);
 
         router.push(`/admin/restaurants/#restaurant_` + restaurantId.value);
@@ -1465,6 +1589,7 @@ export default defineComponent({
         console.error(error);
         submitting.value = false;
         dialogStore.setErrorMessage({
+          error,
           code: "restaurant.save",
         });
       }
@@ -1492,7 +1617,13 @@ export default defineComponent({
     };
 
     const disableSave = computed(() => {
-      return hasError.value && editShopInfo.publicFlag;
+      // 非公開の店舗では入力途中の未入力を許す。ただし形の違う登録番号だけは
+      // 公開状態に関わらず止める。保存できてしまうと、印字側が弾くので画面上は
+      // 設定済みに見えたまま、レシートにも請求書にも一生出ない。
+      return (
+        (hasError.value && editShopInfo.publicFlag) ||
+        !isValidInvoiceNumber(editShopInfo.invoiceNumber)
+      );
     });
 
     const openTips = (key: string) => {
@@ -1508,10 +1639,10 @@ export default defineComponent({
       minimumCookTimeChoices,
       taxRates,
       taxRateKeys,
-      region,
 
       editShopInfo,
 
+      upcomingHolidays,
       days: daysOfWeek,
 
       // ref
@@ -1526,8 +1657,10 @@ export default defineComponent({
       restProfilePhoto,
       restCoverPhoto,
       errors,
+      timeErrors,
       hasError,
 
+      temporaryClosureDates,
       deleteTemporaryClosure,
       addNewTemporaryClosure,
 

@@ -109,13 +109,12 @@
           <div class="mt-4" v-if="orderInfo.isDelivery">
             <span
               v-if="
-                $refs.ecCustomerRef &&
-                $refs.ecCustomerRef.ecErrors['location'].length > 0
+                ecCustomerRef && ecCustomerRef.ecErrors['location'].length > 0
               "
               class="font-bold text-red-700"
             >
               <div
-                v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
+                v-for="(error, key) in ecCustomerRef.ecErrors['location']"
                 :key="key"
               >
                 {{ $t(error) }}
@@ -125,9 +124,7 @@
               ref="orderPageMapRef"
               @updateHome="updateHome"
               :shopInfo="shopInfo"
-              :fullAddress="
-                $refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress
-              "
+              :fullAddress="ecCustomerRef?.fullAddress"
               :deliveryInfo="deliveryData"
             />
           </div>
@@ -215,6 +212,9 @@
                   class="w-full rounded border border-gray-300 px-3 py-2"
                   :class="userNameError ? 'border-red-500' : 'border-green-500'"
                 />
+                <div :class="userNameError ? 'font-bold text-red-700' : ''">
+                  {{ $t("validationError.name.length") }}
+                </div>
               </div>
             </div>
           </template>
@@ -335,11 +335,7 @@
 
             <!-- Error message for ec and delivery -->
             <div
-              v-if="
-                requireAddress &&
-                $refs.ecCustomerRef &&
-                $refs.ecCustomerRef.hasEcError
-              "
+              v-if="requireAddress && ecCustomerRef && ecCustomerRef.hasEcError"
               class="mt-2 text-center font-bold text-red-700"
             >
               {{ $t("order.alertReqireAddress") }}
@@ -353,6 +349,8 @@
 
 <script lang="ts">
 import { defineComponent, computed, watch, ref, PropType } from "vue";
+import type { DeliveryAreaData } from "@/models/deliveryArea";
+import type { PaymentInfo } from "@/models/paymentInfo";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 
@@ -374,7 +372,7 @@ import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status, paymentMethods } from "@/config/constant";
 
-import { costCal } from "@/utils/commonUtils";
+import { costCal, type PostageInfo } from "@/utils/commonUtils";
 import { errorMessage } from "@/utils/utils";
 import { usePromotionData } from "@/utils/promotion";
 
@@ -391,6 +389,7 @@ import { useGeneralStore } from "@/store";
 import { useCartStore } from "@/store/cart";
 import { useDialogStore } from "@/store/dialog";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 export default defineComponent({
   name: "Order",
@@ -423,11 +422,11 @@ export default defineComponent({
       required: true,
     },
     paymentInfo: {
-      type: Object,
+      type: Object as PropType<PaymentInfo>,
       required: true,
     },
     deliveryData: {
-      type: Object,
+      type: Object as PropType<DeliveryAreaData>,
       required: true,
     },
     promotions: {
@@ -436,7 +435,7 @@ export default defineComponent({
     },
     menuPagePath: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   data() {
@@ -449,23 +448,23 @@ export default defineComponent({
     const cartStore = useCartStore();
     const dialogStore = useDialogStore();
 
-    const restaurantId = route.params.restaurantId as string;
+    const restaurantId = routeParamOf(route.params.restaurantId);
 
     const notAvailable = ref(false);
 
-    const cardState = ref({});
+    const cardState = ref<{ complete?: boolean }>({});
     const memo = ref("");
     const userName = ref(props.orderInfo.name);
 
     let tip = 0;
 
     // ref for refs
-    const ecCustomerRef = ref();
-    const orderPageMapRef = ref();
-    const timeToPickupRef = ref();
+    const ecCustomerRef = ref<InstanceType<typeof ECCustomer> | null>(null);
+    const orderPageMapRef = ref<InstanceType<typeof OrderPageMap> | null>(null);
+    const timeToPickupRef = ref<InstanceType<typeof TimeToPickup> | null>(null);
     const stripeRef = ref();
 
-    const postageInfo = ref({});
+    const postageInfo = ref<Partial<PostageInfo>>({});
     const setPostage = () => {
       if (props.shopInfo.isEC) {
         getDoc(doc(db, `restaurants/${restaurantId}/ec/postage`)).then(
@@ -489,7 +488,7 @@ export default defineComponent({
     });
 
     const orderId = computed(() => {
-      return route.params.orderId as string;
+      return routeParamOf(route.params.orderId);
     });
     const stripeSmallPayment = computed(() => {
       return props.orderInfo.total <= 50;
@@ -557,9 +556,10 @@ export default defineComponent({
     });
 
     // methods
-    type LatLng = { lat?: number; lng?: number };
+    type LatLng = { lat: number; lng: number };
+    // 地図は setHome(lat: number, lng: number) から、ECCustomer は保存済みの location から送る。どちらもそろっている。
     const updateHome = (pos: LatLng) => {
-      ecCustomerRef.value.updateHome(pos);
+      ecCustomerRef.value?.updateHome(pos);
     };
     const updateLocation = (pos: LatLng) => {
       if (orderPageMapRef.value) {
@@ -578,7 +578,7 @@ export default defineComponent({
             quantity: Array.isArray(or.count)
               ? or.count.reduce((a, b) => a + b, 0)
               : or.count,
-          } as analyticsUtil.AnalyticsMenuData;
+          };
         }),
         props.shopInfo,
         restaurantId,
@@ -595,7 +595,7 @@ export default defineComponent({
     const handleTipChange = (_tip: number) => {
       tip = _tip;
     };
-    const handleCardStateChange = (state: { [key: string]: boolean }) => {
+    const handleCardStateChange = (state: { complete?: boolean }) => {
       cardState.value = state;
     };
     // internal
@@ -623,13 +623,17 @@ export default defineComponent({
         if (ecCustomerRef.value && ecCustomerRef.value.hasEcError) {
           return;
         }
-        if (ecCustomerRef.value.isSaveAddress) {
+        if (ecCustomerRef.value?.isSaveAddress) {
           await ecCustomerRef.value.saveAddress();
         }
       }
       const timeToPickup = props.shopInfo.isEC
         ? Timestamp.now()
-        : timeToPickupRef.value.timeToPickup();
+        : timeToPickupRef.value?.timeToPickup();
+      // 受取時刻の欄は、店舗に営業日が無いと描画されない（v-if="shopInfo.businessDay"）。
+      if (!timeToPickup) {
+        return;
+      }
       try {
         generalStore.setLoading(true);
         const promotionId =
@@ -665,6 +669,7 @@ export default defineComponent({
         // alert(JSON.stringify(error));
         console.error(errorMessage(error), error);
         dialogStore.setErrorMessage({
+          error,
           code: "order.place",
         });
       } finally {

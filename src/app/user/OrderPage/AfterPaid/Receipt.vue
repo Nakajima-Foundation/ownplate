@@ -29,6 +29,7 @@ import { stripeReceipt } from "@/lib/firebase/functions";
 
 import { useRestaurantId } from "@/utils/utils";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 export default defineComponent({
   setup() {
@@ -43,7 +44,7 @@ export default defineComponent({
       try {
         const res = await stripeReceipt({
           restaurantId: restaurantId.value,
-          orderId: route.params.orderId,
+          orderId: routeParamOf(route.params.orderId),
         });
         if (res.data && res.data.receipt_url) {
           window.open(res.data.receipt_url);

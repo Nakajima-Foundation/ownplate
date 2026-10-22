@@ -35,7 +35,7 @@ import { signInWithCustomToken, signOut } from "firebase/auth";
 import { liffAuthenticate } from "@/lib/firebase/functions";
 import { useUserStore } from "@/store/user";
 
-import queryString from "query-string";
+import { classifyOS, parseLiffState } from "@/utils/liffState";
 
 import PC from "@/app/liff/PC.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -43,6 +43,7 @@ import NotFound from "@/components/NotFound.vue";
 import Modal from "@/components/Modal2.vue";
 
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 
 /*
  liff flow
@@ -60,33 +61,7 @@ import { useRoute } from "vue-router";
  5. everything ok
 */
 
-const getOS = () => {
-  const os = liff.getOS();
-  const isAndroid = os === "android";
-  const isIOS = os === "ios";
-  const isWeb = os === "web";
-  return {
-    os,
-    isAndroid,
-    isIOS,
-    isWeb,
-  };
-};
-
-const parseLiffState = (liffstate: string) => {
-  if (!liffstate) return {};
-  const splited = liffstate.split("?");
-  if (splited.length < 2) {
-    return {
-      liffStatePath: splited[0] || "",
-      liffStateQuery: {},
-    };
-  }
-  return {
-    liffStatePath: splited[0],
-    liffStateQuery: queryString.parse(splited[1]),
-  };
-};
+const getOS = () => classifyOS(liff.getOS());
 
 export default defineComponent({
   components: {
@@ -118,7 +93,7 @@ export default defineComponent({
     });
 
     const liffIndexId = computed(() => {
-      return route.params.liffIndexId as string;
+      return routeParamOf(route.params.liffIndexId);
     });
 
     watch(userLoad, () => {
@@ -127,7 +102,6 @@ export default defineComponent({
           (async () => {
             const { data } = await liffAuthenticate({
               liffIndexId: liffIndexId.value,
-              liffId: liffId.value,
               token: liffIdToken.value,
             });
             if (data.customToken) {

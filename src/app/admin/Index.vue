@@ -186,16 +186,15 @@
               >
                 <a :id="'restaurant_' + restaurantId" />
                 <restaurant
-                  v-if="restaurantItems[restaurantId]"
+                  v-if="restaurantItems?.[restaurantId]"
                   :simpleMode="simpleMode"
-                  :shopInfo="restaurantItems[restaurantId]"
+                  :shopInfo="restaurantItems?.[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
-                    restaurantItems[restaurantId].numberOfMenus || 0
+                    restaurantItems?.[restaurantId].numberOfMenus || 0
                   "
                   :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                   :lineEnable="lines[restaurantId] || false"
-                  :shopOwner="shopOwner"
                   :position="
                     index == 0
                       ? 'first'
@@ -243,9 +242,6 @@
 
         <!-- Mail Magazine-->
         <MailMagazine />
-
-        <!-- Smaregi-->
-        <Smaregi />
       </div>
       <!-- End of Right Section -->
     </div>
@@ -258,6 +254,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onUnmounted, onMounted } from "vue";
+import type { AdminMessageData } from "@/models/subAccount";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -277,7 +274,7 @@ import {
 } from "firebase/firestore";
 
 import { order_status } from "@/config/constant";
-import { midNight } from "@/utils/dateUtils";
+import { startOfDayAfter } from "@/utils/shopCalendar";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
@@ -291,7 +288,6 @@ import News from "@/app/admin/Index/News.vue";
 import Survey from "@/app/admin/Index/Survey.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
-import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import IndexFooter from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
@@ -299,14 +295,15 @@ import SubAccount from "@/app/admin/Index/SubAccount.vue";
 import { ping } from "@/lib/firebase/functions";
 
 import {
-  getShopOwner,
   doc2data,
   sleep,
   scrollToElementById,
   arrayChunk,
   useAdminUids,
   defaultTitle,
+  redirectedResponse,
 } from "@/utils/utils";
+import { getShopOwner } from "@/utils/shopOwner";
 import { checkAdminPermission } from "@/utils/userPermission";
 
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
@@ -330,7 +327,6 @@ export default defineComponent({
     Survey,
     Partners,
     EmailVerify,
-    Smaregi,
     SubAccount,
     MailMagazine,
     Note,
@@ -354,14 +350,14 @@ export default defineComponent({
     const shopOwner = ref<ShopOwnerData | Record<string, never> | null>(null);
     const restaurantLists = ref<string[]>([]);
     const numberOfOrderObj = ref<{ [key: string]: number }>({});
-    const messages = ref<DocumentData[]>([]);
+    const messages = ref<AdminMessageData[]>([]);
 
     useHead(() => ({
       title: ["Admin Index", defaultTitle].join(" / "),
     }));
 
     if (!checkAdminPermission()) {
-      return;
+      return redirectedResponse;
     }
     ping({
       restaurantId: "index",
@@ -386,7 +382,7 @@ export default defineComponent({
           return onSnapshot(
             query(
               collection(db, `restaurants/${restaurantId}/orders`),
-              where("timePlaced", ">=", midNight()),
+              where("timePlaced", ">=", startOfDayAfter(new Date(), 0)),
             ),
             // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
             (result) => {
@@ -449,9 +445,8 @@ export default defineComponent({
                     tmp: { [key: string]: RestaurantInfoData },
                     restaurantDoc: DocumentSnapshot<DocumentData>,
                   ) => {
-                    tmp[restaurantDoc.id] = doc2data("restaurant")(
-                      restaurantDoc,
-                    ) as RestaurantInfoData;
+                    tmp[restaurantDoc.id] =
+                      doc2data<RestaurantInfoData>("restaurant")(restaurantDoc);
                     if (!restaurantLists.value.includes(restaurantDoc.id)) {
                       restaurantLists.value.push(restaurantDoc.id);
                     }
@@ -491,9 +486,10 @@ export default defineComponent({
                       tmp: { [key: string]: RestaurantInfoData },
                       restaurantDoc: DocumentSnapshot<DocumentData>,
                     ) => {
-                      tmp[restaurantDoc.id] = doc2data("restaurant")(
-                        restaurantDoc,
-                      ) as RestaurantInfoData;
+                      tmp[restaurantDoc.id] =
+                        doc2data<RestaurantInfoData>("restaurant")(
+                          restaurantDoc,
+                        );
                       return tmp;
                     },
                     {},
@@ -537,8 +533,8 @@ export default defineComponent({
         ),
         (messageCollection) => {
           messages.value = messageCollection.docs
-            .map(doc2data("message"))
-            .filter((a: DocumentData) => a.toDisplay);
+            .map(doc2data<AdminMessageData>("message"))
+            .filter((a) => a.toDisplay);
         },
       );
     });
@@ -572,7 +568,7 @@ export default defineComponent({
 
           router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
-          dialogStore.setErrorMessage({});
+          dialogStore.setErrorMessage({ error });
           console.error(error);
         }
       }

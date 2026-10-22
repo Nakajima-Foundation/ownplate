@@ -1,8 +1,8 @@
-import * as admin from "firebase-admin";
+import { Firestore } from "firebase-admin/firestore";
 import * as utils from "../../lib/utils";
 
 // called by order/orderCreated
-export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
+export const createCustomer = async (db: Firestore, uid: string, phoneNumber: string) => {
   const stripe = utils.get_stripe_v2();
   await db.runTransaction(async (tr) => {
     const refStripe = db.doc(`/users/${uid}/system/stripe`);
@@ -22,7 +22,7 @@ export const createCustomer = async (db: admin.firestore.Firestore, uid: string,
 };
 
 // called by delete account
-export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string) => {
+export const deleteCustomer = async (db: Firestore, uid: string) => {
   const stripe = utils.get_stripe_v2();
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
   const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);

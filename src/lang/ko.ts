@@ -15,7 +15,6 @@ const data = {
     },
   },
   serviceName: {
-    ownPlate: "OwnPlate",
     omochikaeri: "Omochikaeri.com",
   },
   pageTitle: {
@@ -158,6 +157,9 @@ const data = {
     current: "변경 전",
     clickAndUpload: "여기를 클릭",
     clickAndUploadDetail: "회색 영역을 클릭하여 업로드 (JPEG 형식)",
+    imageTooLarge:
+      "이미지는 {size}MB 이하여야 합니다. 더 작은 이미지를 선택해 주세요.",
+    imageNotImage: "이미지 파일을 선택해 주세요.",
     edit: "편집",
   },
   currency: {
@@ -315,6 +317,12 @@ const data = {
     notificationConfig: "알림 설정",
     moveToLineConfig:
       "LINE 알림 설정 화면으로 이동합니다. 이동하기 전에 이 페이지 저장을 잊지 마세요.",
+    invoiceNumber: "인보이스 등록번호",
+    enterInvoiceNumber: "예: T1234567890123",
+    invoiceNumberNote:
+      "적격청구서 발행사업자 등록번호. 미설정 시 영수증과 PDF에 인쇄되지 않습니다.",
+    webPushNotification: "푸시 알림",
+    moveToPushConfig: "웹 푸시 설정",
     openDaysConfig: "영업일시 설정",
     lunchOrDinnerToggle: "런치/디너 자동 전환",
     lunchOrDinnerNotice:
@@ -349,6 +357,8 @@ const data = {
     availableDayTimeSettings: "상품의 주문 가능 시간 설정",
     free: "무료",
     optionsPreview: "옵션 미리보기",
+    showOptionsPreview: "옵션 미리보기 표시",
+    hideOptionsPreview: "옵션 미리보기 숨기기",
     priceChange: "가격 변동",
     noPriceChange: "없음",
     tax: "소비세",
@@ -382,6 +392,7 @@ const data = {
     category2: "카테고리 2",
     editCategory2: "카테고리 2 편집",
     exclusionDate: "제외일",
+    holiday: "공휴일",
     exclusionTime: "제외 시간",
     showAllMenu: "전체 상품",
     showPublicMenu: "공개 중만",
@@ -503,6 +514,11 @@ const data = {
     temporaryClosureDescription: "날짜를 선택한 후 추가를 눌러 주세요",
     temporaryClosureOkay: "확인",
     temporaryClosureSelect: "날짜 선택",
+    closedOnHolidays: "공휴일 휴무",
+    closedOnHolidaysLabel: "공휴일을 정기 휴무일로 설정",
+    closedOnHolidaysDescription: "켜면 공휴일에는 수령할 수 없습니다.",
+    holidayList: "대상 공휴일(내년 말까지)",
+    closedOnHolidaysNotice: "공휴일은 정기 휴무일입니다",
     paymentMethod: "결제 방법",
     onlinePayment: "온라인 결제",
     onsitePayment: "현장 결제",
@@ -597,6 +613,7 @@ const data = {
     about: "매장 정보",
     limitedSale: "한정 판매",
     unavailableTime: "수령 불가 시간",
+    unavailableOnHolidays: "공휴일에는 수령할 수 없습니다",
     confirmCart: "장바구니 보기",
     checkout: "결제",
     orderCounter: "{count} 개",
@@ -870,12 +887,9 @@ const data = {
     discountPriceMessage: "할인이 있습니다",
     discountPrice: "할인 금액",
     beforeDiscountPrice: "할인 전 가격",
-    cancelReason: "취소 사유",
     productId: "상품 번호",
     category: "카테고리",
     categoryId: "카테고리 ID",
-    subCategory: "서브 카테고리",
-    subCategoryId: "서브 카테고리 ID",
   },
   editEC: {
     postageList: "배송비 목록",
@@ -927,7 +941,6 @@ const data = {
     backToDiscounts: "할인 설정 목록으로 돌아가기",
     backToDocument: "문서 목록으로 돌아가기",
     backToSubaccounts: "서브 계정 목록으로 돌아가기",
-    backToSmaregi: "Smaregi 설정으로 돌아가기",
     addTitle: "상품 그룹명 추가",
     addItem: "상품 추가",
     downloadMenu: "전단지 다운로드",
@@ -984,6 +997,40 @@ const data = {
     "auth/missing-verification-code": "SMS 인증 코드가 입력되지 않았습니다",
     "auth/code-expired":
       "SMS 인증 코드가 만료되었습니다. SMS 인증 코드를 재전송하여 다시 입력해 주세요",
+  },
+  pushDevice: {
+    appName: "おもちかえり.com 주문 알림",
+    appShortName: "주문 알림",
+    title: "알림을 받을 기기 등록",
+    installHeading: "iPhone·iPad를 사용하는 경우",
+    installStep1: "Safari의 공유 버튼을 누릅니다",
+    installStep2: '"홈 화면에 추가"를 선택합니다',
+    installStep3:
+      '홈 화면에 추가된 아이콘을 눌러 "알림을 받을 기기 등록" 화면을 엽니다',
+    nameLabel: "기기 이름 (필수)",
+    nameHint:
+      "관리 화면의 기기 목록에 표시됩니다. 이 기기임을 알 수 있는 이름을 입력해 주세요.",
+    namePlaceholder: "예: 계산대의 iPad",
+    register: "알림 받기",
+    done: "등록했습니다",
+    doneHint: "새 주문이 들어오면 이 기기로 알림이 전송됩니다.",
+    status: {
+      "registered-here": "이 기기는 등록되어 있습니다",
+      used: "이 URL은 이미 사용되었습니다. 관리자에게 새 URL을 요청해 주세요.",
+      expired: "이 URL은 기한이 지났습니다. 관리자에게 새 URL을 요청해 주세요.",
+      "not-found":
+        "이 URL은 유효하지 않습니다. 관리자에게 새 URL을 요청해 주세요.",
+    },
+    failure: {
+      unconfigured: "이 매장에서는 푸시 알림을 사용할 수 없습니다.",
+      unsupported:
+        "이 기기 또는 브라우저에서는 푸시 알림을 사용할 수 없습니다.",
+      denied: "알림이 차단되어 있습니다. 브라우저 설정에서 허용해 주세요.",
+      dismissed: "알림이 허용되지 않았습니다. 다시 시도해 주세요.",
+      "no-fid": "등록하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+      invite:
+        "이 URL은 이미 사용되었거나 기한이 지났습니다. 관리자에게 문의해 주세요.",
+    },
   },
   admin: {
     welcomeMessage: "어서 오세요!",
@@ -1096,13 +1143,6 @@ const data = {
         optout: "받지 않음",
       },
     },
-    thirdPartyService: {
-      title: "시스템 연동",
-      openSmaregi: "Smaregi 연동 설정",
-      smaregiManual: "Smaregi 매뉴얼",
-      smaregiAppMarket: "Smaregi 앱 마켓으로",
-      smaregiManualLink: "Smaregi 연동 사용 방법",
-    },
     needEmailVerification: "이메일 주소 인증을 완료해 주세요.",
     noteEmailVerification1:
       "{email}에서 보낸 이메일을 확인하고 이메일 내의 URL을 클릭하여 인증을 완료해 주세요.",
@@ -1128,7 +1168,11 @@ const data = {
     directory: {
       status: "고객용 매장 목록 게재 상태",
       requestWarning: "결제 설정 후 매장을 공개하고 신청해 주세요",
+      requestOptionalNote:
+        "※ 게재 신청은 선택 사항입니다. 신청하지 않아도 매장을 공개할 수 있습니다. 신청하는 경우 먼저 매장을 공개해 주세요.",
       requestingWarning: "결제 설정과 매장 공개가 아직인 경우 설정해 주세요",
+      requestingPublicNote:
+        "※ 매장이 공개되어 있지 않으면 목록에 게재되거나 운영팀의 확인이 불가능합니다. 아직이라면 매장을 공개해 주세요.",
       notListed: "미게재",
       requestList: "게재 신청",
       waiting: "신청 중",
@@ -1142,6 +1186,71 @@ const data = {
     forgotPassword: "비밀번호를 잊으신 경우",
     passwordReset: "비밀번호 재설정",
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
+    timeline: {
+      title: "알림 기록",
+      empty: "아직 알림이 없습니다.",
+      failed: "알림을 불러오지 못했습니다. 권한을 확인해 주세요.",
+    },
+    push: {
+      sendFailed: "최근 전송에 실패했습니다",
+      lastSentAt: "마지막 전송",
+      undelivered: "알림이 도착하지 않습니다. 다시 등록해 주세요.",
+      rename: "기기 이름 변경",
+      save: "저장",
+      delete: "삭제",
+      registeredAt: "등록",
+      namePlaceholder: "예: 계산대의 iPad",
+      devices: "알림을 받을 기기",
+      empty: "아직 등록된 기기가 없습니다.",
+      addDevice: "기기 추가",
+      inviteHeading: "알림을 받을 기기에서 이 URL을 열어 주세요",
+      inviteHint:
+        '이 URL로 등록할 수 있는 기기는 1대뿐입니다. 2대째를 추가하려면 "기기 추가"를 다시 눌러 주세요. 유효 기간은 24시간입니다. ※ URL을 LINE 그룹 등 불특정 다수가 볼 수 있는 곳에 공유하지 마세요.',
+      deviceGuideHeading: "이 URL을 여는 기기에서의 순서",
+      deviceGuideIos:
+        'iPhone・iPad: Safari에서 열고 공유 버튼에서 "홈 화면에 추가"를 선택한 뒤, 추가된 아이콘으로 다시 열어 주세요. Safari 탭에서는 알림을 받을 수 없습니다(iOS 16.4 이상 필요).',
+      deviceGuideAndroid:
+        "Android: Chrome에서 그대로 열어 등록할 수 있습니다. 기기 설정에서 알림이 꺼져 있으면 도착하지 않습니다.",
+      deviceGuideDesktop:
+        "컴퓨터: 알림을 허용했더라도 OS 알림 설정에서 브라우저가 꺼져 있거나 집중 모드 중에는 표시되지 않습니다.",
+      copy: "URL 복사",
+      copied: "복사했습니다",
+      test: "테스트 전송",
+      testResult: {
+        noTargets: "알림이 켜진 기기가 없습니다.",
+        allSent: "{targets}대에 전송했습니다.",
+        partlySent:
+          "{targets}대 중 {sent}대에 전송했습니다. 받지 못한 기기는 목록에서 확인해 주세요.",
+        failed: "테스트 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+      },
+      deleteConfirm: "이 기기로의 알림을 삭제할까요?",
+    },
+    webpush: {
+      restaurantId: "매장 ID",
+      title: "Web Push test",
+      statusHeading: "Status",
+      configured: "VAPID key",
+      notConfigured: "not set",
+      supported: "Supported here",
+      notSupported: "not supported",
+      permission: "Notification permission",
+      currentDevice: "FID of this device",
+      noDevice: "not registered",
+      iosHint:
+        "On iPhone and iPad this works only when opened from the icon added to the Home Screen.",
+      registrationHeading: "Device registration",
+      register: "Register this device",
+      unregister: "Unregister this device",
+      sendHeading: "Test send",
+      sendTitle: "Title",
+      sendBody: "Body",
+      send: "Send to my devices",
+      probeHeading: "Callable interference probe",
+      probeHint:
+        "Calls a normal callable once. If a send still arrives afterwards, the callable no longer breaks the FID.",
+      probe: "Call a callable",
+      logHeading: "Log",
+    },
     order: {
       suspend: "접수 중지",
       suspendSettings: "접수 중지 설정",
@@ -1164,6 +1273,9 @@ const data = {
       infinityNotificationOn: "1분마다 재알림",
       infinityNotificationOff: "수주 시에만 알림",
       soundTest: "테스트",
+      webPushDescription:
+        "관리 화면을 닫아도 이 기기로 새 주문을 알려 드립니다.",
+      webPushDevices: "푸시 알림 기기",
       paymentIsNotCompleted:
         "주의: 「접수 완료」버튼을 누르면 카드 결제가 처리됩니다.",
       cancelButton: "주문 취소",
@@ -1278,6 +1390,7 @@ const data = {
         "auth/unauthorized-continue-uri":
           "도메인이 화이트리스트에 등록되지 않았습니다.",
         "auth/internal-error": "비밀번호가 유효하지 않습니다.",
+        "auth/missing-password": "비밀번호를 입력해 주세요.",
         "auth/invalid-credential": "이메일 또는 비밀번호가 유효하지 않습니다.",
       },
     },
@@ -1352,12 +1465,6 @@ const data = {
       showBelow: "설정 아래쪽에 있습니다",
       enabled: "활성화",
       callbackURLCopyToLine: "이 값을 복사하여 LINE에 설정해 주세요.",
-    },
-    smaregi: {
-      index: "Smaregi 연동",
-      authenticating: "인증 중",
-      authenticationError: "인증 실패",
-      smaregiShopList: "Smaregi 매장 목록",
     },
   },
   week: {
@@ -1464,6 +1571,10 @@ const data = {
     },
   },
   dialogTips: {
+    pushDeviceRegistered: {
+      title: "등록했습니다",
+      body: '계속 등록하려면 "기기 추가"를 눌러 주세요.',
+    },
     paymentMethods: {
       title: "결제 방법",
       body: "이 기능은 「현장 결제」를 선택한 고객에게 매장에서 이용 가능한 결제 방법 정보를 제공합니다",
@@ -1493,6 +1604,62 @@ const data = {
     reset: "서버 URL 재설정",
   },
   validationError: {
+    invoiceNumber: {
+      format: "반각으로 T 다음에 숫자 13자리를 입력하세요",
+    },
+    itemName: {
+      empty: "상품명을 입력해 주세요",
+    },
+    price: {
+      empty: "가격을 입력해 주세요",
+      invalid: "가격은 0 이상의 정수로 입력해 주세요",
+    },
+    restaurantName: {
+      empty: "음식점명을 입력해 주세요",
+    },
+    ownerName: {
+      empty: "책임자 성명을 입력해 주세요",
+    },
+    streetAddress: {
+      empty: "번지 이하를 입력해 주세요",
+    },
+    city: {
+      empty: "시·구·정촌을 입력해 주세요",
+    },
+    state: {
+      empty: "도도부현을 선택해 주세요",
+    },
+    url: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    lineUrl: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    instagramUrl: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    uberEatsUrl: {
+      invalidUrl: "올바른 URL(http:// 또는 https://)을 입력해 주세요",
+    },
+    pickUpMinimumCookTime: {
+      tooMuch: "준비 시간이 너무 깁니다(최대 7일까지)",
+      negative: "준비 시간에 음수는 지정할 수 없습니다",
+      notNumbery: "준비 시간은 숫자로 입력해 주세요",
+      empty: "준비 시간을 입력해 주세요",
+    },
+    pickUpDaysInAdvance: {
+      invalid: "예약 접수 시작일 설정이 올바르지 않습니다",
+      empty: "예약 접수 시작일을 선택해 주세요",
+    },
+    restProfilePhoto: {
+      empty: "프로필 이미지를 설정해 주세요",
+    },
+    restCoverPhoto: {
+      empty: "커버 이미지를 설정해 주세요",
+    },
+    oneInEmpty: "시작 시각과 종료 시각을 모두 입력해 주세요",
+    validBusinessTime: "종료 시각은 시작 시각보다 뒤여야 합니다",
+    noSelect: "영업시간을 설정해 주세요",
     zip: {
       empty: "우편번호를 입력해 주세요",
       invalidZip: "올바른 우편번호를 입력해 주세요",
@@ -1502,6 +1669,7 @@ const data = {
     },
     name: {
       empty: "성명을 입력해 주세요",
+      length: "성명은 3자 이상 입력해 주세요.",
     },
     memo: {
       length: "메시지는 500자 이내로 입력해 주세요.",

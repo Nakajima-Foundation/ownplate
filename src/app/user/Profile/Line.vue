@@ -48,7 +48,7 @@
       <!-- LINE Not Connected -->
 
       <div v-if="!inLiff && (!isLineUser || isDev)">
-        <div v-if="isLineEnabled" class="mt-4 text-center">
+        <div class="mt-4 text-center">
           <div v-if="isLineUser && isDev" class="mb-2 text-base font-bold">
             再設定 for Dev
           </div>
@@ -75,7 +75,7 @@ import {
   useUserData,
   useLiffIndexId,
   isDev,
-  isLineEnabled,
+  collectionData,
 } from "@/utils/utils";
 import liff from "@line/liff";
 
@@ -98,7 +98,7 @@ export default defineComponent({
     const liffIndexId = useLiffIndexId();
 
     const isFriend = ref<undefined | boolean>(undefined);
-    const liffConfig = ref<null | { friendUrl: string }>(null);
+    const liffConfig = ref<null | undefined | { friendUrl: string }>(null);
 
     const isWindowActive = computed(() => {
       return generalStore.isWindowActive;
@@ -183,9 +183,11 @@ export default defineComponent({
         checkFriend();
       }
       if (inLiff.value) {
-        liffConfig.value = (
+        const liffDoc = (
           await getDoc(doc(db, `liff/${liffIndexId.value}`))
         ).data();
+        liffConfig.value =
+          liffDoc && collectionData<{ friendUrl: string }>(liffDoc);
       }
     };
     init();
@@ -200,7 +202,6 @@ export default defineComponent({
 
       isDev,
       inLiff,
-      isLineEnabled,
 
       isLiffUser,
       isLineUser,

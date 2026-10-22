@@ -118,6 +118,7 @@
         <!-- Submit Button -->
         <div class="mt-2 text-center">
           <t-button
+            type="button"
             @click="handleCancel"
             :isCancel="true"
             class="mr-4 mb-2 h-12 w-32"
@@ -339,7 +340,7 @@ export default defineComponent({
         if (code === "auth/email-already-in-use") {
           emailTaken.value = email.value;
         } else {
-          dialogStore.setErrorMessage({ code: "auth.signupFailed" });
+          dialogStore.setErrorMessage({ code: "auth.signupFailed", error });
         }
       } finally {
         generalStore.setLoading(false);

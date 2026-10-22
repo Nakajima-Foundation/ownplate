@@ -13,27 +13,20 @@
       </a>
     </div>
 
-    <TransactionsActModal
-      ref="transactions"
-      :shopInfo="shopInfo"
-      :isDelivery="isDelivery"
-    />
+    <TransactionsActModal ref="transactions" :shopInfo="shopInfo" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import TransactionsActModal from "@/app/user/TransactionsAct/Modal.vue";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
-      required: true,
-    },
-    isDelivery: {
-      type: Boolean,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
@@ -41,9 +34,11 @@ export default defineComponent({
     TransactionsActModal,
   },
   setup() {
-    const transactions = ref();
+    const transactions = ref<InstanceType<typeof TransactionsActModal> | null>(
+      null,
+    );
     const openTransactionsAct = () => {
-      transactions.value.openTransactionsAct();
+      transactions.value?.openTransactionsAct();
     };
     return {
       openTransactionsAct,

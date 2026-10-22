@@ -22,7 +22,7 @@ import {
   Unsubscribe,
 } from "firebase/firestore";
 
-import { arrayChunk } from "@/utils/utils";
+import { collectionData, arrayChunk } from "@/utils/utils";
 
 import { db } from "@/lib/firebase/firebase9";
 
@@ -32,15 +32,18 @@ import Promotion, {
   UserPromotionHistoryData,
 } from "@/models/promotion";
 
-export const getPromotionCollctionPath = (id: string) => {
-  return `restaurants/${id}/promotions`;
-};
-
-export const getPromotionDocumentPath = (id: string, promotionId: string) => {
-  const basePath = getPromotionCollctionPath(id);
-  const path = `${basePath}/${promotionId}`;
-  return path;
-};
+import {
+  compareForAdmin,
+  compareForCustomer,
+  getPromotionCollctionPath,
+  getPromotionDocumentPath,
+  hasStarted,
+  isPaymentAllowed,
+  promotionDiscount,
+  splitPromotionIdsByLookup,
+  usablePromotions,
+  userPromotionHistoryPath,
+} from "@/utils/promotionRules";
 
 export const getPromotion = async (id: string, promotionId: string) => {
   const path = getPromotionDocumentPath(id, promotionId);
@@ -55,21 +58,7 @@ export const usePromotionsForAdmin = (id: string) => {
     onSnapshot(query(collection(db, promotionPath)), (ret1) => {
       promotionDataSet.value = ret1.docs
         .map((a) => new Promotion(a))
-        .sort((a, b) => {
-          if (a.currentOpen !== b.currentOpen) {
-            return a.currentOpen ? -1 : 1;
-          }
-          if (a.enable !== b.enable) {
-            return a.enable ? -1 : 1;
-          }
-          if (a.enable !== b.enable) {
-            return a.enable ? -1 : 1;
-          }
-          if (a.hasTerm !== b.hasTerm) {
-            return a.hasTerm ? -1 : 1;
-          }
-          return a.termFrom > b.termFrom ? -1 : 1;
-        });
+        .sort(compareForAdmin);
     });
   })();
   return {
@@ -77,9 +66,9 @@ export const usePromotionsForAdmin = (id: string) => {
   };
 };
 
-type UserRef = ComputedRef<undefined | boolean | User>;
+type UserRef = ComputedRef<undefined | null | User>;
 
-const isUser = (v: undefined | boolean | User): v is User => {
+const isUser = (v: undefined | null | User): v is User => {
   return typeof v === "object" && v !== null;
 };
 
@@ -87,7 +76,7 @@ const getUserHistoryPath = (id: string, user: UserRef) => {
   if (!isUser(user.value)) {
     throw new Error("user is not authenticated");
   }
-  return `users/${user.value.uid}/promotionHistories`;
+  return userPromotionHistoryPath(user.value.uid);
 };
 const getHistoryCondition = (id: string) => {
   return where("restaurantId", "==", id);
@@ -122,15 +111,11 @@ export const usePromotions = (id: string, user: UserRef) => {
       ).then((ret1) => {
         const res = ret1.docs
           .map((a) => new Promotion(a))
-          .filter((a) => {
-            return a.termFrom < new Date();
-          });
+          .filter((a) => hasStarted(a, new Date()));
         res.map((a) => p.push(a));
       }),
     ]);
-    promotionData.value = p.sort((a, b) => {
-      return a.discountValue > b.discountValue ? 1 : -1;
-    });
+    promotionData.value = p.sort(compareForCustomer);
   })();
 
   const promotionUsed = ref<{
@@ -152,18 +137,9 @@ export const usePromotions = (id: string, user: UserRef) => {
         promotionUsed.value = {};
         return;
       }
-      const keys: string[] = [];
-      const values: string[] = [];
-      promotionData.value.forEach((a) => {
-        if (
-          ["discount", "onetimeCoupon"].includes(a.type) &&
-          a.usageRestrictions
-        ) {
-          keys.push(a.promotionId);
-        } else {
-          values.push(a.promotionId);
-        }
-      });
+      const { byDocumentId: keys, byField: values } = splitPromotionIdsByLookup(
+        promotionData.value,
+      );
       // TODO set condition
       const userHistoryPath = getUserHistoryPath(id, user);
 
@@ -185,7 +161,9 @@ export const usePromotions = (id: string, user: UserRef) => {
                   ? { ...promotionUsed.value }
                   : {};
                 a.docs.forEach((b) => {
-                  used[b.id] = b.data() as UserPromotionHistoryData;
+                  used[b.id] = collectionData<UserPromotionHistoryData>(
+                    b.data(),
+                  );
                 });
                 promotionUsed.value = used;
               },
@@ -212,7 +190,7 @@ export const usePromotions = (id: string, user: UserRef) => {
                   )
                     ? existing
                     : [];
-                  list.push(b.data() as UserPromotionHistoryData);
+                  list.push(collectionData<UserPromotionHistoryData>(b.data()));
                   used[b.id] = list;
                 });
                 promotionUsed.value = used;
@@ -221,28 +199,9 @@ export const usePromotions = (id: string, user: UserRef) => {
           : null;
     }
   });
-  const promotions = computed(() => {
-    if (promotionUsed.value !== null) {
-      const ret = promotionData.value.filter((a) => {
-        if (!a.usageRestrictions) {
-          return true;
-        }
-        if (a.type === "multipletimesCoupon") {
-          // TODO
-        } else if (a.type === "onetimeCoupon") {
-          const used = (promotionUsed.value || {})[a?.data.promotionId];
-          if (Array.isArray(used)) {
-            return true;
-          }
-          return !used?.used;
-        }
-        // discount case.
-        return !(promotionUsed.value || {})[a?.data.promotionId];
-      });
-      return ret;
-    }
-    return [];
-  });
+  const promotions = computed(() =>
+    usablePromotions(promotionData.value, promotionUsed.value),
+  );
 
   return {
     promotions,
@@ -258,30 +217,14 @@ export const usePromotionData = (
 
   watchEffect(() => {
     if (orderInfo && promotion && promotion.value) {
-      enablePromotion.value =
-        orderInfo.total >= promotion.value.discountThreshold;
-      if (promotion.value.discountMethod === "amount") {
-        discountPrice.value = Number(promotion.value.discountValue);
-      } else {
-        discountPrice.value = Number(
-          (promotion.value.discountValue * orderInfo.total) / 100,
-        );
-      }
+      const discount = promotionDiscount(orderInfo.total, promotion.value);
+      enablePromotion.value = discount.enabled;
+      discountPrice.value = discount.discountPrice;
     }
   });
 
-  const isEnablePaymentPromotion = (payStripe: boolean) => {
-    if (!promotion.value) {
-      return false;
-    }
-    if (promotion.value.paymentRestrictions === "stripe") {
-      return payStripe;
-    }
-    if (promotion.value.paymentRestrictions === "instore") {
-      return !payStripe;
-    }
-    return true;
-  };
+  const isEnablePaymentPromotion = (payStripe: boolean) =>
+    isPaymentAllowed(promotion.value, payStripe);
 
   return {
     enablePromotion,
@@ -309,7 +252,7 @@ export const useUserPromotionHistory = (id: string, user: UserRef) => {
       const userHistory: DiscountHistoryItem[] = historySnapShot.docs.map(
         (a) => {
           return {
-            userHistory: a.data() as UserPromotionHistoryData,
+            userHistory: collectionData<UserPromotionHistoryData>(a.data()),
             history: {},
           };
         },
@@ -327,7 +270,7 @@ export const useUserPromotionHistory = (id: string, user: UserRef) => {
             ),
           );
           ret.docs.forEach((a) => {
-            histories[a.id] = a.data() as PromotionData;
+            histories[a.id] = collectionData<PromotionData>(a.data());
           });
         }),
       );

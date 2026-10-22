@@ -19,8 +19,8 @@
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
-            {{ $t("order.status.stripe_" + order.payment.stripe) }}
+          <StripeStatus :stripeState="stripeState" v-if="stripeState">
+            {{ $t("order.status.stripe_" + stripeState) }}
           </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
@@ -75,7 +75,7 @@
 
         <div
           class="mr-2 items-center justify-center rounded-md bg-yellow-500/10 p-1 text-xs font-bold text-yellow-500"
-          v-if="hasStripe && order.payment.stripe !== 'canceled'"
+          v-if="stripeState && stripeState !== 'canceled'"
         >
           {{ $t("admin.order.cardPayment") }}
         </div>
@@ -126,8 +126,8 @@
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
-            {{ $t("order.status.stripe_" + order.payment.stripe) }}
+          <StripeStatus :stripeState="stripeState" v-if="stripeState">
+            {{ $t("order.status.stripe_" + stripeState) }}
           </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
@@ -201,8 +201,8 @@
       <!-- Payment Status and Time Stamp -->
       <div class="flex items-center px-2">
         <div class="flex-1 text-xs font-bold">
-          <StripeStatus :stripeState="order.payment.stripe" v-if="hasStripe">
-            {{ $t("order.status.stripe_" + order.payment.stripe) }}
+          <StripeStatus :stripeState="stripeState" v-if="stripeState">
+            {{ $t("order.status.stripe_" + stripeState) }}
           </StripeStatus>
           <div v-else class="text-yellow-500">
             {{ $t("order.status.onsitePayment") }}
@@ -306,11 +306,14 @@ export default defineComponent({
     const statusKey = computed(() => {
       return order_status_keys[props.order.status];
     });
-    const hasStripe = computed(() => {
+    // 支払いの状態そのもの。現地払いの注文には無いので undefined になる。
+    const stripeState = computed(() => {
       return props.order?.payment?.stripe;
     });
     const timestamp = computed(() => {
-      const time = props.order.timeEstimated || props.order.timePlaced;
+      const time = (
+        props.order.timeEstimated || props.order.timePlaced
+      ).toDate();
 
       if (props.isSuperView) {
         return d(time, "long");
@@ -331,9 +334,12 @@ export default defineComponent({
     });
     const totalCount = computed(() => {
       if (props.order.order) {
-        return Object.values(props.order.order).reduce((count, order) => {
-          return count + arrayOrNumSum(order);
-        }, 0);
+        return Object.values(props.order.order).reduce<number>(
+          (count, order) => {
+            return count + arrayOrNumSum(order);
+          },
+          0,
+        );
       }
       return 0;
     });
@@ -341,7 +347,7 @@ export default defineComponent({
     return {
       restaurant,
       statusKey,
-      hasStripe,
+      stripeState,
       timestamp,
       phoneNumber,
       nationalPhoneNumber,

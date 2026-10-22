@@ -51,13 +51,14 @@ export default defineComponent({
           });
           console.log("lineValidate", data);
 
-          if (data.nonce && data.profile) {
+          const signedInUser = user.value;
+          if (data.nonce && data.profile && signedInUser) {
             const state = route.query.state as string;
             const params = lineGuard(data.nonce, state);
 
-            user.value
+            signedInUser
               .getIdTokenResult(true)
-              .then((result: { claims: string }) => {
+              .then((result) => {
                 userStore.setCustomClaims(result.claims);
                 console.log("isLineuser", isLineUser.value);
                 if (isLineUser.value) {
@@ -81,6 +82,7 @@ export default defineComponent({
         } catch (error) {
           console.error(errorMessage(error), error);
           dialogStore.setErrorMessage({
+            error,
             code: "line.validation",
             message2: "errorPage.message.line",
           });

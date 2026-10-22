@@ -45,7 +45,10 @@
       </tr>
     </table>
     <div>
-      <button @click="updateQuery">
+      <button
+        @click="updateQuery"
+        class="mt-2 cursor-pointer rounded border-2 border-black/40 bg-gray-200 p-1 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-25"
+      >
         <span v-if="last">Next</span>
         <span v-else>Top</span>
       </button>
@@ -55,6 +58,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type {
+  AdminPrivateProfileData,
+  ShopOwnerData,
+} from "@/models/ShopOwner";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -70,6 +77,7 @@ import {
   DocumentData,
   QueryDocumentSnapshot,
   Unsubscribe,
+  type Timestamp,
 } from "firebase/firestore";
 
 import { stripeVerify } from "@/lib/firebase/functions";
@@ -89,10 +97,11 @@ export default defineComponent({
   setup() {
     useSuper();
 
-    type AdminData = DocumentData & { id: string };
+    // created で並べて読むので、created の無い文書は Firestore が返さない。
+    type AdminData = ShopOwnerData & { id: string; created: Timestamp };
     type AdminInfo = {
       payment?: DocumentData;
-      profile?: DocumentData;
+      profile?: Partial<AdminPrivateProfileData>;
       account?: { capabilities?: { [key: string]: string } };
     };
     const admins = ref<AdminData[]>([]);
@@ -114,10 +123,7 @@ export default defineComponent({
           const { data } = await stripeVerify({
             account_id: payment?.stripe,
           });
-          const verifyData = data as {
-            result?: boolean;
-            account?: { capabilities?: { [key: string]: string } };
-          };
+          const verifyData = data;
           payment.verified = verifyData.result;
           if (verifyData.account) {
             info.account = verifyData.account;
@@ -149,7 +155,7 @@ export default defineComponent({
         } else {
           last.value = null;
         }
-        const _admins = snapshot.docs.map(doc2data("admin"));
+        const _admins = snapshot.docs.map(doc2data<AdminData>("admin"));
         _admins.forEach((admin) => {
           admins.value.push(admin);
           // NOTE: We are getting extra data only once for each admin

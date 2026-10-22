@@ -165,15 +165,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { db } from "@/lib/firebase/firebase9";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import {
-  usePromotionsForAdmin,
-  getPromotionCollctionPath,
-} from "@/utils/promotion";
+import { usePromotionsForAdmin } from "@/utils/promotion";
+import { getPromotionCollctionPath } from "@/utils/promotionRules";
 
 import {
   setDoc,
@@ -193,25 +192,23 @@ export default defineComponent({
   },
   props: {
     shopInfo: {
-      type: Object,
-      required: false,
+      type: Object as PropType<RestaurantInfoData>,
+      required: true,
     },
   },
   setup(props) {
-    const id = props.shopInfo?.restaurantId;
-    const { promotionDataSet } = usePromotionsForAdmin(id as string);
+    const id = props.shopInfo.restaurantId;
 
     const { ownerUid } = useAdminUids();
 
-    if (
-      !checkShopAccount(props.shopInfo || {}, ownerUid.value) ||
-      !ownerUid.value
-    ) {
+    if (!checkShopAccount(props.shopInfo, ownerUid.value) || !ownerUid.value) {
       return notFoundResponse;
     }
 
+    const { promotionDataSet } = usePromotionsForAdmin(id);
+
     const newDiscount = async () => {
-      const path = getPromotionCollctionPath(id as string);
+      const path = getPromotionCollctionPath(id);
       const promotionId = doc(collection(db, path)).id;
       const data = {
         promotionName: "no name",

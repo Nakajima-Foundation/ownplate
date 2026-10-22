@@ -88,7 +88,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 
-import moment from "moment-timezone";
+import { formatDay } from "@/utils/shopCalendar";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -105,11 +105,16 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import {
+  order_status,
+  order_status_keys,
+  orderStatusOf,
+} from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData, OrderInfoData } from "@/models/orderInfo";
 import {
+  collectionData,
   defaultTitle,
   arrayOrNumSum,
   useAdminUids,
@@ -173,7 +178,7 @@ export default defineComponent({
           })
           .map((key) => {
             return {
-              index: order_status[key],
+              index: orderStatusOf(key),
               key: key === "error" ? "" : key,
             };
           }),
@@ -199,10 +204,10 @@ export default defineComponent({
       return filteredOrders.value.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
-          date: time ? moment(time).format("YYYY/MM/DD") : "",
-          restaurantId: order.restaurant.restaurantId, // mo
+          date: time ? formatDay(time.toDate(), "YYYY/MM/DD") : "",
+          restaurantId: order.restaurant?.restaurantId, // mo
           type: t("order." + orderTypeKey(order)),
-          restaurantName: order.restaurant.restaurantName,
+          restaurantName: order.restaurant?.restaurantName,
           orderStatus: t("order.status." + order_status_keys[order.status]),
           foodRevenue: order.accounting?.food.revenue,
           foodTax: order.accounting?.food?.tax,
@@ -213,7 +218,7 @@ export default defineComponent({
           serviceTax: order.accounting?.service?.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
-          totalCount: Object.values(order.order).reduce(
+          totalCount: Object.values(order.order).reduce<number>(
             (count, currentOrder) => {
               return count + arrayOrNumSum(currentOrder);
             },
@@ -223,7 +228,6 @@ export default defineComponent({
           beforeDiscountPrice: order.totalCharge + (order.discountPrice || 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
-          cancelReason: order.cancelReason,
         };
       });
     });
@@ -251,7 +255,7 @@ export default defineComponent({
           for (; i < snapshot.docs.length; i++) {
             const orderDoc = snapshot.docs[i];
             const order = order2ReportData(
-              orderDoc.data() as OrderInfoData,
+              collectionData<OrderInfoData>(orderDoc.data()),
               serviceTaxRate,
             );
             order.restaurantId = orderDoc.ref.path.split("/")[1];

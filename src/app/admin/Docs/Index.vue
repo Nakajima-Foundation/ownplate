@@ -61,19 +61,6 @@
           >
         </div>
 
-        <!-- Smaregi -->
-        <div class="">
-          <a
-            href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
-            target="_blank"
-            class="text-op-teal inline-flex items-center justify-center text-sm font-bold"
-          >
-            {{ $t("admin.thirdPartyService.smaregiManual") }}
-          </a>
-          <span class="text-xs font-normal"
-            >スマレジと連携機能の説明書です</span
-          >
-        </div>
         <!-- Tips -->
         <div class="">
           <a

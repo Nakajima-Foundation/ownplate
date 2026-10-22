@@ -64,7 +64,7 @@ export default [
       "vue/v-bind-style": "error",
       "vue/require-default-prop": "off",
       "vue/require-prop-types": "error",
-      "vue/no-mutating-props": "warn",
+      "vue/no-mutating-props": "error",
       "vue/no-undef-properties": "error",
       "no-undef": "error",
       "no-useless-assignment": "error",
@@ -79,7 +79,7 @@ export default [
       
       // "no-type-assertion/no-type-assertion": "warn",
       "no-console": "off",
-      "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+      "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
 
       "vue/require-explicit-emits": "error",
       "vue/no-unused-properties": "error",

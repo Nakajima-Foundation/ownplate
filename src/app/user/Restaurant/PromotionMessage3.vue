@@ -14,16 +14,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import type { CartTotalPrice } from "@/models/cartType";
+import type Promotion from "@/models/promotion";
 
 export default defineComponent({
   props: {
     promotion: {
-      type: Object,
+      type: Object as PropType<Promotion>,
       required: true,
     },
     totalPrice: {
-      type: Object,
+      type: Object as PropType<CartTotalPrice>,
       required: true,
     },
   },

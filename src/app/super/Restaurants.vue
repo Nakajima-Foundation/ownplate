@@ -19,16 +19,18 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { superTwilio } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton.vue";
 
 import { db } from "@/lib/firebase/firebase9";
-import { getDoc, doc, DocumentData } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 import { superPermissionCheck, getBackUrl, defaultTitle } from "@/utils/utils";
 import { useRoute } from "vue-router";
+import { routeParamOf } from "@/utils/routeParam";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
@@ -37,16 +39,17 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
-    const restaurantId = route.params.restaurantId;
+    const restaurantId = routeParamOf(route.params.restaurantId);
     superPermissionCheck();
 
     useHead(() => ({
       title: [defaultTitle, "Super All Restaurants"].join(" / "),
     }));
 
-    const restaurantData = ref<DocumentData>({});
+    const restaurantData = ref<Partial<RestaurantInfoData>>({});
     getDoc(doc(db, `restaurants/${restaurantId}`)).then((restaurantDoc) => {
-      restaurantData.value = restaurantDoc.data();
+      // 文書が無ければ .data() は undefined。ref の初期値と同じ空にしておく。
+      restaurantData.value = restaurantDoc.data() || {};
     });
 
     const phone = async () => {

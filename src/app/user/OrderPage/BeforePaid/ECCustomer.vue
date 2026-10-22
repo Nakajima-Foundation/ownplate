@@ -169,7 +169,9 @@ import { defineComponent, ref, computed, PropType } from "vue";
 
 import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { regionalSetting, countObj, useUserData } from "@/utils/utils";
+import { countObj, useUserData } from "@/utils/utils";
+import { inputValueOf } from "@/utils/domEvent";
+import { regionalSetting } from "@/config/constant";
 
 import { CustomerInfo } from "@/models/customer";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
@@ -197,16 +199,19 @@ export default defineComponent({
   setup(props, ctx) {
     const isSaveAddress = ref(true);
     const customerInfo = ref<CustomerInfo>({});
-    const addressList = ref([]);
+    // 郵便番号の文書が持つ住所の一つ分（zipcodeJP/parse.js が作る形）。
+    type ZipAddress = {
+      prefectureId: number;
+      prefecture: string;
+      address1: string;
+      address2: string;
+      address3: string;
+    };
+    const addressList = ref<ZipAddress[]>([]);
 
     const { uid } = useUserData();
 
-    const updateAddress = (address: {
-      address2: string;
-      address3: string;
-      prefectureId: number;
-      prefecture: string;
-    }) => {
+    const updateAddress = (address: ZipAddress) => {
       const { address2, address3, prefectureId, prefecture } = address;
 
       const data = {
@@ -218,9 +223,11 @@ export default defineComponent({
       customerInfo.value = { ...customerInfo.value, ...data };
       addressList.value = [];
     };
-    const updatePrefecture = (e) => {
-      const prefectureId = e.target.value;
-      const prefecture = regionalSetting.AddressStates[prefectureId - 1];
+    const updatePrefecture = (e: Event) => {
+      // 欄の値は文字列。保存もそのまま文字列で入る（郵便番号から選んだときは数）。
+      const prefectureId = inputValueOf(e);
+      const prefecture =
+        regionalSetting.AddressStates[Number(prefectureId) - 1];
 
       if (prefecture) {
         customerInfo.value = {
@@ -243,15 +250,20 @@ export default defineComponent({
     };
     const ecErrors = computed(() => {
       const err: { [key: string]: string[] } = {};
-      const attrs = ["zip", "address", "name", "prefectureId"];
+      const attrs: (keyof CustomerInfo)[] = [
+        "zip",
+        "address",
+        "name",
+        "prefectureId",
+      ];
       if (props.shopInfo.isEC) {
         attrs.push("email");
       }
       attrs.forEach((name) => {
         err[name] = [];
         if (
-          customerInfo.value[name as keyof CustomerInfo] === undefined ||
-          customerInfo.value[name as keyof CustomerInfo] === ""
+          customerInfo.value[name] === undefined ||
+          customerInfo.value[name] === ""
         ) {
           err[name].push("validationError." + name + ".empty");
         }
@@ -315,7 +327,7 @@ export default defineComponent({
       }
     })();
 
-    const updateHome = (pos: { lat?: number; lng?: number }) => {
+    const updateHome = (pos: { lat: number; lng: number }) => {
       const customer = { ...customerInfo.value };
       customer.location = pos;
       customerInfo.value = customer;

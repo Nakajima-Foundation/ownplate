@@ -1,5 +1,5 @@
 type CsvValue = string | number | boolean | null | undefined;
-type CsvRow = { [key: string]: CsvValue };
+export type CsvRow = { [key: string]: CsvValue };
 
 type CsvData = {
   data: CsvRow[];

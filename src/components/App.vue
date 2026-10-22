@@ -64,7 +64,7 @@ import DialogBox from "@/components/DialogBox.vue";
 import DialogTips from "@/components/DialogTips.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 import Loading from "@/components/Loading.vue";
-import { isDev, useRestaurantId } from "@/utils/utils";
+import { isDev, useRestaurantId, redirectedResponse } from "@/utils/utils";
 
 import * as Sentry from "@sentry/vue";
 import { defaultHeader } from "@/config/header";
@@ -121,20 +121,22 @@ export default defineComponent({
       }
       return false;
     });
-    const audioPlay = ref();
+    const audioPlay = ref<InstanceType<typeof AudioPlay> | null>(null);
     const enableSound = () => {
       if (audioPlay.value?.enableSound) {
         audioPlay.value?.enableSound();
       }
     };
-    const sideMenu = ref();
+    const sideMenu = ref<InstanceType<typeof SideMenu> | null>(null);
     const handleOpen = () => {
-      sideMenu.value.handleOpen();
+      sideMenu.value?.handleOpen();
     };
     const pingAnalytics = () => {
       setCurrentScreen(analytics, document.title);
       logEvent(analytics, "page_view");
-      logEvent(analytics, "screen_view", {
+      // 旧来の名前で送り続けている。変えると GA に届く中身が変わるので型だけ通す。
+      const screenViewEvent: string = "screen_view";
+      logEvent(analytics, screenViewEvent, {
         app_name: "web",
         screen_name: document.title,
       });
@@ -181,13 +183,13 @@ export default defineComponent({
           window.location.href =
             window.location.href + "?openExternalBrowser=1";
         }
-        return;
+        return redirectedResponse;
       }
     }
 
     let openTime = new Date();
     timerId = window.setInterval(() => {
-      const diff = (new Date() - openTime) / 1000; // second
+      const diff = (Date.now() - openTime.getTime()) / 1000; // second
       if (diff > 20 * 3600) {
         openTime = new Date();
         location.reload();

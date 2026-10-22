@@ -1,0 +1,44 @@
+// 店舗向け timeline に残す1件の形。Firestore に依らないので単体で試験できる。
+//
+// LINE の talk が店にとっての控えだった。畳むと「何を知らされたか」を遡る先が
+// 無くなるので、送った内容をこちらに残す。**届いたかどうかは持たない** —
+// それは Web Push のログの仕事で、ここは「何を伝えたか」だけ。
+
+export const SHOP_MESSAGE_COLLECTION = "messages";
+
+// 注文と種別から作るので、同じ通知が二度走っても行が増えない。
+export const shopMessageId = (orderId: string, messageId: string): string =>
+  `${orderId}-${messageId}`;
+
+export type ShopMessageRecord = {
+  // 店舗オーナーの uid。複数店舗を運営しているオーナーが collection group で
+  // 串刺しに引くために要る。firestore.rules の isResuaurantOwner がこれを見る。
+  ownerUid: string;
+  // 送った文面の本文。末尾に付けていた URL は path に分けて持つ（画面ではリンクにする）。
+  // あとから組み直すと「送っていない文面」を見せることになるので、組み直さない。
+  text: string;
+  // 種別（msg_order_placed など）。画面で色分けや絞り込みに使う。
+  messageId: string;
+  orderId: string;
+  orderNumber: number;
+  // 注文へ飛ぶ先。LINE では文面の末尾に付けていた URL の代わり。
+  path: string;
+  restaurantId: string;
+};
+
+export const shopMessageRecord = (params: {
+  ownerUid: string;
+  text: string;
+  messageId: string;
+  orderId: string;
+  orderNumber: number;
+  restaurantId: string;
+}): ShopMessageRecord => ({
+  ownerUid: params.ownerUid,
+  text: params.text,
+  messageId: params.messageId,
+  orderId: params.orderId,
+  orderNumber: params.orderNumber,
+  path: `/admin/restaurants/${params.restaurantId}/orders/${params.orderId}`,
+  restaurantId: params.restaurantId,
+});

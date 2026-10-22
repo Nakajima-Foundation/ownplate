@@ -26,6 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { ReviewData } from "@/models/reviewData";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,
@@ -34,19 +35,26 @@ import {
   startAfter,
   limit,
   getDocs,
-  DocumentData,
   QueryDocumentSnapshot,
+  type Timestamp,
 } from "firebase/firestore";
 import moment from "moment";
 
-import { useSuper, resizedProfileImage, defaultTitle } from "@/utils/utils";
+import {
+  collectionData,
+  useSuper,
+  resizedProfileImage,
+  defaultTitle,
+} from "@/utils/utils";
 import { useHead } from "@unhead/vue";
 
 export default defineComponent({
   setup() {
     useSuper();
 
-    const reviews = ref<DocumentData[]>([]);
+    // timeLiked で並べて読むので、timeLiked の無い文書は Firestore が返さない。
+    type ReviewRow = ReviewData & { timeLiked: Timestamp; uid?: string };
+    const reviews = ref<ReviewRow[]>([]);
     const last = ref<QueryDocumentSnapshot | null>(null);
     let isLoading = false;
 
@@ -75,7 +83,7 @@ export default defineComponent({
           for (; i < snapshot.docs.length; i++) {
             const doc = snapshot.docs[i];
             const userId = doc.ref.path.split("/")[1];
-            const review = doc.data();
+            const review = collectionData<ReviewRow>(doc.data());
             review.uid = userId;
             reviews.value.push(review);
           }

@@ -51,8 +51,9 @@ import {
 
 import { Timestamp } from "firebase/firestore";
 
-import { isNull } from "@/utils/utils";
+import { exceptDataOf } from "@/utils/exceptData";
 import { usePickupTime } from "@/utils/pickup";
+import { pickupDateOf } from "../../../../utils/shopCalendar";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { OrderInfoData } from "@/models/orderInfo";
@@ -81,33 +82,8 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
-    type ExceptHour = { start: number; end: number };
-    type ExceptDataValue = {
-      exceptDay: { [key: string]: boolean };
-      exceptHours: ExceptHour[];
-    };
     const exceptData = computed(() => {
-      return (
-        Object.values(props.orderInfo.menuItems) || []
-      ).reduce<ExceptDataValue>(
-        (tmp, menu) => {
-          const { exceptDay, exceptHour } = menu;
-          Object.keys(exceptDay || {}).forEach((key) => {
-            if (exceptDay[key]) {
-              tmp.exceptDay[key] = true;
-            }
-          });
-          if (
-            !isNull(exceptHour) &&
-            !isNull(exceptHour.start) &&
-            !isNull(exceptHour.end)
-          ) {
-            tmp.exceptHours.push(exceptHour);
-          }
-          return tmp;
-        },
-        { exceptDay: {}, exceptHours: [] },
-      );
+      return exceptDataOf(props.orderInfo.menuItems);
     });
 
     const { deliveryAvailableDays, availableDays } = usePickupTime(
@@ -158,11 +134,8 @@ export default defineComponent({
       console.log("time changed");
     });
 
-    // TODO: change emit
     const timeToPickup = () => {
-      const date = days.value[dayIndex.value].date;
-      date.setHours(time.value / 60);
-      date.setMinutes(time.value % 60);
+      const date = pickupDateOf(days.value[dayIndex.value].date, time.value);
       const ts = Timestamp.fromDate(date);
       return new Timestamp(ts.seconds, ts.nanoseconds);
     };

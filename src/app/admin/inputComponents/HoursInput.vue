@@ -16,7 +16,7 @@
       >
         <option
           v-for="(timeItem, index) of timeList"
-          :key="timeItem"
+          :key="timeItem ?? ''"
           :value="index === 0 ? null : (index - 1) * 30"
         >
           {{ timeItem }}
@@ -40,7 +40,7 @@
       >
         <option
           v-for="(timeItem, index) of timeList"
-          :key="timeItem"
+          :key="timeItem ?? ''"
           :value="index === 0 ? null : (index - 1) * 30"
         >
           {{ timeItem }}
@@ -51,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 
 import { timeList } from "@/config/constant";
-import { isNull } from "@/utils/utils";
+import { inputValueOf } from "@/utils/domEvent";
 
 export default defineComponent({
   name: "HoursInput",
@@ -68,7 +68,7 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: Object,
+      type: Object as PropType<{ start?: number; end?: number }>,
       required: true,
       default: () => ({}),
     },
@@ -77,19 +77,21 @@ export default defineComponent({
   setup(props, context) {
     const updateValueStart = (e: Event) => {
       const a = { ...props.modelValue };
-      if (isNull(e.target.value) || e.target.value === "") {
+      const value = inputValueOf(e);
+      if (value === "") {
         delete a.start;
       } else {
-        a.start = Number(e.target.value);
+        a.start = Number(value);
       }
       context.emit("update:modelValue", a);
     };
     const updateValueEnd = (e: Event) => {
       const a = { ...props.modelValue };
-      if (isNull(e.target.value) || e.target.value === "") {
+      const value = inputValueOf(e);
+      if (value === "") {
         delete a.end;
       } else {
-        a.end = Number(e.target.value);
+        a.end = Number(value);
       }
       context.emit("update:modelValue", a);
     };

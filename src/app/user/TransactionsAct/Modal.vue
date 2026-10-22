@@ -4,7 +4,6 @@
     <t-modal v-model:active="transactionsActPopup" width="488" scroll="keep">
       <Contents
         :shopInfo="shopInfo"
-        :isDelivery="isDelivery"
         @closeTransactionsAct="closeTransactionsAct"
         closeButton="menu.close"
       />
@@ -13,17 +12,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, PropType } from "vue";
+import type { RestaurantInfoData } from "@/models/RestaurantInfo";
 import Contents from "@/app/user/TransactionsAct/Contents.vue";
 
 export default defineComponent({
   props: {
     shopInfo: {
-      type: Object,
-      required: true,
-    },
-    isDelivery: {
-      type: Boolean,
+      type: Object as PropType<RestaurantInfoData>,
       required: true,
     },
   },
