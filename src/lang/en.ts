@@ -324,7 +324,7 @@ const data = {
     invoiceNumberNote:
       "Qualified invoice issuer registration number. Left off the receipt and PDF when unset.",
     webPushNotification: "Push notifications",
-    moveToPushConfig: "Manage push devices",
+    moveToPushConfig: "Web push settings",
     openDaysConfig: "Business date and time setting",
     lunchOrDinnerToggle: "Automatic lunch/dinner switch",
     lunchOrDinnerNotice:

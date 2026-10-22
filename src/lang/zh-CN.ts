@@ -311,7 +311,7 @@ const data = {
     invoiceNumberNote:
       "合格发票开具者登记号。未设置时不会打印在小票和 PDF 上。",
     webPushNotification: "推送通知",
-    moveToPushConfig: "管理推送设备",
+    moveToPushConfig: "Web 推送设置",
     openDaysConfig: "营业日时设置",
     lunchOrDinnerToggle: "午餐/晚餐自动切换",
     lunchOrDinnerNotice:

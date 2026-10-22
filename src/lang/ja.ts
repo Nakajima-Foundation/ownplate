@@ -325,7 +325,7 @@ const data = {
     invoiceNumberNote:
       "適格請求書発行事業者の登録番号。未設定の場合はレシート・PDF に印字しません。",
     webPushNotification: "プッシュ通知",
-    moveToPushConfig: "プッシュ通知の端末設定へ",
+    moveToPushConfig: "Webプッシュ設定",
     openDaysConfig: "営業日時設定",
     lunchOrDinnerToggle: "ランチ/ディナーの自動切り替え",
     lunchOrDinnerNotice:

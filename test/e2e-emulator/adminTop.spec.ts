@@ -63,7 +63,7 @@ test.describe("管理画面トップの飲食店カード", () => {
   // 店舗カードから一段で見えること。
   test("Web Push の端末設定へ行ける", async ({ page }) => {
     await signInAsOwner(page);
-    await page.getByText("Manage push devices").first().click();
+    await page.getByText("Web push settings").first().click();
 
     await expect(page).toHaveURL(`${CARD_BASE}/pushlist`);
   });

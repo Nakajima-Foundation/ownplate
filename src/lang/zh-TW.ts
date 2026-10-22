@@ -311,7 +311,7 @@ const data = {
     invoiceNumberNote:
       "合格發票開立者登記號。未設定時不會列印在收據和 PDF 上。",
     webPushNotification: "推播通知",
-    moveToPushConfig: "管理推播裝置",
+    moveToPushConfig: "Web 推播設定",
     openDaysConfig: "營業日時設定",
     lunchOrDinnerToggle: "午餐/晚餐自動切換",
     lunchOrDinnerNotice:
