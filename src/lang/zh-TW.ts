@@ -1001,6 +1001,8 @@ const data = {
       title: "通知",
       newsTop: "通知列表",
       adminTop: "管理介面",
+      year: "{year}年",
+      olderNews: "{year}年以前的通知（{count}則）",
     },
     yes: "有",
     yesOnce: "有 (1 次)",

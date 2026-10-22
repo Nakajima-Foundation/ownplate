@@ -1041,6 +1041,8 @@ const data = {
       title: "ประกาศ",
       newsTop: "รายการประกาศ",
       adminTop: "หน้าจัดการ",
+      year: "{year}",
+      olderNews: "ประกาศของปี {year} และก่อนหน้า ({count})",
     },
     yes: "มี",
     yesOnce: "มี (1 ครั้ง)",

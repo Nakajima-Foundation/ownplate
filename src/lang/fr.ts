@@ -1070,6 +1070,8 @@ const data = {
       title: "News",
       newsTop: "News Top",
       adminTop: "Admin Top",
+      year: "{year}",
+      olderNews: "News from {year} and earlier ({count})",
     },
     yes: "Yes",
     yesOnce: "Yes(once)",

@@ -1042,6 +1042,8 @@ const data = {
       title: "알림",
       newsTop: "알림 목록",
       adminTop: "관리 화면",
+      year: "{year}년",
+      olderNews: "{year}년 이전의 알림 ({count}건)",
     },
     yes: "있음",
     yesOnce: "있음 (1회)",

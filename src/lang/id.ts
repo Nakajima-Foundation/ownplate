@@ -1061,6 +1061,8 @@ const data = {
       title: "Pemberitahuan",
       newsTop: "Daftar pemberitahuan",
       adminTop: "Halaman admin",
+      year: "{year}",
+      olderNews: "Pemberitahuan {year} dan sebelumnya ({count})",
     },
     yes: "Ada",
     yesOnce: "Ada (1 kali)",
