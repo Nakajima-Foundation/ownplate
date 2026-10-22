@@ -61,7 +61,7 @@ const shopTimelineQuery = async (idToken: string | null) =>
     headers: authHeader(idToken),
     body: JSON.stringify({
       structuredQuery: {
-        from: [{ collectionId: "messages" }],
+        from: [{ collectionId: "shopMessages" }],
         orderBy: [
           { field: { fieldPath: "createdAt" }, direction: "DESCENDING" },
         ],
@@ -76,7 +76,7 @@ const crossShopQuery = async (idToken: string, ownerUid: string) =>
     headers: authHeader(idToken),
     body: JSON.stringify({
       structuredQuery: {
-        from: [{ collectionId: "messages", allDescendants: true }],
+        from: [{ collectionId: "shopMessages", allDescendants: true }],
         where: {
           fieldFilter: {
             field: { fieldPath: "ownerUid" },
@@ -162,7 +162,7 @@ const expectCannotWrite = async (
   // 新しい行の作成。**本物と同じ形**で作りに行く。項目の欠けた行で試すと、
   // 「形が整っていれば作れる」規則を足されたときに緑のまま通ってしまう。
   const created = await fetch(
-    `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/messages/forged`,
+    `${FIRESTORE_BASE}/restaurants/${SEED_RESTAURANT_ID}/shopMessages/forged`,
     {
       method: "PATCH",
       headers: authHeader(idToken),
