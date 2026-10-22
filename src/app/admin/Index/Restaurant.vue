@@ -137,6 +137,21 @@
         </div>
       </div>
 
+      <!-- Web Push -->
+      <div
+        class="mt-4 flex justify-center rounded-lg bg-black/5 py-3 text-center"
+        v-if="isOwner && !simpleMode"
+      >
+        <router-link :to="'/admin/restaurants/' + restaurantid + '/pushlist'">
+          <div class="text-op-teal inline-flex items-center">
+            <i class="material-icons mr-2 text-lg">notifications_active</i>
+            <span class="text-sm font-bold">
+              {{ $t("editRestaurant.moveToPushConfig") }}
+            </span>
+          </div>
+        </router-link>
+      </div>
+
       <!-- Notifications Settings -->
       <div
         class="mt-4 flex justify-evenly rounded-lg bg-black/5 pt-3 pb-2 text-center"
