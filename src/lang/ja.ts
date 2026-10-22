@@ -1048,6 +1048,8 @@ const data = {
       title: "お知らせ",
       newsTop: "お知らせ一覧",
       adminTop: "管理画面",
+      year: "{year}年",
+      olderNews: "{year}年以前のお知らせ（{count}件）",
     },
     yes: "あり",
     yesOnce: "あり(1回)",

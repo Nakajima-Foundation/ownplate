@@ -1053,6 +1053,8 @@ const data = {
       title: "Thông báo",
       newsTop: "Danh sách thông báo",
       adminTop: "Trang quản lý",
+      year: "{year}",
+      olderNews: "Thông báo từ năm {year} trở về trước ({count})",
     },
     yes: "Có",
     yesOnce: "Có (1 lần)",
