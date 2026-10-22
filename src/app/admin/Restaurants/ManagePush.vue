@@ -167,18 +167,6 @@
           <div class="mt-2 text-xs text-black/60">
             {{ $t("admin.push.inviteHint") }}
           </div>
-
-          <!-- 渡す相手に伝える手順。iPhone はホーム画面に追加しないと受け取れない。 -->
-          <div class="mt-4 rounded bg-black/5 p-3">
-            <div class="text-xs font-bold text-black/60">
-              {{ $t("admin.push.deviceGuideHeading") }}
-            </div>
-            <ul class="mt-2 list-disc space-y-1 pl-4 text-xs text-black/60">
-              <li>{{ $t("admin.push.deviceGuideIos") }}</li>
-              <li>{{ $t("admin.push.deviceGuideAndroid") }}</li>
-              <li>{{ $t("admin.push.deviceGuideDesktop") }}</li>
-            </ul>
-          </div>
           <div class="mt-4 flex justify-center">
             <vue-qrcode :value="inviteUrl" :options="{ width: 180 }" />
           </div>
@@ -196,6 +184,18 @@
               </span>
             </button>
           </div>
+        </div>
+
+        <!-- 端末ごとの手順。招待を出す前に読めないと、渡したあとで詰まる。 -->
+        <div class="mt-6 rounded-lg bg-black/5 p-4">
+          <div class="text-sm font-bold text-black/60">
+            {{ $t("admin.push.deviceGuideHeading") }}
+          </div>
+          <ul class="mt-2 list-disc space-y-1 pl-4 text-xs text-black/60">
+            <li>{{ $t("admin.push.deviceGuideIos") }}</li>
+            <li>{{ $t("admin.push.deviceGuideAndroid") }}</li>
+            <li>{{ $t("admin.push.deviceGuideDesktop") }}</li>
+          </ul>
         </div>
 
         <!-- Test -->
