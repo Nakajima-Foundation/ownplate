@@ -1207,6 +1207,7 @@ const data = {
     pleaseCheckInbox: "Đã gửi email. Vui lòng kiểm tra hộp thư đến.",
     timeline: {
       title: "Lịch sử thông báo",
+      description: "Xem lại các thông báo đã gửi đến nhà hàng của bạn.",
       empty: "Chưa có thông báo nào.",
       failed: "Không thể tải thông báo. Vui lòng kiểm tra quyền truy cập.",
     },

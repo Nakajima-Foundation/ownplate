@@ -1223,6 +1223,7 @@ const data = {
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     timeline: {
       title: "Historique des notifications",
+      description: "Consultez les notifications envoyées à votre restaurant.",
       empty: "Aucune notification pour le moment.",
       failed:
         "Impossible de charger les notifications. Veuillez vérifier vos autorisations.",

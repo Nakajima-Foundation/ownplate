@@ -1203,6 +1203,7 @@ const data = {
     pleaseCheckInbox: "Please check your inbox, an email is on the way.",
     timeline: {
       title: "Notification history",
+      description: "Look back at the notifications sent to your restaurant.",
       empty: "No notifications yet.",
       failed: "Could not load notifications. Please check your permissions.",
     },

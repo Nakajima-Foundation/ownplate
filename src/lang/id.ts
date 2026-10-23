@@ -1216,6 +1216,7 @@ const data = {
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
     timeline: {
       title: "Riwayat notifikasi",
+      description: "Lihat kembali notifikasi yang dikirim ke restoran Anda.",
       empty: "Belum ada notifikasi.",
       failed: "Tidak dapat memuat notifikasi. Silakan periksa izin Anda.",
     },

@@ -160,6 +160,22 @@
             </div>
           </div>
 
+          <!-- Message Timeline -->
+          <div class="mt-4" @click="closeNotificationSettings()">
+            <router-link
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black/5 px-4"
+              :to="`/admin/restaurants/${restaurantId}/messages`"
+            >
+              <i class="material-icons text-op-teal mr-2 text-lg">history</i>
+              <span class="text-op-teal text-sm font-bold">
+                {{ $t("admin.timeline.title") }}
+              </span>
+            </router-link>
+            <div class="mt-2 text-xs text-black/60">
+              {{ $t("admin.timeline.description") }}
+            </div>
+          </div>
+
           <!-- LINE Connection -->
           <div class="mt-4" @click="closeNotificationSettings()">
             <router-link
