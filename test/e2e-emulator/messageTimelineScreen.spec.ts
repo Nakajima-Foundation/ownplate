@@ -5,13 +5,16 @@ import {
   SEED_SUB_UNASSIGNED_EMAIL,
   SEED_SUB_UNASSIGNED_PASSWORD,
 } from "../../scripts/seedData";
-import { placeOrder, signInAsOwner, submitOwnerSignIn } from "./helpers";
+import {
+  ADMIN_ORDERS_PATH,
+  placeOrder,
+  signInAsOwner,
+  submitOwnerSignIn,
+} from "./helpers";
 
 // 店舗向けメッセージ timeline の画面。**画面を通して読む**ので、ここは
 // firestore.rules の入れ子の読み取り許可を実際に通る唯一の経路。
 // REST を Bearer owner で叩く試験は規則を迂回してしまうため、これが要る。
-//
-// 導線はまだ出していないので、URL を直接開く。
 
 const TIMELINE = `/admin/restaurants/${SEED_RESTAURANT_ID}/messages`;
 
@@ -54,4 +57,22 @@ test("読めないときに「まだありません」と出さない", async ({
   ).toBeVisible();
   // ここが肝。空に見えてはいけない。
   await expect(page.getByText("No notifications yet.")).toHaveCount(0);
+});
+
+// 導線。画面があっても辿り着けなければ無いのと同じなので、注文画面から
+// 実際に押して着くところまで通す。鈴は全ての店舗画面の上にあるので、
+// ここが通れば注文中でも遡れる。
+test("注文画面の鈴から timeline へ行ける", async ({ page }) => {
+  await signInAsOwner(page);
+  await page.goto(ADMIN_ORDERS_PATH);
+
+  // 泡が開く前は、この文字を持つのは鈴だけ。
+  await page.getByText("Notification", { exact: true }).first().click();
+
+  const entry = page.getByRole("link", { name: "Notification history" });
+  await expect(entry).toBeVisible();
+  await entry.click();
+
+  await expect(page).toHaveURL(new RegExp(`${TIMELINE}$`));
+  await expect(page.getByText("Notification history")).toBeVisible();
 });

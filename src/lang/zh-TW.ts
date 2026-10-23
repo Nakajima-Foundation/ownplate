@@ -1144,6 +1144,7 @@ const data = {
     pleaseCheckInbox: "郵件已傳送。請檢視收件箱。",
     timeline: {
       title: "通知紀錄",
+      description: "可以回顧發送給店鋪的通知。",
       empty: "目前沒有通知。",
       failed: "無法載入通知。請確認您的權限。",
     },

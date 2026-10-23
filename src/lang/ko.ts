@@ -1190,6 +1190,7 @@ const data = {
     pleaseCheckInbox: "이메일을 전송했습니다. 받은 편지함을 확인해 주세요.",
     timeline: {
       title: "알림 기록",
+      description: "매장으로 보낸 알림을 나중에 다시 확인할 수 있습니다.",
       empty: "아직 알림이 없습니다.",
       failed: "알림을 불러오지 못했습니다. 권한을 확인해 주세요.",
     },
