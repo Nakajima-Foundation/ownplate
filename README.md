@@ -45,7 +45,7 @@ see GitHub Actions setting.
 
 # Run the development server on localhost
 
-Requires Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` (see `engines` in `package.json`). `yarn install` fails on older versions.
+Requires Node.js `^22.23.4 || ^24.22.1 || >=26.12.1` (see `engines` in `package.json`). `yarn install` fails on older versions. `functions/` requires Node.js 24 (the Firebase Functions runtime).
 
 ```
 # install dependencies
