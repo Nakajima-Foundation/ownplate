@@ -21,6 +21,8 @@ OwnPlate は飲食店向けのテイクアウト注文サービス。Firebase + 
 
 ## 開発セットアップ
 
+Node.js は `package.json` の `engines`（`^22.23.4 || ^24.22.1 || >=26.12.1`）を満たす版が必要。満たさないと `yarn install` が失敗する。
+
 ```bash
 yarn install
 cp src/config/default/ownplate-dev.ts src/config/project.ts   # 環境設定のひな形
