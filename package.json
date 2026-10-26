@@ -5,6 +5,9 @@
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
   "type": "module",
+  "engines": {
+    "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
+  },
   "scripts": {
     "start": "vite",
     "test": "node --import tsx --test test/unit/test_*.ts",
