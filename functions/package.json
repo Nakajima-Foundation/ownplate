@@ -30,15 +30,15 @@
     "minimatch": "^10.2.6"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1153.0",
+    "@aws-sdk/client-sns": "^3.1158.0",
     "@holiday-jp/holiday_jp": "^2.5.2",
     "@sentry/node": "^10.74.0",
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "firebase-admin": "^14.5.0",
     "firebase-functions": "^7.4.0",
-    "google-libphonenumber": "^3.2.47",
-    "i18next": "^26.5.3",
+    "google-libphonenumber": "^3.2.48",
+    "i18next": "^26.5.11",
     "moment": "^2.31.0",
     "moment-timezone": "^0.6.5",
     "nodemailer": "^10.0.13",
@@ -63,7 +63,7 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.1"
   },
   "private": true
 }
