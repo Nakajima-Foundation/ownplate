@@ -41,7 +41,7 @@
     "i18next": "^26.5.3",
     "moment": "^2.31.0",
     "moment-timezone": "^0.6.5",
-    "nodemailer": "^10.0.13",
+    "nodemailer": "^10.1.4",
     "receiptline": "^4.0.4",
     "sharp": "^0.35.5",
     "stripe": "~22.6.2",
