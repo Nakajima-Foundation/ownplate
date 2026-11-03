@@ -30,17 +30,17 @@
     "minimatch": "^10.2.6"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1153.0",
+    "@aws-sdk/client-sns": "^3.1161.0",
     "@holiday-jp/holiday_jp": "^2.5.2",
     "@sentry/node": "^10.74.0",
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "firebase-admin": "^14.5.0",
     "firebase-functions": "^7.4.0",
-    "google-libphonenumber": "^3.2.47",
+    "google-libphonenumber": "^3.2.48",
     "i18next": "^26.5.3",
     "moment": "^2.31.0",
-    "moment-timezone": "^0.6.5",
+    "moment-timezone": "^0.6.6",
     "nodemailer": "^10.1.4",
     "receiptline": "^4.0.4",
     "sharp": "^0.35.5",
@@ -55,15 +55,15 @@
     "@firebase/rules-unit-testing": "^5.0.2",
     "@types/google-libphonenumber": "^7.4.31",
     "@types/validator": "^13.15.10",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.13.0",
+    "globals": "^17.14.0",
     "prettier": "^3.9.10",
     "supertest": "^7.3.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.1"
   },
   "private": true
 }
