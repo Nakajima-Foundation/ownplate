@@ -243,11 +243,17 @@ service cloud.firestore {
     }
 
     // collection group。ここは **すべての messages コレクション** に当たる。
-    // 持っている項目だけで判断されるので、**どこかの messages に fromUid や
-    // ownerUid を足すと、その相手から読めるようになる**。項目を増やすときは必ずここを見ること。
+    // 持っている項目だけで判断されるので、**どこかの messages に fromUid を足すと、
+    // その相手から読めるようになる**。項目を増やすときは必ずここを見ること。
+    // サブアカウントの招待がこれを使う。
     match /{path=**}/messages/{messageId} {
       allow read: if isFromUser(resource, request);
-      // 店舗向けの timeline。複数店舗のオーナーが串刺しで引くために collection group で許す。
+    }
+
+    // 店舗向けの timeline。複数店舗のオーナーが串刺しで引くために collection group で許す。
+    // 招待の messages とは**別の名前**にしてある。同じ名前だと、片方に項目を足しただけで
+    // もう片方の持ち主から読めるようになってしまう。
+    match /{path=**}/shopMessages/{messageId} {
       allow read: if isResuaurantOwner(resource, request);
     }
 
@@ -371,6 +377,14 @@ service cloud.firestore {
           allow read, write: if isRestaurantOwner(restaurantId, request);
           allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
+        // 店舗向けメッセージの timeline。書くのは Functions だけ（Admin SDK なので
+        // この rules を通らない）。オーナーとサブアカウントが読むだけ。
+        // 全店舗を串刺しで引くほうは collection group 側の規則が持っている。
+        match /shopMessages/{messageId} {
+          allow read: if isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        }
+
         // Web Push の端末登録。lines と違い、この doc はサーバだけが持つ値
         // (recentSends の送信記録、restaurantId、登録時の情報) を抱えている。
         // そこでクライアントに許すのは「一覧に出す」「ON/OFF する」「名前を変える」
@@ -378,14 +392,6 @@ service cloud.firestore {
         // フィールドだけを列挙する。並べ方だと、後から足したフィールドが素通りする。
         // 新規作成はワンタイム URL 経由で Functions が書くので、クライアントには要らない。
         // Functions は Admin SDK なのでこの rules を通らない。
-        // 店舗向けメッセージの timeline。書くのは Functions だけ（Admin SDK なので
-        // この rules を通らない）。オーナーとサブアカウントが読むだけ。
-        // 全店舗を串刺しで引くほうは collection group 側の規則が持っている。
-        match /messages/{messageId} {
-          allow read: if isRestaurantOwner(restaurantId, request);
-          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
-        }
-
         match /pushRegistrations/{fid} {
           allow read, delete: if isRestaurantOwner(restaurantId, request);
           allow read, delete: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);

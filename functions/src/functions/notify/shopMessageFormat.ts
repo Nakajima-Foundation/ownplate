@@ -4,7 +4,9 @@
 // 無くなるので、送った内容をこちらに残す。**届いたかどうかは持たない** —
 // それは Web Push のログの仕事で、ここは「何を伝えたか」だけ。
 
-export const SHOP_MESSAGE_COLLECTION = "messages";
+// サブアカウント招待の admins/:uid/messages と名前が衝突すると、collection group の
+// 規則と索引が両方に当たってしまう。別の名前にして混ざらないようにする。
+export const SHOP_MESSAGE_COLLECTION = "shopMessages";
 
 // 注文と種別から作るので、同じ通知が二度走っても行が増えない。
 export const shopMessageId = (orderId: string, messageId: string): string =>

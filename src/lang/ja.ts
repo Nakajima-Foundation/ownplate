@@ -1048,6 +1048,8 @@ const data = {
       title: "お知らせ",
       newsTop: "お知らせ一覧",
       adminTop: "管理画面",
+      year: "{year}年",
+      olderNews: "{year}年以前のお知らせ（{count}件）",
     },
     yes: "あり",
     yesOnce: "あり(1回)",
@@ -1199,6 +1201,7 @@ const data = {
     pleaseCheckInbox: "メールを送信しました。受信箱をご確認ください。",
     timeline: {
       title: "お知らせ履歴",
+      description: "これまでにお店へ送った通知を、あとから見返せます。",
       empty: "まだお知らせはありません。",
       failed: "お知らせを読み込めませんでした。権限をご確認ください。",
     },

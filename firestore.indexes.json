@@ -69,7 +69,7 @@
       ]
     },
     {
-      "collectionGroup": "messages",
+      "collectionGroup": "shopMessages",
       "queryScope": "COLLECTION_GROUP",
       "fields": [
         {
@@ -557,7 +557,7 @@
       ]
     },
     {
-      "collectionGroup": "messages",
+      "collectionGroup": "shopMessages",
       "fieldPath": "ownerUid",
       "ttl": false,
       "indexes": [

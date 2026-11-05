@@ -107,7 +107,7 @@ export default defineComponent({
 
     const detacher = onSnapshot(
       query(
-        collection(db, `restaurants/${restaurantId.value}/messages`),
+        collection(db, `restaurants/${restaurantId.value}/shopMessages`),
         orderBy("createdAt", "desc"),
         limit(SHOWN_MESSAGES),
       ),

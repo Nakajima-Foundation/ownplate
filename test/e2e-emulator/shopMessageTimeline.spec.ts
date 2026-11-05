@@ -15,7 +15,7 @@ import { placeOrder } from "./helpers";
 const MESSAGES_URL =
   `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
   `/v1/projects/ownplate-dev/databases/(default)/documents` +
-  `/restaurants/${SEED_RESTAURANT_ID}/messages`;
+  `/restaurants/${SEED_RESTAURANT_ID}/shopMessages`;
 
 type FirestoreDoc = {
   name: string;

@@ -53,7 +53,7 @@ const crossShopQuery = async (idToken: string, ownerUid: string) =>
     },
     body: JSON.stringify({
       structuredQuery: {
-        from: [{ collectionId: "messages", allDescendants: true }],
+        from: [{ collectionId: "shopMessages", allDescendants: true }],
         // 画面が使うのと同じ形。複合 index はこの並びのためにある。
         orderBy: [
           { field: { fieldPath: "createdAt" }, direction: "DESCENDING" },
@@ -72,7 +72,7 @@ const crossShopQuery = async (idToken: string, ownerUid: string) =>
 const OTHER_SHOP_ROW =
   `http://${EMULATOR_HOST}:${FIRESTORE_EMULATOR_PORT}` +
   `/v1/projects/ownplate-dev/databases/(default)/documents` +
-  `/restaurants/${SEED_EDIT_RESTAURANT_ID}/messages/crossShopProbe`;
+  `/restaurants/${SEED_EDIT_RESTAURANT_ID}/shopMessages/crossShopProbe`;
 
 // 2店舗目は種まきに無いので、別の店舗の下に同じ ownerUid の行を直に置く。
 // 見たいのは「問い合わせが親をまたぐか」なので、親が違えば足りる。

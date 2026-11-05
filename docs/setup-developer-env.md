@@ -64,15 +64,15 @@ nodebrew ls-remote
 ```
 で、インストール可能なバージョン一覧を調べる。
 
-## 3.2. **18系** の最新をダウンロードする
+## 3.2. **24系** の最新をダウンロードする（24.22.1 以上。`functions/` は Firebase の実行環境に合わせて 24 系のみ）
 
 ```
-nodebrew install v18.18.2 
+nodebrew install v24.22.1 
 ```
 
 ## 3.3. ダウンロードした Node を指定する
 ```
-nodebrew use v18.18.2
+nodebrew use v24.22.1
 ```
 
 # -- (参考) 4. yarn をインストール

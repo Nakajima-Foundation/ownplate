@@ -223,7 +223,7 @@ export default defineComponent({
 
     const menuPagePath = computed(() => {
       if (inLiff.value) {
-        return liffBasePath + "/r/" + restaurantId.value;
+        return liffBasePath.value + "/r/" + restaurantId.value;
       } else {
         return `/r/${restaurantId.value}`;
       }

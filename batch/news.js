@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+import { newsSummary, newsVersion } from '../src/utils/newsList';
+
 const text = "hoge foo bar";
 
 const dirpath = "./docs/news/";
@@ -43,6 +45,9 @@ const files = fs.readdirSync(dirpath).filter((file) => {
   fs.writeSync(release_note_fd, "\n");
 
   data.markdown = removeFirstLine(data.markdown);
+  // 一覧は本文を開かずに中身が分かる必要がある。版と要約はここで作って data.ts に持たせる。
+  data.version = newsVersion(data.title);
+  data.summary = newsSummary(data.markdown);
   write_data.push(data);
 
 });
