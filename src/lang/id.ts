@@ -1061,6 +1061,8 @@ const data = {
       title: "Pemberitahuan",
       newsTop: "Daftar pemberitahuan",
       adminTop: "Halaman admin",
+      year: "{year}",
+      olderNews: "Pemberitahuan {year} dan sebelumnya ({count})",
     },
     yes: "Ada",
     yesOnce: "Ada (1 kali)",
@@ -1214,6 +1216,7 @@ const data = {
     pleaseCheckInbox: "Email telah dikirim. Silakan periksa kotak masuk.",
     timeline: {
       title: "Riwayat notifikasi",
+      description: "Lihat kembali notifikasi yang dikirim ke restoran Anda.",
       empty: "Belum ada notifikasi.",
       failed: "Tidak dapat memuat notifikasi. Silakan periksa izin Anda.",
     },

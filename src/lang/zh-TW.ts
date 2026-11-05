@@ -1001,6 +1001,8 @@ const data = {
       title: "通知",
       newsTop: "通知列表",
       adminTop: "管理介面",
+      year: "{year}年",
+      olderNews: "{year}年以前的通知（{count}則）",
     },
     yes: "有",
     yesOnce: "有 (1 次)",
@@ -1142,6 +1144,7 @@ const data = {
     pleaseCheckInbox: "郵件已傳送。請檢視收件箱。",
     timeline: {
       title: "通知紀錄",
+      description: "可以回顧發送給店鋪的通知。",
       empty: "目前沒有通知。",
       failed: "無法載入通知。請確認您的權限。",
     },

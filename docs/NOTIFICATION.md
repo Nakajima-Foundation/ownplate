@@ -31,13 +31,13 @@
 受信設定を何も入れていない店舗でも記録されるので、「何を知らせたか」は
 通知経路が増減しても追えます。
 
-- 置き場所: `/restaurants/:restaurantId/messages/:orderId-:messageId`
+- 置き場所: `/restaurants/:restaurantId/shopMessages/:orderId-:messageId`
 - 書くのは Functions だけ（Admin SDK なので `firestore.rules` を通らない）
 - 読めるのは、その店舗のオーナーと、その店舗を担当するサブアカウント
 - 複数店舗のオーナーは collection group で串刺しに引ける。
   サブアカウントは店舗ごとなので串刺しには含まれない
 - 画面は `/admin/restaurants/:restaurantId/messages`。
-  **導線はまだ出していない**（URL を直接開いたときだけ見える）
+  入口は通知の設定（店舗画面の上にある鈴）の中
 
 ## お客さんへ送る通知
 
