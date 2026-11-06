@@ -1040,6 +1040,10 @@ const data = {
     },
     open: "营业",
     closed: "休业",
+    phoneCallEnd: {
+      title: "电话通知将于 2026年11月30日 结束",
+      body: "今后请使用推送通知。在各店铺订单页面点击铃铛图标打开「通知设置」，即可登记接收通知的设备。",
+    },
     notes: {
       title: "注意",
       userRestaurantsTitle: "关于客户用店铺列表",

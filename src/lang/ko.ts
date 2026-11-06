@@ -1081,6 +1081,10 @@ const data = {
     },
     open: "영업",
     closed: "휴업",
+    phoneCallEnd: {
+      title: "전화 알림은 2026년 11월 30일에 종료됩니다",
+      body: "앞으로는 푸시 알림을 이용해 주세요. 각 매장 주문 화면의 종 아이콘에서 「알림 설정」을 열면 알림을 받을 기기를 등록할 수 있습니다.",
+    },
     notes: {
       title: "주의",
       userRestaurantsTitle: "고객용 매장 목록에 대하여",

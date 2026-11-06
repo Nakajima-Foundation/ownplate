@@ -1040,6 +1040,10 @@ const data = {
     },
     open: "營業",
     closed: "休業",
+    phoneCallEnd: {
+      title: "電話通知將於 2026年11月30日 結束",
+      body: "今後請使用推播通知。在各店鋪訂單頁面點擊鈴鐺圖示開啟「通知設定」，即可登記接收通知的裝置。",
+    },
     notes: {
       title: "注意",
       userRestaurantsTitle: "關於客戶用店鋪列表",
