@@ -1,6 +1,9 @@
 <template>
   <div v-if="userStore.uidAdmin">
-    <div class="mx-6 mt-4 rounded-lg bg-red-700/10 p-4">
+    <div
+      v-if="webPushConfigured"
+      class="mx-6 mt-4 rounded-lg bg-red-700/10 p-4"
+    >
       <div class="text-sm font-bold text-red-700">
         {{ $t("admin.phoneCallEnd.title") }}
       </div>
@@ -324,6 +327,7 @@ import { useRouter } from "vue-router";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { ShopOwnerData } from "@/models/ShopOwner";
 import { useHead } from "@unhead/vue";
+import { isWebPushConfigured } from "@/utils/webPush";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -675,6 +679,7 @@ export default defineComponent({
 
     return {
       userStore,
+      webPushConfigured: isWebPushConfigured(),
       // ref
       readyToDisplay,
       restaurantItems,
