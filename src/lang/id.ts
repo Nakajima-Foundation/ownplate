@@ -1100,6 +1100,10 @@ const data = {
     },
     open: "Buka",
     closed: "Tutup",
+    phoneCallEnd: {
+      title: "Notifikasi panggilan telepon akan berakhir pada 30 November 2026",
+      body: 'Silakan gunakan notifikasi push. Buka "Pengaturan Notifikasi" dari ikon lonceng di halaman pesanan setiap restoran untuk mendaftarkan perangkat yang menerima notifikasi.',
+    },
     notes: {
       title: "Perhatian",
       userRestaurantsTitle: "Tentang daftar restoran untuk pelanggan",

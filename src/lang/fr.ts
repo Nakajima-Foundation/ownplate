@@ -1109,6 +1109,11 @@ const data = {
     },
     open: "Ouvert",
     closed: "Fermé",
+    phoneCallEnd: {
+      title:
+        "Les notifications par appel téléphonique prendront fin le 30 novembre 2026",
+      body: "Veuillez utiliser les notifications push. Ouvrez « Paramètres de notification » depuis l'icône de cloche sur la page des commandes de chaque restaurant pour enregistrer les appareils qui recevront les notifications.",
+    },
     notes: {
       title: "À noter",
       userRestaurantsTitle: "About Restaurants List for User",

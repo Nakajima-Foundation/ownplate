@@ -1090,6 +1090,10 @@ const data = {
     },
     open: "Open",
     closed: "Closed",
+    phoneCallEnd: {
+      title: "Phone call notifications will end on November 30, 2026",
+      body: 'Please use push notifications instead. Open "Notification Settings" from the bell icon on each restaurant\'s order page to register the devices that receive notifications.',
+    },
     notes: {
       title: "Notes",
       userRestaurantsTitle: "About Restaurants List for User",

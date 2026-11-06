@@ -1092,6 +1092,11 @@ const data = {
     },
     open: "Mở cửa",
     closed: "Đóng cửa",
+    phoneCallEnd: {
+      title:
+        "Thông báo qua cuộc gọi điện thoại sẽ kết thúc vào ngày 30 tháng 11 năm 2026",
+      body: 'Vui lòng sử dụng thông báo đẩy. Mở "Cài đặt thông báo" từ biểu tượng chuông trên trang đơn hàng của từng nhà hàng để đăng ký thiết bị nhận thông báo.',
+    },
     notes: {
       title: "Lưu ý",
       userRestaurantsTitle: "Về danh sách nhà hàng dành cho khách hàng",

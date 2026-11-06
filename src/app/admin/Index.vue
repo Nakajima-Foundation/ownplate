@@ -1,5 +1,14 @@
 <template>
   <div v-if="userStore.uidAdmin">
+    <div class="mx-6 mt-4 rounded-lg bg-red-700/10 p-4">
+      <div class="text-sm font-bold text-red-700">
+        {{ $t("admin.phoneCallEnd.title") }}
+      </div>
+      <div class="mt-1 text-sm text-red-700">
+        {{ $t("admin.phoneCallEnd.body") }}
+      </div>
+    </div>
+
     <!-- Partnets -->
     <Partners :shopOwner="shopOwner" v-if="shopOwner" />
 
