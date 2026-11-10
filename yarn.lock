@@ -4642,7 +4642,7 @@ mime@^3.0.0:
   resolved "https://registry.yarnpkg.com/mime/-/mime-3.0.0.tgz#b374550dca3a0c18443b0c950a6a58f1931cf7a7"
   integrity sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==
 
-minimatch@^10.2.2, minimatch@^10.2.4, minimatch@^10.2.6, minimatch@^11.0.6, minimatch@^3.1.2, minimatch@^9.0.4:
+minimatch@>=9.0.7, minimatch@^10.2.2, minimatch@^10.2.4, minimatch@^10.2.6, minimatch@^3.1.2, minimatch@^9.0.4:
   version "11.0.6"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-11.0.6.tgz#99b1cdf4592b77aac7b12a83d2d76dfa78420016"
   integrity sha512-6NZbDPQIRnsJFjJ9wbd5659OKaTHCqpPHdldE3WwArjxr5wLxHIwnx4eTGcPebpVBZZQbITvQQIx8K0VGXoT3Q==
