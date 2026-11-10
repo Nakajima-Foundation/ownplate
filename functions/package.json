@@ -27,10 +27,10 @@
   },
   "main": "lib/index.js",
   "resolutions": {
-    "minimatch": "^10.2.6"
+    "minimatch": "^11.0.6"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.1163.0",
+    "@aws-sdk/client-sns": "^3.1166.0",
     "@holiday-jp/holiday_jp": "^2.5.2",
     "@sentry/node": "^10.74.0",
     "cors": "^2.8.6",
@@ -59,11 +59,11 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.14.0",
     "prettier": "^3.9.10",
-    "supertest": "^7.3.1",
+    "supertest": "^7.3.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1"
+    "typescript-eslint": "^8.72.2"
   },
   "private": true
 }
