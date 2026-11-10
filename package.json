@@ -59,9 +59,6 @@
     "vue-social-sharing": "^4.0.0-alpha4",
     "vuedraggable": "^4.1.0"
   },
-  "resolutions": {
-    "minimatch": "^11.0.6"
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@intlify/eslint-plugin-vue-i18n": "^4.5.1",
