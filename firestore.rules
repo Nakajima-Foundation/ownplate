@@ -90,7 +90,17 @@ service cloud.firestore {
                                                      'isDelivery', 'isLiff', 'phoneNumber', 'name', 'updatedAt', 'timeCreated'])
              && request.resource.data.status == 100
              && request.resource.data.uid == request.auth.uid
-             && request.resource.data.ownerUid == get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
+             && request.resource.data.ownerUid == get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid
+             && request.resource.data.timeCreated == request.time
+             && request.resource.data.updatedAt == request.time
+             && isBoundedMap(request.resource.data.order)
+             && isBoundedMap(request.resource.data.options)
+             && isBoundedMap(request.resource.data.rawOptions)
+             && (request.resource.data.name == null || (request.resource.data.name is string && request.resource.data.name.size() <= 100));
+    }
+    // 注文の中身は orderCreated がメニューを1件ずつ引いて組み直す。大きな注文で読み取りを膨らませないよう上限を置く
+    function isBoundedMap(value) {
+      return value is map && value.size() <= 200;
     }
     function inStoreIsBool(request) {
       return request.resource.data.inStore is bool;
