@@ -84,8 +84,8 @@ service cloud.firestore {
       return (isUndefined(request.resource.data, 'isEC') || request.resource.data.isEC == resource.data.isEC) &&
              (isUndefined(request.resource.data, 'onTheList') || request.resource.data.onTheList == resource.data.onTheList || request.resource.data.onTheList == false);
     }
-    function notUpdatePaymentParams(resource, request) {
-      return request.resource.data.stripe == resource.data.stripe || isUndefined(request.resource.data, ['stripe']);
+    function inStoreIsBool(request) {
+      return request.resource.data.inStore is bool;
     }
 
     match /users/{userId} {
@@ -151,7 +151,10 @@ service cloud.firestore {
       }
       match /public/payment {
         allow read: if true;
-        allow write: if request.auth.uid == userId && notUpdatePaymentParams(resource, request);
+        allow create: if request.auth.uid == userId && request.resource.data.keys().hasOnly(['inStore'])
+                        && inStoreIsBool(request);
+        allow update: if request.auth.uid == userId && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['inStore'])
+                        && inStoreIsBool(request);
         allow write: if isSuper(request);
       }
       match /private/profile {

@@ -14,10 +14,17 @@ export const disconnect = async (db: Firestore, context: CallableRequest) => {
 
   try {
     const refPayment = db.doc(`/admins/${uid}/public/payment`);
-    const payment = (await refPayment.get()).data();
-    const stripe_user_id = payment?.stripe;
+    const refStripe = db.doc(`/admins/${uid}/system/stripe`);
+    // 解除する相手は、関数だけが書ける system/stripe を正とする
+    const stripeInfo = (await refStripe.get()).data();
+    // 2020-06-22 より前の連携は、トークンの応答を包まずに保存している
+    const stripe_user_id =
+      stripeInfo?.auth?.stripe_user_id ?? stripeInfo?.stripe_user_id;
     if (!stripe_user_id) {
-      throw new HttpsError("invalid-argument", "This account is not connected to Stripe.");
+      throw new HttpsError(
+        "invalid-argument",
+        "This account is not connected to Stripe.",
+      );
     }
 
     // We remove it from the database first, so that the operator can attempt to re-connect
@@ -26,7 +33,7 @@ export const disconnect = async (db: Firestore, context: CallableRequest) => {
       stripe: null,
     });
 
-    await db.doc(`/admins/${uid}/system/stripe`).delete();
+    await refStripe.delete();
 
     await stripe.oauth.deauthorize({
       client_id,
