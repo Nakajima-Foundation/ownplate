@@ -136,11 +136,6 @@ describe("orderCreated — 受け付けない注文は error にする", () => {
     await rejected(world({ order: { order: { karaage: 1.5 } } }));
   });
 
-  it("rejects an order that is not the caller's, or not new", async () => {
-    await rejected(world({ order: { uid: "someone-else" } }));
-    await rejected(world({ order: { status: order_status.validation_ok } }));
-  });
-
   it("rejects an order at a shop that is closed to the public", async () => {
     await rejected(world({ shop: { publicFlag: false } }));
     await rejected(world({ shop: { deletedFlag: true } }));
@@ -152,6 +147,22 @@ describe("orderCreated — 呼び出しそのものを断る", () => {
     const { db, log } = fakeFirestore(world());
     await assert.rejects(orderCreated(db, request, { auth: { uid: CUSTOMER, token: {} } }), /authenticated/);
     assert.deepStrictEqual(log, []);
+  });
+
+  it("refuses an order that is not the caller's, or not new, without writing", async () => {
+    const cases: { shop?: object; order: object }[] = [
+      { order: { uid: "someone-else" } },
+      { order: { status: order_status.validation_ok } },
+      { shop: { publicFlag: false }, order: { uid: "someone-else" } },
+      { shop: { deletedFlag: true }, order: { status: order_status.order_placed } },
+    ];
+    for (const overrides of cases) {
+      const { db, log, store } = fakeFirestore(world(overrides));
+      const before = store.get(orderPath)?.status;
+      await assert.rejects(orderCreated(db, request, signedIn), /does not exist/);
+      assert.strictEqual(store.get(orderPath)?.status, before);
+      assert.ok(!log.some((line) => line.includes(orderPath)), "the order must not be written");
+    }
   });
 
   it("refuses a malformed id, without writing", async () => {

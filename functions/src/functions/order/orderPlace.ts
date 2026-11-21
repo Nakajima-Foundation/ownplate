@@ -3,10 +3,10 @@ import { CallableRequest, HttpsError } from "firebase-functions/v2/https";
 import { CollectionReference, DocumentData, DocumentReference, FieldValue, Firestore, Timestamp, Transaction } from "firebase-admin/firestore";
 import moment from "moment-timezone";
 
-import { order_status, stripe_regions_jp } from "../../common/constant";
+import { order_status, stripe_regions_jp, JPPrefecture } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { notifyNewOrderToRestaurant } from "../notify2";
-import { costCal } from "../../utils/commonUtils";
+import { costCal, isPrefectureIdInRange } from "../../utils/commonUtils";
 import { checkPickupOffered } from "../../utils/pickupCheck";
 
 import { getStripeAccount, getHash, getCustomerStripeInfo2, saveCustomerStripeInfo2 } from "../stripe/intent";
@@ -145,7 +145,7 @@ const multiple = stripe_regions_jp.multiple; // 100 for USD, 1 for JPY
 export const place = async (db: Firestore, data: OrderPlacedData, context: CallableRequest) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe, waitingPayment } = data;
+  const { restaurantId, orderId, tip, timeToPickup, memo, userName, customerInfo, payStripe } = data;
   // const { promotionId, affiliateId } = data;
   const { promotionId } = data;
   utils.required_params({ restaurantId, orderId }); // tip is optinoal
@@ -155,7 +155,9 @@ export const place = async (db: Firestore, data: OrderPlacedData, context: Calla
     console.error("orderPlace", validateResult.errors);
     throw new HttpsError("invalid-argument", "Validation Error.");
   }
-  const enableStripe = !!payStripe;
+  const enableStripe = payStripe === true;
+  // カード払いは orderPay で与信を確かめるまで決済待ちにする。画面の申告には頼らない
+  const waitingPayment = enableStripe;
 
   const roundedTip = Math.round((Number(tip) || 0) * multiple) / multiple;
   if (roundedTip < 0) {
@@ -167,6 +169,12 @@ export const place = async (db: Firestore, data: OrderPlacedData, context: Calla
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId) as RestaurantInfoData;
     const restaurantOwnerUid = restaurantData.uid;
+    if (!enableStripe) {
+      const payment = (await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get()).data();
+      if (!payment?.inStore) {
+        throw new HttpsError("invalid-argument", "Validation Error.");
+      }
+    }
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {} as PostageData;
 
     // check tip
@@ -230,6 +238,10 @@ export const place = async (db: Firestore, data: OrderPlacedData, context: Calla
         };
       })();
 
+      if (restaurantData.isEC && !isPrefectureIdInRange(customerInfo?.prefectureId, JPPrefecture.length)) {
+        console.error("orderPlace", "invalid prefectureId");
+        throw new HttpsError("invalid-argument", "Validation Error.");
+      }
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId || 0, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {

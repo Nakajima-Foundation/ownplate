@@ -85,6 +85,13 @@ service cloud.firestore {
              (isUndefined(request.resource.data, 'isEC') || request.resource.data.isEC == resource.data.isEC) &&
              (isUndefined(request.resource.data, 'onTheList') || request.resource.data.onTheList == resource.data.onTheList || request.resource.data.onTheList == false);
     }
+    function isNewOrder(restaurantId, request) {
+      return request.resource.data.keys().hasOnly(['order', 'options', 'rawOptions', 'status', 'uid', 'ownerUid', 'lunchOrDinner',
+                                                     'isDelivery', 'isLiff', 'phoneNumber', 'name', 'updatedAt', 'timeCreated'])
+             && request.resource.data.status == 100
+             && request.resource.data.uid == request.auth.uid
+             && request.resource.data.ownerUid == get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
+    }
     function inStoreIsBool(request) {
       return request.resource.data.inStore is bool;
     }
@@ -349,12 +356,10 @@ service cloud.firestore {
           allow read: if isSuper(request);
           allow read: if isOperator(request);
           allow create: if isPhoneUser(request)
-                          && request.resource.data.status == 100
-                          && request.resource.data.phoneNumber == request.auth.token.phone_number
-                          && request.resource.data.uid == request.auth.uid;
+                          && isNewOrder(restaurantId, request)
+                          && request.resource.data.phoneNumber == request.auth.token.phone_number;
           allow create: if isLiffUser(request)
-                          && request.resource.data.status == 100
-                          && request.resource.data.uid == request.auth.uid;
+                          && isNewOrder(restaurantId, request);
           allow read: if isAdmin(request)
                           && isRestaurantOwner(restaurantId, request);
           allow read: if isAdmin(request)

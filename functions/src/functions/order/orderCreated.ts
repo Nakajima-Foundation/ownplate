@@ -93,6 +93,19 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
 
+  // 他人の注文や受付後の注文を error に書き換えないよう、どの書き込みよりも先に確かめる
+  const order = await orderRef.get();
+
+  if (!order) {
+    throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+  }
+  const orderData = order.data() as OrderData | undefined;
+
+  if (!orderData || !orderData.status || orderData.status !== order_status.new_order || !orderData.uid || orderData.uid !== customerUid) {
+    console.log("invalid order:" + String(orderId));
+    throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+  }
+
   try {
     const restaurantDoc = await restaurantRef.get();
     if (!restaurantDoc.exists) {
@@ -109,18 +122,6 @@ export const orderCreated = async (db: Firestore, data: OrderCreatedData, contex
       console.error("[orderCreated] not exists");
       return orderRef.update("status", order_status.error);
     }
-    const order = await orderRef.get();
-
-    if (!order) {
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
-    }
-    const orderData = order.data() as OrderData | undefined;
-
-    if (!orderData || !orderData.status || orderData.status !== order_status.new_order || !orderData.uid || orderData.uid !== customerUid) {
-      console.log("invalid order:" + String(orderId));
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
-    }
-
     // validate
     const ownerUid = restaurantData.uid;
     const { isDelivery, isLiff, lunchOrDinner } = orderData;

@@ -23,6 +23,7 @@ export const createRestaurantData = async (db, restaurantId) => {
     publicFlag: true,
     emailNotification: true,
   });
+  await db.doc(`admins/121212/public/payment`).set({ inStore: true });
   // create menu.
   await db.doc(`restaurants/${restaurantId}/menus/hoge1`).set({
     deletedFlag: false,
