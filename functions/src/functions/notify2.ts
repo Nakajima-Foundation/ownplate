@@ -200,7 +200,7 @@ export const createNotifyRestaurantMailMessage = async (
   };
   const replacedTemp = Object.keys(data).reduce((tmp, key) => {
     const regex = new RegExp("\\${" + key + "}", "g");
-    return tmp.replace(regex, data[key]);
+    return tmp.replace(regex, () => data[key]);
   }, template_data);
 
   // const message = `${restaurantName} ${t(messageId)} ${orderName} ${JSON.stringify(order)}`;

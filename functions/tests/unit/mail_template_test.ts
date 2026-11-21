@@ -110,3 +110,12 @@ describe("mail template function", () => {
     });
   });
 });
+
+// 店名やメニュー名は店の入力。$& や $` を置換の記法として読むと、テンプレートの断片が本文に混ざる。
+describe("mail template with replacement patterns in the shop's text", () => {
+  it("keeps $&, $` and $' in the restaurant name as they are", async () => {
+    const name = "店$&$`$'";
+    const mail = await createNotifyRestaurantMailMessage("msg_order_placed", name, order, 123, "ja", "https://example.com");
+    assert.strictEqual(mail.split("\n")[0], `${name}様`);
+  });
+});
