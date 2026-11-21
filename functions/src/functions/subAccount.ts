@@ -7,7 +7,7 @@ import { SubAccountInvitateData, SubAccountInvitationAcceptDenyData, SubAccountD
 
 import isEmail from "validator/lib/isEmail";
 import { validateFirebaseId } from "../lib/validator";
-import { claimsAfterLeavingParent } from "../lib/subAccountClaims";
+import { claimsAfterJoiningParent, claimsAfterLeavingParent } from "../lib/subAccountClaims";
 
 import { Context } from "../models/TestType";
 
@@ -122,8 +122,8 @@ export const accept = async (db: Firestore, data: SubAccountInvitationAcceptDeny
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
-        const customClaims = { parentUid: messageData.fromUid };
-        await getAuth().setCustomUserClaims(messageData.toUid, customClaims);
+        const claims = claimsAfterJoiningParent((await getAuth().getUser(messageData.toUid)).customClaims, messageData.fromUid);
+        await getAuth().setCustomUserClaims(messageData.toUid, claims);
 
         const childRef = db.doc(`admins/${messageData.fromUid}/children/${messageData.toUid}`);
         await tr.get(childRef);

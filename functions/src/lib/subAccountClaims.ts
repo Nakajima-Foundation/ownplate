@@ -8,3 +8,6 @@ export const claimsAfterLeavingParent = (claims: Claims | undefined, parentUid: 
   }
   return Object.fromEntries(Object.entries(claims).filter(([key]) => key !== "parentUid"));
 };
+
+// 招待を受けた相手がもともと持っていた admin や operator は、子になっても消さない。
+export const claimsAfterJoiningParent = (claims: Claims | undefined, parentUid: string): Claims => ({ ...claims, parentUid });
