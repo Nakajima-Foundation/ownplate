@@ -120,6 +120,7 @@ import { doc, onSnapshot, Unsubscribe, setDoc } from "firebase/firestore";
 import { stripeConnect, stripeDisconnect } from "@/lib/firebase/functions";
 import { ownPlateConfig } from "@/config/project";
 import { parseCookie } from "cookie";
+import { isReturnedOAuthState } from "@/utils/oauthState";
 
 import { PaymentInfo } from "@/models/paymentInfo";
 import Checkbox from "@/components/form/checkbox.vue";
@@ -148,7 +149,7 @@ export default defineComponent({
         const state = route.query.state;
         const cookies = parseCookie(document.cookie);
         //console.log("mounted", code, state, cookies.stripe_state);
-        if (state === cookies?.stripe_state) {
+        if (isReturnedOAuthState(state, cookies?.stripe_state)) {
           generalStore.setLoading(true);
           try {
             const { data } = await stripeConnect({ code });
