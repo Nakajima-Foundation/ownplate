@@ -291,18 +291,16 @@ service cloud.firestore {
 
         match /ec/postage {
           allow read: if true
-          allow create: if isAdmin(request)
+          allow create, update: if isAdmin(request)
+                          && (isRestaurantOwner(restaurantId, request) || isRestaurantSubAccount(restaurantId, request))
                           && request.resource.data.uid == request.auth.uid;
-          allow update: if isAdmin(request) && isOwner(resource, request);
-          allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
           allow update: if isSuper(request);
         }
         match /delivery/area {
           allow read: if true
-          allow create: if isAdmin(request)
+          allow create, update: if isAdmin(request)
+                          && (isRestaurantOwner(restaurantId, request) || isRestaurantSubAccount(restaurantId, request))
                           && request.resource.data.uid == request.auth.uid;
-          allow update: if isAdmin(request) && isOwner(resource, request);
-          allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
           allow update: if isSuper(request);
         }
         match /private/notifications {
