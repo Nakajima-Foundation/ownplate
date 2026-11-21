@@ -81,7 +81,8 @@ service cloud.firestore {
              isUndefined(request.resource.data, 'onTheList');
     }
     function notUpdateRestaurantParams(resource, request) {
-      return (isUndefined(request.resource.data, 'isEC') || request.resource.data.isEC == resource.data.isEC) &&
+      return request.resource.data.uid == resource.data.uid &&
+             (isUndefined(request.resource.data, 'isEC') || request.resource.data.isEC == resource.data.isEC) &&
              (isUndefined(request.resource.data, 'onTheList') || request.resource.data.onTheList == resource.data.onTheList || request.resource.data.onTheList == false);
     }
     function inStoreIsBool(request) {
