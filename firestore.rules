@@ -153,7 +153,7 @@ service cloud.firestore {
     }
     match /admins/{userId} {
       // Note: we don't want to allow the user to "update"
-      allow create: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
+      allow create: if isAdmin(request) && request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
               && isUndefined(request.resource.data, 'operator');
       allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
@@ -212,7 +212,7 @@ service cloud.firestore {
     }
     match /owners/{ownerId} {
       // Note: we don't want to allow the user to "update"
-      allow write: if request.auth.uid == ownerId && isUndefined(request.resource.data, 'admin')
+      allow write: if isAdmin(request) && request.auth.uid == ownerId && isUndefined(request.resource.data, 'admin')
               && isUndefined(request.resource.data, 'operator');
       allow read: if true
     }

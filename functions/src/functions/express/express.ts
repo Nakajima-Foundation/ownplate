@@ -374,8 +374,8 @@ const ownerPage = async (req: express.Request<OwnerParams>, res: express.Respons
     res.send(
       template_data
         .replace(/<meta[^>]*>/g, "")
-        .replace(regexTitle, metas.join("\n"))
-        .replace(regexBody, bodyString),
+        .replace(regexTitle, () => metas.join("\n"))
+        .replace(regexBody, () => bodyString),
     );
   } catch (e) {
     console.log(e);
