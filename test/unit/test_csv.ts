@@ -168,4 +168,51 @@ describe("合計行の列記号が A-Z に収まっていること", () => {
       `列記号が壊れていない: ${footer}`,
     );
   });
+
+  // 注文者や店が入れた文字が、表計算ソフトで式として動かないようにする。
+  it("keeps a value that starts like a formula from running as one", () => {
+    const formulas = [
+      '=HYPERLINK("https://example.com")',
+      "+A1",
+      "-1+A1",
+      "@SUM(A1)",
+      "=1",
+      " =SUM(A1)",
+      "-1-2",
+      "+81 90-1234-5678",
+    ];
+    formulas.forEach((memo) => {
+      const csv = data2csv(
+        { data: [{ name: "x", count: 1, total: 1, memo }], fields },
+        asKey,
+      );
+      assert.strictEqual(linesOf(csv)[1], `x,1,1,'${memo}`);
+    });
+  });
+
+  it("looks past a tab that turned into a space", () => {
+    const csv = data2csv(
+      { data: [{ name: "x", count: 1, total: 1, memo: "\t=1" }], fields },
+      asKey,
+    );
+    assert.strictEqual(linesOf(csv)[1], "x,1,1,' =1");
+  });
+
+  it("leaves plain numbers, domestic phone numbers and ordinary text as they are", () => {
+    [
+      "-100",
+      "+1.5",
+      "090-1234-5678",
+      "(03) 1234 5678",
+      "山田",
+      "a=b",
+      "",
+    ].forEach((memo) => {
+      const csv = data2csv(
+        { data: [{ name: "x", count: 1, total: 1, memo }], fields },
+        asKey,
+      );
+      assert.strictEqual(linesOf(csv)[1], `x,1,1,${memo}`);
+    });
+  });
 });

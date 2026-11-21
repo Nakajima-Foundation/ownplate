@@ -12,9 +12,19 @@ type TranslateFn = (key: string) => string;
 
 const regexEscape = /[,\t\n\r]/g;
 
+// 先頭（空白の後ろも含む）が = + - @ の値は表計算ソフトが式として動かす。
+// ただの数（-100 や +1.5）は式にならず、' を付けると数として扱われなくなるので残す。
+const regexFormulaStart = /^\s*[=+\-@]/;
+const regexDecimal = /^[+-]?\d+(\.\d+)?$/;
+
+const neutralizeFormula = (value: string): string =>
+  regexFormulaStart.test(value) && !regexDecimal.test(value)
+    ? `'${value}`
+    : value;
+
 const escapeCVS = (value: CsvValue): CsvValue => {
   if (typeof value === "string") {
-    return value.replace(regexEscape, " ");
+    return neutralizeFormula(value.replace(regexEscape, " "));
   }
   return value;
 };

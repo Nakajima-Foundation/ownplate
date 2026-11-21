@@ -1,6 +1,10 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { costCal, freeThresholdOf } from "../../src/utils/commonUtils.ts";
+import {
+  costCal,
+  freeThresholdOf,
+  isPrefectureIdInRange,
+} from "../../src/utils/commonUtils.ts";
 
 // EC の送料。注文確定のときにサーバ（functions/src/functions/order/orderPlace.ts）でも
 // 呼ばれるので、ここが狂うと客の請求額が変わる。
@@ -189,5 +193,42 @@ describe("costCal が一覧の外を指したとき", () => {
     assert.strictEqual(costCal({ postageList }, "", 1000), 0);
     assert.strictEqual(costCal({ postageList }, undefined, 1000), 0);
     assert.strictEqual(costCal({ postageList }, "abc", 1000), 0);
+  });
+});
+
+describe("isPrefectureIdInRange", () => {
+  const PREFECTURE_COUNT = 47;
+  it("accepts every prefecture, as a number or a string", () => {
+    Array.from({ length: PREFECTURE_COUNT }, (_, index) => index + 1).forEach(
+      (id) => {
+        assert.ok(isPrefectureIdInRange(id, PREFECTURE_COUNT));
+        assert.ok(isPrefectureIdInRange(String(id), PREFECTURE_COUNT));
+      },
+    );
+  });
+
+  it("rejects anything that would not pick a postage", () => {
+    [
+      0,
+      -1,
+      48,
+      1.5,
+      NaN,
+      Infinity,
+      "",
+      "abc",
+      "0",
+      "48",
+      undefined,
+      null,
+      true,
+      [1],
+      "0x1",
+      "1e1",
+      " 1",
+      "1.0",
+    ].forEach((id) =>
+      assert.ok(!isPrefectureIdInRange(id, PREFECTURE_COUNT), String(id)),
+    );
   });
 });

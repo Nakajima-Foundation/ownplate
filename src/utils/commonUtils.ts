@@ -18,6 +18,20 @@ export const freeThresholdOf = (raw: unknown): number | null => {
   return null;
 };
 
+// 送料は都道府県の番号で一覧を引くので、範囲外や空だと送料 0 で決済されてしまう。
+export const isPrefectureIdInRange = (
+  prefectureId: unknown,
+  prefectureCount: number,
+): boolean => {
+  const id =
+    typeof prefectureId === "number"
+      ? prefectureId
+      : typeof prefectureId === "string" && /^\d+$/.test(prefectureId)
+        ? Number(prefectureId)
+        : NaN;
+  return Number.isInteger(id) && id >= 1 && id <= prefectureCount;
+};
+
 export const costCal = (
   postageInfo: Partial<PostageInfo> | null | undefined,
   prefectureId: number | string | undefined,
