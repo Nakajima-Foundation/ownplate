@@ -1,11 +1,8 @@
-import { onCall } from "firebase-functions/v2/https";
-import { getFirestore } from "firebase-admin/firestore";
+import { HttpsError, onCall } from "firebase-functions/v2/https";
 
-import { orderChange } from "../../functions/stripe/orderChange";
 import { enforceAppCheck, requireAppCheck, secretKeys } from "../firebase";
 
-const db = getFirestore();
-
+// 注文の編集は画面から外してある。金額の組み直しに穴が残っているので、呼ばれても何もせず断る。
 export default onCall(
   {
     region: "asia-northeast1",
@@ -16,6 +13,6 @@ export default onCall(
   },
   async (context) => {
     requireAppCheck(context);
-    return await orderChange(db, context.data, context);
+    throw new HttpsError("failed-precondition", "Order change is closed.");
   },
 );
