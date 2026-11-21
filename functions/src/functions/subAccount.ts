@@ -7,6 +7,7 @@ import { SubAccountInvitateData, SubAccountInvitationAcceptDenyData, SubAccountD
 
 import isEmail from "validator/lib/isEmail";
 import { validateFirebaseId } from "../lib/validator";
+import { claimsAfterLeavingParent } from "../lib/subAccountClaims";
 
 import { Context } from "../models/TestType";
 
@@ -196,9 +197,10 @@ export const deleteChild = async (db: Firestore, data: SubAccountDeleteChildData
       if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
         throw new HttpsError("invalid-argument", "The child or message does not exist.");
       }
-      // ok!!
-      const customClaims = {};
-      await getAuth().setCustomUserClaims(childUid, customClaims);
+      const claims = claimsAfterLeavingParent((await getAuth().getUser(childUid)).customClaims, adminUid);
+      if (claims) {
+        await getAuth().setCustomUserClaims(childUid, claims);
+      }
 
       await tr.delete(childRef);
       await tr.delete(messageRef);
